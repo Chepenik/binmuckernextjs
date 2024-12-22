@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { FaLinkedin, FaTwitter, FaFeatherAlt } from 'react-icons/fa';
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6'; // X (Twitter) logo
 
 export function Footer() {
   return (
@@ -12,28 +13,28 @@ export function Footer() {
         </p>
         <div className="flex space-x-6">
           <a
-            href="https://linkedin.com/in/your-profile"
+            href="https://www.linkedin.com/in/conorchepenik/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-600 transition-colors"
+            className="hover:text-[#0077B5] transition-colors"
           >
             <FaLinkedin size="1.5em" />
           </a>
           <a
-            href="https://x.com/your-profile"
+            href="https://x.com/ConorChepenik"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-600 transition-colors"
+            className="hover:text-[#1DA1F2] transition-colors"
           >
-            <FaTwitter size="1.5em" />
+            <FaXTwitter size="1.5em" />
           </a>
           <a
-            href="https://nostr.directory/your-profile"
+            href="https://github.com/Chepenik"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-600 transition-colors"
+            className="hover:text-[#171515] transition-colors"
           >
-            <FaFeatherAlt size="1.5em" />
+            <FaGithub size="1.5em" />
           </a>
         </div>
       </div>
