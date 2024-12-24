@@ -27,9 +27,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY, isOpen, toggleOpen]);
 
-  // Sticky (or fixed) + transparent so content can flow underneath if wanted
-  // but we keep it simpler by not covering the content.
-  // If you want it "fixed", swap "sticky top-0" for "fixed w-full".
   const headerStyling = `
     sticky top-0 bg-transparent text-black z-50
     transition-transform duration-300 shadow-md
@@ -50,12 +47,12 @@ export function Header() {
           />
         </Link>
 
-        {/* Mobile menu toggle (hidden on desktop) */}
+        {/* Mobile menu toggle */}
         <div className="md:hidden">
           <MenuToggle toggle={() => toggleOpen()} />
         </div>
 
-        {/* Desktop nav (hidden on mobile) */}
+        {/* Desktop navigation */}
         <div className="hidden md:flex items-center space-x-8">
           {links.map((link) => (
             <Link
@@ -66,9 +63,12 @@ export function Header() {
               {link}
             </Link>
           ))}
-          <button className="border border-black px-4 py-2 rounded-full text-black hover:bg-black hover:text-white transition">
+          <Link
+            href="/contact"
+            className="border border-black px-4 py-2 rounded-full text-black hover:bg-black hover:text-white transition"
+          >
             Get in Touch
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -92,13 +92,13 @@ export function Header() {
               {link}
             </Link>
           ))}
-          <button
-            className="border border-black px-4 py-2 rounded-full text-black
-                       hover:bg-black hover:text-white transition"
+          <Link
+            href="/contact"
+            className="border border-black px-4 py-2 rounded-full text-black hover:bg-black hover:text-white transition"
             onClick={() => toggleOpen()}
           >
             Get in Touch
-          </button>
+          </Link>
         </motion.div>
       )}
     </motion.header>

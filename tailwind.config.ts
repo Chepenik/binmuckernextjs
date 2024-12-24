@@ -1,17 +1,22 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
-    // plus any other folders containing your components
+    "./src/components/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {
       colors: {
-        currencyGreen: '#85BB65',      // Lighter bill green
-        federalGreen: '#156B45',       // Darker bill green
-        treasuryGold: '#BF9B30',       // Metallic gold
-        certificateGold: '#D4AF37',    // Brighter gold
-        securityBlue: '#1B3E87',       // Security thread blue
+        currencyGreen: '#85BB65',
+        treasuryGold: '#BF9B30',
+        gradientStart: '#6EE7B7',
+        gradientEnd: '#3B82F6',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '108': '27rem',
+      },
+      fontFamily: {
+        sans: ['Inter', 'Arial', 'sans-serif'],
       },
     },
   },
