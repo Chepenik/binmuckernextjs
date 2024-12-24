@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import QRCode from 'qrcode.react';
+import Image from 'next/image'; // Import Next.js Image
 import { Copy, ExternalLink, X } from 'lucide-react';
 
 interface ZapModalProps {
@@ -14,17 +14,24 @@ const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
   const lightningAddress = 'https://strike.me/chepenik/';
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('BTC Address copied to clipboard');
-    }).catch((error) => {
-      console.error('Failed to copy BTC Address', error);
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert('BTC Address copied to clipboard');
+      })
+      .catch((error) => {
+        console.error('Failed to copy BTC Address', error);
+      });
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50" role="dialog" aria-modal="true">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="bg-gray-800 rounded-xl shadow-2xl max-w-md w-full relative overflow-hidden text-white">
         <button
           className="absolute top-2 right-2 text-gray-300 hover:text-white"
@@ -33,9 +40,11 @@ const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
         >
           <X size={24} />
         </button>
-        
-        <h2 className="text-2xl font-bold mb-6 text-center pt-6">Support The Binmucker</h2>
-        
+
+        <h2 className="text-2xl font-bold mb-6 text-center pt-6">
+          Support The Binmucker
+        </h2>
+
         <div className="px-6 pb-6">
           <a
             href={lightningAddress}
@@ -45,11 +54,18 @@ const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
           >
             ⚡ Pay with Lightning <ExternalLink size={20} className="ml-2" />
           </a>
-          
+
           <div className="mt-6 text-center">
             <h3 className="text-xl font-semibold mb-2">Bitcoin Address</h3>
             <div className="mb-4 flex justify-center">
-              <QRCode value={btcAddress} size={200} bgColor="transparent" fgColor="#ffffff" />
+              {/* Use Next.js <Image> for optimization */}
+              <Image
+                src="https://i.nostr.build/skgeMS8YfFOt0DQG.jpg"
+                alt="Bitcoin Address"
+                width={300}
+                height={300}
+                className="max-w-full h-auto"
+              />
             </div>
             <p className="text-sm text-gray-300 mb-2 break-all">{btcAddress}</p>
             <button
@@ -59,7 +75,7 @@ const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
               Copy BTC Address <Copy size={20} className="ml-2" />
             </button>
           </div>
-          
+
           <p className="text-center text-gray-300 font-medium mt-6">
             Thank you for supporting the Binmucker! 🙏
           </p>
