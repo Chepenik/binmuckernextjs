@@ -40,27 +40,56 @@ export default function ContactPage() {
         </div>
         <div>
           <label htmlFor="social-media" className="block text-sm font-semibold text-gray-900 mb-1">
-            Social Media (optional)
+            Social Media Handle <span className="text-red-600">*</span>
           </label>
           <input
             type="text"
             id="social-media"
             name="social_media"
+            required
             placeholder="e.g., Twitter @yourhandle"
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
         <div>
+          <label htmlFor="platform" className="block text-sm font-semibold text-gray-900 mb-1">
+            Social Media Platform <span className="text-red-600">*</span>
+          </label>
+          <select
+            id="platform"
+            name="platform"
+            required
+            className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
+          >
+            <option value="">Select Platform</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
           <label htmlFor="query" className="block text-sm font-semibold text-gray-900 mb-1">
-            Query (optional)
+            Query 
           </label>
           <textarea
             id="query"
             name="query"
+            required
             rows={4}
             placeholder="What&apos;s on your mind?"
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           ></textarea>
+        </div>
+        <div>
+          <label htmlFor="language" className="block text-sm font-semibold text-gray-900 mb-1">
+            Please write in English <span className="text-red-600">*</span>
+          </label>
+          <p className="text-sm text-gray-600">
+            Any text not in English will be ignored, including non-English social media handles.
+          </p>
         </div>
         <div>
           <label htmlFor="how-found" className="block text-sm font-semibold text-gray-900 mb-1">
