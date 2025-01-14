@@ -36,7 +36,7 @@ const links: BlockLink[] = [
   },
   {
     title: 'Join Crowdhealth',
-    description: 'Escape the grip of big insurance with CrowdHealth - the free-market disruptor empowering you to control your healthcare costs and choices.',
+    description: 'Escape the grip of big insurance with CrowdHealth - the free-market disruptor empowering you to control your healthcare costs and choices',
     url: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
     category: 'Healthcare',
     gradient: 'from-orange-200 to-orange-600',
