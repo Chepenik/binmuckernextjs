@@ -8,7 +8,7 @@ import MenuToggle from './MenuToggle';
 import ZapModal from './ZapModal';
 
 export function Header() {
-  const links = ['Home', 'Projects', 'Zap Me'];
+  const links = ['Home', 'Game', 'Zap Me'];
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [showHeader, setShowHeader] = useState(true);
@@ -67,7 +67,7 @@ export function Header() {
               ) : (
                 <Link
                   key={link}
-                  href={link === 'Home' ? '/' : `/${link.toLowerCase()}`}
+                  href={link === 'Home' ? '/' : link === 'Game' ? '/space-invaders' : `/${link.toLowerCase()}`}
                   className="font-semibold hover:underline"
                 >
                   {link}
@@ -107,7 +107,7 @@ export function Header() {
               ) : (
                 <Link
                   key={link}
-                  href={link === 'Home' ? '/' : `/${link.toLowerCase()}`}
+                  href={link === 'Home' ? '/' : link === 'Game' ? '/space-invaders' : `/${link.toLowerCase()}`}
                   className="text-lg font-semibold"
                   onClick={() => toggleOpen()}
                 >
