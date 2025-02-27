@@ -35,6 +35,13 @@ const links: BlockLink[] = [
     gradient: 'from-blue-200 to-blue-600',
   },
   {
+    title: 'Breath Better',
+    description: 'An app to help you improve your breathing techniques',
+    url: 'https://breathbetter.io',
+    category: 'Health',
+    gradient: 'from-teal-200 to-teal-600',
+  },
+  {
     title: 'Join Crowdhealth',
     description: 'Escape the grip of big insurance with CrowdHealth - the free-market disruptor empowering you to control your healthcare costs and choices',
     url: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
