@@ -10,8 +10,9 @@ export default function ContactPage() {
       >
         <h1 className="text-4xl font-bold text-gray-900 text-center">Contact Me</h1>
         <p className="text-lg text-gray-800 text-center">
-          Have a question, comment, or just want to connect? Fill out the form below, and I&apos;ll get back to you!
+          Have a specific question or project idea? Fill out the form below with details, and I&apos;ll get back to you!
         </p>
+        
         <div>
           <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-1">
             Name <span className="text-red-600">*</span>
@@ -21,10 +22,11 @@ export default function ContactPage() {
             id="name"
             name="name"
             required
-            placeholder="Your name"
+            placeholder="Your full name"
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
+        
         <div>
           <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-1">
             Email <span className="text-red-600">*</span>
@@ -34,10 +36,11 @@ export default function ContactPage() {
             id="email"
             name="email"
             required
-            placeholder="Your email"
+            placeholder="Your email address"
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
+        
         <div>
           <label htmlFor="social-media" className="block text-sm font-semibold text-gray-900 mb-1">
             Social Media Handle <span className="text-red-600">*</span>
@@ -51,6 +54,7 @@ export default function ContactPage() {
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
+        
         <div>
           <label htmlFor="platform" className="block text-sm font-semibold text-gray-900 mb-1">
             Social Media Platform <span className="text-red-600">*</span>
@@ -67,30 +71,67 @@ export default function ContactPage() {
             <option value="Facebook">Facebook</option>
             <option value="LinkedIn">LinkedIn</option>
             <option value="TikTok">TikTok</option>
+            <option value="Nostr">Nostr</option>
             <option value="Other">Other</option>
           </select>
         </div>
+        
+        <div>
+          <label htmlFor="purpose" className="block text-sm font-semibold text-gray-900 mb-1">
+            Purpose of Contact <span className="text-red-600">*</span>
+          </label>
+          <select
+            id="purpose"
+            name="purpose"
+            required
+            className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
+          >
+            <option value="">Select Purpose</option>
+            <option value="Project Collaboration">Project Collaboration</option>
+            <option value="Technical Question">Technical Question</option>
+            <option value="Business Inquiry">Business Inquiry</option>
+            <option value="Feedback">Feedback on Projects</option>
+            <option value="Other">Other (Please specify in message)</option>
+          </select>
+        </div>
+        
         <div>
           <label htmlFor="query" className="block text-sm font-semibold text-gray-900 mb-1">
-            Query 
+            Specific Message <span className="text-red-600">*</span>
           </label>
           <textarea
             id="query"
             name="query"
             required
             rows={4}
-            placeholder="What&apos;s on your mind?"
+            placeholder="Please provide specific details about your inquiry. Generic messages like 'what's your price' will be ignored."
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           ></textarea>
         </div>
+        
+        <div>
+          <label htmlFor="verification" className="block text-sm font-semibold text-gray-900 mb-1">
+            Human Verification <span className="text-red-600">*</span>
+          </label>
+          <input
+            type="text"
+            id="verification"
+            name="verification"
+            required
+            placeholder="What is 7+3? (Please answer with a number)"
+            className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
+          />
+        </div>
+        
         <div>
           <label htmlFor="language" className="block text-sm font-semibold text-gray-900 mb-1">
-            Please write in English <span className="text-red-600">*</span>
+            Language Requirements <span className="text-red-600">*</span>
           </label>
           <p className="text-sm text-gray-600">
-            Any text not in English will be ignored, including non-English social media handles.
+            Please write in English only. Any text not in English will be ignored, including non-English social media handles.
           </p>
         </div>
+        
         <div>
           <label htmlFor="how-found" className="block text-sm font-semibold text-gray-900 mb-1">
             How did you find me? (optional)
@@ -99,13 +140,20 @@ export default function ContactPage() {
             type="text"
             id="how-found"
             name="how_found"
-            placeholder="e.g., Google, Twitter, Friend"
+            placeholder="e.g., Google, Twitter, Friend, Project"
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
+        
         <input type="hidden" name="_subject" value="New Contact Submission" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_next" value="https://binmucker.com/thank-you" />
+        <input type="text" name="_honey" style={{ display: 'none' }} />
+        
+        <div className="text-sm text-gray-600 mb-4">
+          <p>Note: Generic inquiries like "what's your price" without specific project details will not receive a response.</p>
+        </div>
+        
         <button
           type="submit"
           className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"

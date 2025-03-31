@@ -56,6 +56,20 @@ const links: BlockLink[] = [
     gradient: 'from-yellow-300 to-blue-600',
   },
   {
+    title: 'Fold Bitcoin Card',
+    description: 'Earn 2% unlimited bitcoin rewards with the Fold Credit Card',
+    url: 'https://foldapp.com/credit-card?r=bohpA',
+    category: 'Finance',
+    gradient: 'from-purple-300 to-orange-300',
+  },
+  {
+    title: 'Gemini Credit Card',
+    description: 'Earn extra crypto rewards when you use this link to apply for the Gemini Credit Card and are approved',
+    url: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
+    category: 'Finance',
+    gradient: 'from-red-400 to-sky-300',
+  },
+  {
     title: 'Handwritten Letters',
     description: 'Buy personal handwritten letters with sats',
     url: 'https://quotestoansweryourquestions.replit.app/',
