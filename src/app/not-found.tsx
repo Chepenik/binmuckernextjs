@@ -51,14 +51,14 @@ export default function NotFoundPage() {
     if (timeLeft <= 0) {
       setIsGameActive(false);
       setActiveIndex(null);
-      alert(`Time's up! Your final score: ${score}`);
+      alert("Time's up! Your final score: " + score);
     }
   }, [timeLeft, score]);
 
   // Handle square click
   const handleSquareClick = (index: number) => {
     if (!isGameActive) return;
-    // Only score if user clicks the “active” square
+    // Only score if user clicks the "active" square
     if (index === activeIndex) {
       setScore((prev) => prev + 1);
       setActiveIndex(null);
@@ -69,18 +69,18 @@ export default function NotFoundPage() {
     <div
       className="
         min-h-screen flex flex-col items-center justify-center
-        bg-gradient-to-b from-[#6EE7B7] to-[#3B82F6]
-        p-6 text-white text-center
+        bg-white
+        p-6 text-gray-800 text-center
       "
     >
-      <h1 className="text-6xl font-black mb-4 drop-shadow-lg">404 - Oops, You’re Lost!</h1>
+      <h1 className="text-6xl font-black mb-4 drop-shadow-lg">404 - Oops, You&apos;re Lost!</h1>
       <p className="text-lg md:text-2xl max-w-xl mb-8">
-        The page you’re looking for doesn’t exist (yet).  
+        The page you&apos;re looking for doesn&apos;t exist (yet).  
         You can{' '}
-        <Link href="/" className="underline font-bold hover:text-[#BF9B30]">
+        <Link href="/" className="underline font-bold hover:text-gray-600">
           head home
         </Link>{' '}
-        or play a quick game below while you’re here.
+        or play a quick game below while you&apos;re here.
       </p>
 
       {/* Game Start / Restart */}
@@ -88,7 +88,7 @@ export default function NotFoundPage() {
         <button
           onClick={startGame}
           className="
-            bg-[#BF9B30] hover:bg-[#85BB65] text-black
+            bg-gray-700 hover:bg-gray-800 text-white
             font-semibold py-2 px-4 rounded-lg mb-6
             transition-colors
           "

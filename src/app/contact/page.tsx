@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ContactPage() {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-cyan-300 to-teal-400 p-6">
+    <section className="min-h-screen flex items-center justify-center bg-white p-6">
       <form
         action="https://formsubmit.co/chepenikconor@gmail.com"
         method="POST"
@@ -104,7 +104,7 @@ export default function ContactPage() {
             name="query"
             required
             rows={4}
-            placeholder="Please provide specific details about your inquiry. Generic messages like 'what's your price' will be ignored."
+            placeholder="Please provide specific details about your inquiry. Generic messages like &quot;what&apos;s your price&quot; will be ignored."
             className="block w-full p-3 rounded-lg border border-gray-400 shadow-sm placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600"
           ></textarea>
         </div>
@@ -151,12 +151,12 @@ export default function ContactPage() {
         <input type="text" name="_honey" style={{ display: 'none' }} />
         
         <div className="text-sm text-gray-600 mb-4">
-          <p>Note: Generic inquiries like "what's your price" without specific project details will not receive a response.</p>
+          <p>Note: Generic inquiries like &quot;what&apos;s your price&quot; without specific project details will not receive a response.</p>
         </div>
         
         <button
           type="submit"
-          className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="w-full bg-gray-700 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600"
         >
           Submit
         </button>

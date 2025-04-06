@@ -4,19 +4,17 @@
 @tailwind utilities;
 
 :root {
-  --background-light: linear-gradient(to bottom, #d1f5f7, #b3e5e5); /* Soft cyan-teal gradient */
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-light: linear-gradient(to bottom, #1a1a2e, #16213e);
     --foreground: #ededed;
   }
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: white;
   font-family: Arial, Helvetica, sans-serif;
 }
