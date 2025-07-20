@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Heart, Coffee, Star } from 'lucide-react';
+import SupportButton from './SupportButton';
 
 interface BlockLink {
   title: string;
@@ -49,13 +50,6 @@ const links: BlockLink[] = [
     gradient: 'from-orange-200 to-orange-600',
   },
   {
-    title: 'Buy Bitcoin w/ Swan',
-    description: 'Get BTC, retirement exposure, and secure multisig custody',
-    url: 'https://www.swanbitcoin.com/conorchepenik/',
-    category: 'Finance',
-    gradient: 'from-yellow-300 to-blue-600',
-  },
-  {
     title: 'Fold Bitcoin Card',
     description: 'Earn 2% unlimited bitcoin rewards with the Fold Credit Card',
     url: 'https://foldapp.com/credit-card?r=bohpA',
@@ -96,6 +90,31 @@ export function HomeHero() {
           I&apos;m passionate about building things. This website serves as a hub for memes, personal projects, mortgage tools, 
           and everything in between.
         </p>
+      </div>
+      
+      {/* Support Section - Prominently placed */}
+      <div className="mb-12 bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-3xl p-8 shadow-lg border border-purple-100">
+        <div className="text-center mb-6">
+          <div className="flex justify-center items-center gap-2 mb-4">
+            <Heart className="w-8 h-8 text-red-500" />
+            <Coffee className="w-8 h-8 text-orange-500" />
+            <Star className="w-8 h-8 text-yellow-500" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">
+            Support The Binmucker
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            If you find my tools, content, or projects helpful, consider supporting my work! 
+            Every contribution helps me build more awesome stuff for the community.
+          </p>
+        </div>
+        
+        <div className="flex flex-col items-center gap-4">
+          <SupportButton priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID || "price_1YourRecurringPriceId"} />
+          <p className="text-sm text-gray-500 text-center">
+            💝 Your support fuels more late-night coding sessions and free tools for everyone!
+          </p>
+        </div>
       </div>
       
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">
