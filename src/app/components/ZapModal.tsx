@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image'; // Import Next.js Image
 import { Copy, ExternalLink, X } from 'lucide-react';
 
 interface ZapModalProps {
@@ -10,7 +9,7 @@ interface ZapModalProps {
 }
 
 const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
-  const btcAddress = 'bc1qvpmvqjqvac8406ellzdnj8v5a7tegjmpc4x0p9tw54cre8rf30ss9hy37r';
+  const btcAddress = 'bc1qfkpu72e6h58puah8m8cmjxhms4swdauzm30naglgm7au4n7ae24s6wvq2w';
   const lightningAddress = 'https://strike.me/chepenik/';
 
   const copyToClipboard = (text: string) => {
@@ -57,17 +56,9 @@ const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
 
           <div className="mt-6 text-center">
             <h3 className="text-xl font-semibold mb-2">Bitcoin Address</h3>
-            <div className="mb-4 flex justify-center">
-              {/* Use Next.js <Image> for optimization */}
-              <Image
-                src="https://i.nostr.build/skgeMS8YfFOt0DQG.jpg"
-                alt="Bitcoin Address"
-                width={300}
-                height={300}
-                className="max-w-full h-auto"
-              />
+            <div className="mb-4 p-4 bg-gray-700 rounded-lg">
+              <p className="text-sm text-gray-300 break-all font-mono">{btcAddress}</p>
             </div>
-            <p className="text-sm text-gray-300 mb-2 break-all">{btcAddress}</p>
             <button
               className="inline-flex items-center justify-center bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300"
               onClick={() => copyToClipboard(btcAddress)}

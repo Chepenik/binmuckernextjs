@@ -30,7 +30,7 @@ export default function SupportPage() {
           <div className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <Heart className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">More Free Tools</h3>
-            <p className="text-gray-600">I'll build more useful tools and share them with the community for free.</p>
+            <p className="text-gray-600">I&apos;ll build more useful tools and share them with the community for free.</p>
           </div>
           
           <div className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
