@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight, Heart, Coffee, Star, Sparkles, Zap } from 'lucide-react';
+import { ArrowUpRight, Coffee, Sparkles } from 'lucide-react';
 import ZapModal from './ZapModal';
 
 interface BlockLink {
@@ -15,6 +15,13 @@ interface BlockLink {
 }
 
 const links: BlockLink[] = [
+  {
+    title: 'Bitcoin Coloring Book',
+    description: 'A fun introduction to Bitcoin for kids and families. Learn about sound money, self-custody, and the future of finance through engaging coloring activities.',
+    url: 'https://bitcoincoloring.com/',
+    category: 'Education',
+    gradient: 'from-orange-200 via-yellow-300 to-amber-400',
+  },
   {
     title: 'My Nostr',
     description: 'A decentralized network where I get paid to shitpost',
@@ -51,15 +58,8 @@ const links: BlockLink[] = [
     gradient: 'from-orange-200 via-red-300 to-pink-400',
   },
   {
-    title: 'Fold Bitcoin Card',
-    description: 'Earn 2% unlimited bitcoin rewards with the Fold Credit Card',
-    url: 'https://foldapp.com/credit-card?r=bohpA',
-    category: 'Finance',
-    gradient: 'from-yellow-200 via-orange-300 to-red-400',
-  },
-  {
     title: 'Gemini Credit Card',
-    description: 'Earn extra crypto rewards when you use this link to apply for the Gemini Credit Card and are approved',
+    description: 'Earn Bitcoin rewards when you use this link to apply for the Gemini Credit Card and are approved',
     url: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
     category: 'Finance',
     gradient: 'from-pink-200 via-rose-300 to-red-400',
@@ -91,76 +91,9 @@ export function HomeHero() {
           <div className="inline-flex items-center gap-2 mb-6">
             <Sparkles className="w-6 h-6 text-amber-500" />
             <span className="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
-              Welcome to my digital space
+              If you want to fix the world, the best place to start is with yourself.
             </span>
             <Sparkles className="w-6 h-6 text-amber-500" />
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent leading-tight">
-            Most people call me <span className="text-amber-600">Chep</span>, 
-            <br />
-            though some know me as the <span className="text-slate-800">Binmucker</span>.
-          </h1>
-          
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            I&apos;m passionate about building things. This website serves as a hub for memes, personal projects, mortgage tools, 
-            and everything in between.
-          </p>
-        </div>
-        
-        {/* Enhanced Support Section with green effects */}
-        <div className="mb-16 relative overflow-hidden">
-          {/* Animated background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100 rounded-3xl opacity-80"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/10 via-green-400/10 to-emerald-500/10 rounded-3xl animate-pulse"></div>
-          
-          {/* Floating particles */}
-          <div className="absolute inset-0 overflow-hidden rounded-3xl">
-            <div className="absolute top-4 left-4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-60"></div>
-            <div className="absolute top-8 right-8 w-1 h-1 bg-green-400 rounded-full animate-ping opacity-40" style={{ animationDelay: '0.5s' }}></div>
-            <div className="absolute bottom-8 left-12 w-1.5 h-1.5 bg-emerald-300 rounded-full animate-ping opacity-50" style={{ animationDelay: '1s' }}></div>
-            <div className="absolute bottom-4 right-4 w-1 h-1 bg-green-300 rounded-full animate-ping opacity-30" style={{ animationDelay: '1.5s' }}></div>
-          </div>
-          
-          <div className="relative bg-gradient-to-br from-white/90 via-white/95 to-white/90 rounded-3xl p-8 md:p-12 shadow-2xl border border-emerald-200/50 backdrop-blur-sm">
-            <div className="text-center mb-8">
-              <div className="flex justify-center items-center gap-3 mb-6">
-                <div className="p-3 bg-gradient-to-br from-red-100 to-red-200 rounded-full shadow-lg">
-                  <Heart className="w-8 h-8 text-red-500" />
-                </div>
-                <div className="p-3 bg-gradient-to-br from-amber-100 to-amber-200 rounded-full shadow-lg">
-                  <Coffee className="w-8 h-8 text-amber-600" />
-                </div>
-                <div className="p-3 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full shadow-lg">
-                  <Star className="w-8 h-8 text-yellow-600" />
-                </div>
-              </div>
-              
-              <h2 className="text-4xl font-bold text-slate-800 mb-4">
-                Support The Binmucker
-              </h2>
-              
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-6">
-                If you find my tools, content, or projects helpful, consider supporting my work! 
-                Every contribution helps me build more awesome stuff for the community.
-              </p>
-              
-              {/* Enhanced CTA button */}
-              <button
-                onClick={() => setZapModalOpen(true)}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer group"
-              >
-                <Zap className="w-5 h-5 group-hover:animate-pulse" />
-                <span>Support My Work</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </button>
-            </div>
-            
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-sm text-slate-500 text-center max-w-md">
-                💝 Your support fuels more late-night coding sessions and free tools for everyone!
-              </p>
-            </div>
           </div>
         </div>
         
@@ -205,6 +138,31 @@ export function HomeHero() {
               </div>
             </Link>
           ))}
+        </div>
+        
+        {/* Ko-fi Support Section */}
+        <div className="mt-16 text-center">
+          <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-8 border border-pink-200/50">
+            <h3 className="text-2xl font-bold text-slate-800 mb-4">
+              ☕ Coffee Fuel
+            </h3>
+            <p className="text-slate-600 mb-6 max-w-2xl mx-auto leading-relaxed">
+              I won&apos;t hold a grudge if you don&apos;t leave a tip (seriously, I won&apos;t even remember), 
+              but know they&apos;re always greatly appreciated. I hope only people who got legitimate 
+              value from my projects would leave one - I&apos;m not looking for handouts, just 
+              supporting those who found my stuff genuinely useful.
+            </p>
+            <a
+              href="https://ko-fi.com/chepenik"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+            >
+              <Coffee className="w-5 h-5 group-hover:animate-pulse" />
+              <span>Buy me a coffee</span>
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </a>
+          </div>
         </div>
       </section>
 
