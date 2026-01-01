@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Keep transactional-only routes out of the index
+Disallow: /thank-you
+
+# Prevent crawlers from probing API endpoints
+Disallow: /api/
+
+Sitemap: https://www.binmucker.com/sitemap.xml
