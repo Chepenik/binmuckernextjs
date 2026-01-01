@@ -3,26 +3,52 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function MenuToggle({ toggle }: { toggle: () => void }) {
+interface MenuToggleProps {
+  toggle: () => void;
+  isOpen: boolean;
+}
+
+export default function MenuToggle({ toggle, isOpen }: MenuToggleProps) {
   return (
     <button
       onClick={toggle}
-      className="relative w-8 h-8 flex flex-col justify-between items-center group"
+      className="relative w-10 h-10 flex flex-col justify-center items-center
+                 rounded-lg hover:bg-white/5 transition-colors group"
+      aria-label={isOpen ? 'Close menu' : 'Open menu'}
     >
+      {/* Top bar */}
       <motion.span
-        className="block w-full h-[3px] bg-gradient-to-r from-orange-300 to-cyan-300 rounded-full shadow-sm group-hover:shadow-orange-300/50 transition-shadow"
-        animate={{ rotate: 0, translateY: 0 }}
-        transition={{ duration: 0.3 }}
+        className="absolute w-6 h-0.5 bg-gradient-to-r from-gold-400 to-neon-cyan
+                   rounded-full"
+        animate={{
+          rotate: isOpen ? 45 : 0,
+          y: isOpen ? 0 : -8,
+        }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        style={{ boxShadow: isOpen ? '0 0 10px rgba(255, 215, 0, 0.5)' : 'none' }}
       />
+
+      {/* Middle bar */}
       <motion.span
-        className="block w-full h-[3px] bg-gradient-to-r from-cyan-300 to-teal-300 rounded-full shadow-sm group-hover:shadow-cyan-300/50 transition-shadow"
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        className="absolute w-6 h-0.5 bg-gradient-to-r from-neon-cyan to-neon-magenta
+                   rounded-full"
+        animate={{
+          opacity: isOpen ? 0 : 1,
+          scaleX: isOpen ? 0 : 1,
+        }}
+        transition={{ duration: 0.2 }}
       />
+
+      {/* Bottom bar */}
       <motion.span
-        className="block w-full h-[3px] bg-gradient-to-r from-teal-300 to-orange-300 rounded-full shadow-sm group-hover:shadow-teal-300/50 transition-shadow"
-        animate={{ rotate: 0, translateY: 0 }}
-        transition={{ duration: 0.3 }}
+        className="absolute w-6 h-0.5 bg-gradient-to-r from-neon-magenta to-gold-400
+                   rounded-full"
+        animate={{
+          rotate: isOpen ? -45 : 0,
+          y: isOpen ? 0 : 8,
+        }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        style={{ boxShadow: isOpen ? '0 0 10px rgba(255, 215, 0, 0.5)' : 'none' }}
       />
     </button>
   );
