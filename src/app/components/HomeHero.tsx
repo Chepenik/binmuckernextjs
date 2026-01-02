@@ -40,7 +40,7 @@ const links: BlockLink[] = [
   {
     title: 'Mortgage Calculator',
     description: 'Calculate monthly payments and view amortization schedules',
-    url: 'https://mortgagecalculator-conorchepenik.replit.app/',
+    url: 'https://soundmoneymortgage.com/',
     category: 'Finance',
   },
   {

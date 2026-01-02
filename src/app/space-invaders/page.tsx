@@ -28,35 +28,65 @@ export default function SpaceInvadersPage() {
       </div>
 
       {/* Instructions */}
-      <div className="mt-8 text-center max-w-2xl">
+      <div className="mt-8 text-center max-w-3xl">
         <h2 className="text-2xl font-display font-semibold text-gold-400 mb-4">
           How to Play
         </h2>
         <p className="text-gray-400 mb-6">
-          Defend Earth through 5 increasingly difficult levels!
-          The aliens get faster and more numerous with each level.
-          Can you save humanity?
+          Defend Earth through 5 levels or test your skills in Endless Mode!
+          Build combos, collect power-ups, and hunt mystery UFOs for massive bonus points!
         </p>
-        <ul className="text-left text-gray-300 space-y-3 max-w-md mx-auto">
-          <li className="flex items-center gap-3">
-            <span className="text-neon-cyan">&#9670;</span>
-            Use <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-sm mx-1">&#8592; &#8594;</kbd> to move
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="text-neon-cyan">&#9670;</span>
-            Press <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-sm mx-1">Space</kbd> or <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-sm mx-1">&#8593;</kbd> to shoot
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="text-neon-cyan">&#9670;</span>
-            Press <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-sm mx-1">P</kbd> to pause
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="text-neon-cyan">&#9670;</span>
-            Destroy all aliens to advance
-          </li>
-        </ul>
+
+        <div className="grid md:grid-cols-2 gap-6 text-left">
+          {/* Controls */}
+          <div className="glass p-4 rounded-xl border border-neon-cyan/20">
+            <h3 className="text-lg font-semibold text-neon-cyan mb-3">Controls</h3>
+            <ul className="text-gray-300 space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-xs">&#8592; &#8594;</kbd>
+                <span>Move ship</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-xs">Space</kbd>
+                <span>Fire weapons</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <kbd className="px-2 py-1 bg-cyber-700 rounded text-gold-400 text-xs">P</kbd>
+                <span>Pause game</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Power-ups */}
+          <div className="glass p-4 rounded-xl border border-gold-500/20">
+            <h3 className="text-lg font-semibold text-gold-400 mb-3">Power-Ups</h3>
+            <ul className="text-gray-300 space-y-1 text-sm">
+              <li><span className="text-yellow-400">R</span> Rapid Fire - Shoot 3x faster</li>
+              <li><span className="text-blue-400">S</span> Spread Shot - 5-way bullets</li>
+              <li><span className="text-green-400">O</span> Shield - Block one hit</li>
+              <li><span className="text-red-400">B</span> Bomb - Clear all enemies</li>
+              <li><span className="text-purple-400">T</span> Slow-Mo - Slow down time</li>
+              <li><span className="text-pink-400">P</span> Piercing - Shots go through</li>
+              <li><span className="text-yellow-300">2X</span> Double Points</li>
+              <li><span className="text-cyan-400">M</span> Magnet - Attract power-ups</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Pro Tips */}
+        <div className="mt-6 glass p-4 rounded-xl border border-purple-500/20">
+          <h3 className="text-lg font-semibold text-purple-400 mb-2">Pro Tips</h3>
+          <ul className="text-gray-400 text-sm space-y-1">
+            <li>&#9733; Chain kills quickly to build combo multipliers up to 15x!</li>
+            <li>&#9733; Watch for red UFOs flying across the top - worth up to 300 points!</li>
+            <li>&#9733; Diving aliens will chase you - stay mobile!</li>
+            <li>&#9733; Boss levels at 3 and 5 have extra-tough enemies</li>
+            <li>&#9733; Beat level 5 to unlock bragging rights, then try Endless Mode!</li>
+          </ul>
+        </div>
+
         <p className="text-sm italic text-gray-500 mt-6">
-          Remember: In space, no one can hear you rage-quit.
+          12 achievements to unlock. Can you get them all?
         </p>
       </div>
 
