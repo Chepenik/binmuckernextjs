@@ -119,20 +119,24 @@ export function HomeHero() {
             <Sparkles className="w-5 h-5 text-gold-400 animate-pulse" />
           </div>
 
-          <h1 className="heading-display text-gradient-gold mb-4">
+          <h1 className="heading-display text-gradient-gold mb-4 drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]">
             Digital Creations
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
             A curated collection of projects, tools, and resources I&apos;ve built or found useful.
           </p>
+          <div className="mt-6 accent-line w-32 mx-auto rounded-full" />
         </motion.div>
 
         {/* Section Header */}
         <div className="mb-10 flex items-center gap-4">
-          <div className="w-1 h-10 bg-gradient-to-b from-gold-400 via-neon-cyan to-neon-magenta rounded-full" />
-          <h2 className="heading-section text-white">
-            Explore My <span className="text-gradient-neon">Stuff</span>
-          </h2>
+          <div className="w-1 h-12 bg-gradient-to-b from-gold-400 via-neon-cyan to-neon-magenta rounded-full shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
+          <div>
+            <h2 className="heading-section text-white">
+              Explore My <span className="text-gradient-aurora">Stuff</span>
+            </h2>
+            <p className="text-gray-500 text-sm mt-1">Projects, tools, and recommendations</p>
+          </div>
         </div>
 
         {/* Cards Grid */}
@@ -180,15 +184,25 @@ export function HomeHero() {
 
                   {/* Category badge */}
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium
-                                     bg-gold-500/10 text-gold-400 border border-gold-500/20
-                                     group-hover:bg-gold-500/20 group-hover:border-gold-500/40
+                    <span className="px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider
+                                     bg-gradient-to-r from-gold-500/10 to-bitcoin/10 text-gold-400
+                                     border border-gold-500/30
+                                     group-hover:from-gold-500/20 group-hover:to-bitcoin/20
+                                     group-hover:border-gold-400/50 group-hover:shadow-[0_0_10px_rgba(255,215,0,0.2)]
                                      transition-all duration-300">
                       {link.category}
                     </span>
-                    <div className="w-2 h-2 rounded-full bg-gray-700
-                                    group-hover:bg-neon-cyan group-hover:shadow-neon-cyan
-                                    transition-all duration-300" />
+                    <div className="flex gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-700
+                                      group-hover:bg-neon-cyan group-hover:shadow-[0_0_8px_rgba(0,255,255,0.8)]
+                                      transition-all duration-300" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-700
+                                      group-hover:bg-gold-400 group-hover:shadow-[0_0_8px_rgba(255,215,0,0.8)]
+                                      transition-all duration-300 delay-75" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-700
+                                      group-hover:bg-neon-magenta group-hover:shadow-[0_0_8px_rgba(255,0,255,0.8)]
+                                      transition-all duration-300 delay-150" />
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -204,20 +218,41 @@ export function HomeHero() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative glass-gold rounded-3xl p-10 border border-gold-500/30 overflow-hidden">
+          <div className="relative rounded-3xl p-10 overflow-hidden
+                          bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/50
+                          border border-gold-500/40 backdrop-blur-xl
+                          shadow-[0_0_50px_rgba(255,215,0,0.1),inset_0_1px_0_rgba(255,215,0,0.1)]">
+            {/* Sharp accent line at top */}
+            <div className="absolute top-0 left-0 right-0 h-[2px]
+                            bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+
+            {/* Decorative corner accents */}
+            <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-gold-500/50 rounded-tl-lg" />
+            <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-neon-cyan/50 rounded-tr-lg" />
+            <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-neon-cyan/50 rounded-bl-lg" />
+            <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-gold-500/50 rounded-br-lg" />
+
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64
-                            bg-gradient-radial from-gold-500/20 to-transparent
+            <div className="absolute top-0 right-0 w-72 h-72
+                            bg-gradient-radial from-gold-500/15 to-transparent
                             blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-48 h-48
+            <div className="absolute bottom-0 left-0 w-56 h-56
                             bg-gradient-radial from-neon-cyan/10 to-transparent
+                            blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96
+                            bg-gradient-radial from-neon-magenta/5 to-transparent
                             blur-3xl pointer-events-none" />
 
             <div className="relative z-10 text-center">
-              <h3 className="text-3xl font-display font-bold text-gradient-gold mb-4">
+              <div className="inline-block mb-4">
+                <span className="text-5xl drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">&#8383;</span>
+              </div>
+              <h3 className="text-3xl font-display font-bold text-gradient-gold mb-2
+                             drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]">
                 Support the Mission
               </h3>
-              <p className="text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+              <div className="accent-line w-24 mx-auto mb-6 rounded-full" />
+              <p className="text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
                 I won&apos;t hold a grudge if you don&apos;t leave a tip (seriously, I won&apos;t even remember),
                 but know they&apos;re always greatly appreciated. I hope only people who got legitimate
                 value from my projects would leave one.
@@ -228,7 +263,8 @@ export function HomeHero() {
                   href="https://ko-fi.com/chepenik"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-premium inline-flex items-center gap-2"
+                  className="btn-premium inline-flex items-center gap-2 shadow-[0_0_20px_rgba(255,215,0,0.3)]
+                             hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]"
                 >
                   <Coffee className="w-5 h-5" />
                   <span>Buy me a coffee</span>
@@ -237,7 +273,8 @@ export function HomeHero() {
 
                 <button
                   onClick={() => setZapModalOpen(true)}
-                  className="btn-neon inline-flex items-center gap-2"
+                  className="btn-neon inline-flex items-center gap-2
+                             hover:shadow-[0_0_25px_rgba(0,255,255,0.4)]"
                 >
                   <span className="text-xl">&#9889;</span>
                   <span>Zap with Bitcoin</span>

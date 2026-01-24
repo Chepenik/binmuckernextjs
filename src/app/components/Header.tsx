@@ -8,7 +8,7 @@ import MenuToggle from './MenuToggle';
 import ZapModal from './ZapModal';
 
 export function Header() {
-  const links = ['Game', 'Zap Me'];
+  const links = ['Game', 'Merch', 'Zap Me'];
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [showHeader, setShowHeader] = useState(true);
@@ -43,8 +43,10 @@ export function Header() {
         {/* Animated mesh gradient overlay */}
         <div className="absolute inset-0 bg-mesh-gradient opacity-50 pointer-events-none" />
 
-        {/* Subtle animated top line */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/50 to-transparent" />
+        {/* Sharp accent line at top */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+        {/* Bottom glow line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/30 to-transparent" />
 
         <nav className="max-w-6xl mx-auto px-4 flex items-center justify-between h-[80px] relative z-10">
           <Link href="/" className="hover:opacity-90 transition-opacity group">
@@ -85,6 +87,20 @@ export function Header() {
                                    bg-gradient-to-r from-neon-cyan to-gold-400
                                    group-hover:w-full transition-all duration-300" />
                 </button>
+              ) : link === 'Merch' ? (
+                <a
+                  key={link}
+                  href="https://chep.creator-spring.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative font-semibold text-gray-300 hover:text-gold-400
+                             transition-colors duration-300 group py-2"
+                >
+                  <span className="relative z-10">{link}</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5
+                                   bg-gradient-to-r from-neon-cyan to-gold-400
+                                   group-hover:w-full transition-all duration-300" />
+                </a>
               ) : (
                 <Link
                   key={link}
@@ -138,6 +154,18 @@ export function Header() {
                   <span className="text-xl">&#9889;</span>
                   {link}
                 </button>
+              ) : link === 'Merch' ? (
+                <a
+                  key={link}
+                  href="https://chep.creator-spring.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative z-10 text-lg font-semibold text-gray-300
+                             hover:text-gold-400 transition-colors duration-300"
+                  onClick={() => toggleOpen()}
+                >
+                  {link}
+                </a>
               ) : (
                 <Link
                   key={link}
