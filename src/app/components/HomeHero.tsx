@@ -22,6 +22,7 @@ const categoryGradients: Record<string, string> = {
   'Health': 'from-neon-green/20 via-neon-cyan/10 to-electric/20',
   'Healthcare': 'from-laser/20 via-neon-magenta/10 to-neon-pink/20',
   'Shop': 'from-gold-400/20 via-gold-500/10 to-bitcoin/20',
+  'Hosting': 'from-neon-purple/20 via-neon-blue/10 to-neon-cyan/20',
 };
 
 const links: BlockLink[] = [
@@ -78,6 +79,12 @@ const links: BlockLink[] = [
     description: 'Track how investments well likely perform over the years',
     url: 'https://www.saylorscope.com/',
     category: 'Finance',
+  },
+  {
+    title: 'Hostinger Web Hosting',
+    description: 'Secure, speedy, and reliable web hosting with free domain, business email & site migration included. Use my link to get 20% off your first hosting plan',
+    url: 'https://hostinger.com?REFERRALCODE=1CONOR59',
+    category: 'Hosting',
   },
 ];
 
