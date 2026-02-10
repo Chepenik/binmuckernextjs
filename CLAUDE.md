@@ -34,7 +34,7 @@ This is a Next.js 16 portfolio/showcase application using the App Router pattern
 - **Bitcoin/Lightning**: ZapModal provides Bitcoin address and Strike.me link for payments
 - **Ko-fi**: External donation link
 - **Spring Merch**: Creator merchandise store (chep.creator-spring.com)
-- **YouTube**: Video content (@ConorChepenik)
+- **YouTube**: Video content (https://www.youtube.com/@ConorChepenik)
 
 ### Social Links (Footer)
 
