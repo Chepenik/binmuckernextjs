@@ -7,4 +7,4 @@ Disallow: /thank-you
 # Prevent crawlers from probing API endpoints
 Disallow: /api/
 
-Sitemap: https://www.binmucker.com/sitemap.xml
+Sitemap: https://binmucker.com/sitemap.xml

@@ -285,19 +285,17 @@ const SpaceInvaders: React.FC = () => {
     powerUpsCollected: 0,
     damageTakenThisLevel: false,
   });
-  // Use ref for high score to avoid re-running the game loop useEffect when high score changes
-  const highScoreRef = useRef(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [displayScore, setDisplayScore] = useState(0);
-  const [, setDisplayLives] = useState(3);
+  const [displayLives, setDisplayLives] = useState(3);
   const [gameOver, setGameOver] = useState(false);
   const [displayLevel, setDisplayLevel] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const [gameWon, setGameWon] = useState(false);
-  const [, setDisplayCombo] = useState(0);
+  const [displayCombo, setDisplayCombo] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [, setDisplayShield] = useState(false);
+  const [displayShield, setDisplayShield] = useState(false);
   const [displayPowerUp, setDisplayPowerUp] = useState<string | null>(null);
   const [displayPowerUpTimer, setDisplayPowerUpTimer] = useState(0);
   const [isEndless, setIsEndless] = useState(false);
@@ -326,15 +324,9 @@ const SpaceInvaders: React.FC = () => {
   useEffect(() => {
     if (displayScore > highScore) {
       setHighScore(displayScore);
-      highScoreRef.current = displayScore;
       localStorage.setItem('spaceInvadersHighScore', displayScore.toString());
     }
   }, [displayScore, highScore]);
-
-  // Keep ref in sync with state
-  useEffect(() => {
-    highScoreRef.current = highScore;
-  }, [highScore]);
 
   const unlockAchievement = useCallback((id: string) => {
     setAchievements(prev => {
@@ -1353,19 +1345,13 @@ const SpaceInvaders: React.FC = () => {
           p.vy += 0.15;
           p.life -= 0.025;
 
-          // Remove particle if life is depleted (check before drawing to avoid negative radius)
-          if (p.life <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-
           ctx.globalAlpha = p.life;
           ctx.fillStyle = p.color;
           ctx.beginPath();
-          // Ensure radius is always positive to prevent canvas arc() error
-          const radius = Math.max(0, p.size * p.life);
-          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
           ctx.fill();
+
+          if (p.life <= 0) particles.splice(i, 1);
         }
         ctx.globalAlpha = 1;
 
@@ -1487,7 +1473,7 @@ const SpaceInvaders: React.FC = () => {
       ctx.fillStyle = '#FFD700';
       ctx.shadowColor = '#FFD700';
       ctx.shadowBlur = 5;
-      ctx.fillText(`HIGH: ${highScoreRef.current.toLocaleString()}`, canvas.width - 12, 28);
+      ctx.fillText(`HIGH: ${highScore.toLocaleString()}`, canvas.width - 12, 28);
       ctx.shadowBlur = 0;
 
       // Combo display with animation
@@ -1557,7 +1543,7 @@ const SpaceInvaders: React.FC = () => {
         ctx.font = "28px Arial";
         ctx.fillText(`Final Score: ${state.score.toLocaleString()}`, canvas.width / 2, canvas.height / 2);
 
-        if (state.score >= highScoreRef.current && state.score > 0) {
+        if (state.score >= highScore && state.score > 0) {
           ctx.fillStyle = '#FFD700';
           ctx.font = "bold 24px Arial";
           ctx.shadowColor = '#FFD700';
@@ -1593,7 +1579,7 @@ const SpaceInvaders: React.FC = () => {
         ctx.font = "26px Arial";
         ctx.fillText(`Final Score: ${state.score.toLocaleString()}`, canvas.width / 2, canvas.height / 2 + 30);
 
-        if (state.score >= highScoreRef.current && state.score > 0) {
+        if (state.score >= highScore && state.score > 0) {
           ctx.fillStyle = '#FFD700';
           ctx.font = "bold 22px Arial";
           ctx.shadowColor = '#FFD700';
@@ -1644,8 +1630,7 @@ const SpaceInvaders: React.FC = () => {
       clearInterval(shootInterval);
       cancelAnimationFrame(animationFrame);
     };
-  // Note: highScore is accessed via highScoreRef to prevent game reset when high score changes
-  }, [isPlaying, isPaused, gameOver, gameWon, togglePause, startGame, touchControls, unlockAchievement]);
+  }, [isPlaying, isPaused, gameOver, gameWon, togglePause, startGame, highScore, touchControls, unlockAchievement]);
 
   // Touch control handlers
   const handleTouchStart = (control: 'left' | 'right' | 'shoot') => {
@@ -1783,3 +1768,4 @@ const SpaceInvaders: React.FC = () => {
 };
 
 export default SpaceInvaders;
+
