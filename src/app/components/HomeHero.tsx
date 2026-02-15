@@ -11,6 +11,7 @@ interface BlockLink {
   description: string;
   url: string;
   category: string;
+  isAffiliate?: boolean;
 }
 
 // Cyberpunk gradient mappings by category
@@ -51,9 +52,9 @@ const links: BlockLink[] = [
     category: 'Writing',
   },
   {
-    title: 'Breath Better',
-    description: 'An app to help you improve your breathing techniques',
-    url: 'https://breathbetter.io',
+    title: 'Breathe Better',
+    description: 'Free breathing exercises with 5 science-backed patterns. No accounts, no payments — just breathe.',
+    url: '/breathe',
     category: 'Health',
   },
   {
@@ -61,12 +62,14 @@ const links: BlockLink[] = [
     description: 'Escape the grip of big insurance with CrowdHealth - the free-market disruptor empowering you to control your healthcare costs and choices',
     url: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
     category: 'Healthcare',
+    isAffiliate: true,
   },
   {
     title: 'Gemini Credit Card',
     description: 'Earn Bitcoin rewards when you use this link to apply for the Gemini Credit Card and are approved',
     url: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
     category: 'Finance',
+    isAffiliate: true,
   },
   {
     title: 'Handwritten Letters',
@@ -76,7 +79,7 @@ const links: BlockLink[] = [
   },
   {
     title: 'Saylorscope',
-    description: 'Track how investments well likely perform over the years',
+    description: 'Track how investments will likely perform over the years',
     url: 'https://www.saylorscope.com/',
     category: 'Finance',
   },
@@ -85,6 +88,7 @@ const links: BlockLink[] = [
     description: 'Secure, speedy, and reliable web hosting with free domain, business email & site migration included. Use my link to get 20% off your first hosting plan',
     url: 'https://hostinger.com?REFERRALCODE=1CONOR59',
     category: 'Hosting',
+    isAffiliate: true,
   },
 ];
 
@@ -118,29 +122,29 @@ export function HomeHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex items-center gap-3 mb-8 glass-gold px-5 py-2.5 rounded-full">
-            <Sparkles className="w-5 h-5 text-gold-400 animate-pulse" />
-            <span className="text-sm font-medium text-gray-300">
+          <div className="inline-flex items-center gap-3 mb-8 glass-dark px-5 py-2.5 rounded-full border border-white/10">
+            <Sparkles className="w-5 h-5 text-neon-cyan/70 animate-pulse" />
+            <span className="text-sm font-medium text-gray-400">
               If you want to fix the world, the best place to start is with yourself.
             </span>
-            <Sparkles className="w-5 h-5 text-gold-400 animate-pulse" />
+            <Sparkles className="w-5 h-5 text-neon-cyan/70 animate-pulse" />
           </div>
 
-          <h1 className="heading-display text-gradient-gold mb-4 drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]">
+          <h1 className="heading-display text-[#E6EEF3] mb-4 drop-shadow-[0_0_30px_rgba(0,194,255,0.15)]">
             Digital Creations
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
             A curated collection of projects, tools, and resources I&apos;ve built or found useful.
           </p>
-          <div className="mt-6 accent-line w-32 mx-auto rounded-full" />
+          <div className="mt-6 h-[2px] w-32 mx-auto rounded-full bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
         </motion.div>
 
         {/* Section Header */}
         <div className="mb-10 flex items-center gap-4">
-          <div className="w-1 h-12 bg-gradient-to-b from-gold-400 via-neon-cyan to-neon-magenta rounded-full shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
+          <div className="w-1 h-12 bg-neon-cyan/60 rounded-full shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
           <div>
             <h2 className="heading-section text-white">
-              Explore My <span className="text-gradient-aurora">Stuff</span>
+              Explore My <span className="text-neon-cyan">Stuff</span>
             </h2>
             <p className="text-gray-500 text-sm mt-1">Projects, tools, and recommendations</p>
           </div>
@@ -153,18 +157,20 @@ export function HomeHero() {
           initial="hidden"
           animate="visible"
         >
-          {links.map((link) => (
-            <motion.div key={link.title} variants={itemVariants}>
+          {links.map((link) => {
+            const isExternal = link.url.startsWith('http');
+            return (
+            <motion.article key={link.title} variants={itemVariants}>
               <Link
                 href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="group block card-premium h-full"
+                aria-label={`${link.title} — ${link.category}`}
               >
                 {/* Hover gradient overlay */}
                 <div
                   className={`absolute inset-0 rounded-2xl bg-gradient-to-br
-                              ${categoryGradients[link.category] || 'from-gold-500/20 to-neon-cyan/20'}
+                              ${categoryGradients[link.category] || 'from-neon-cyan/10 to-neon-blue/10'}
                               opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
                 />
 
@@ -173,7 +179,7 @@ export function HomeHero() {
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1 pr-4">
                       <h3 className="font-semibold text-white text-lg mb-2
-                                     group-hover:text-gold-400 transition-colors duration-300">
+                                     group-hover:text-neon-cyan transition-colors duration-300">
                         {link.title}
                       </h3>
                       <p className="text-sm text-gray-400 leading-relaxed
@@ -191,31 +197,49 @@ export function HomeHero() {
 
                   {/* Category badge */}
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider
-                                     bg-gradient-to-r from-gold-500/10 to-bitcoin/10 text-gold-400
-                                     border border-gold-500/30
-                                     group-hover:from-gold-500/20 group-hover:to-bitcoin/20
-                                     group-hover:border-gold-400/50 group-hover:shadow-[0_0_10px_rgba(255,215,0,0.2)]
-                                     transition-all duration-300">
-                      {link.category}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider
+                                       bg-white/5 text-gray-400
+                                       border border-white/10
+                                       group-hover:bg-neon-cyan/10 group-hover:text-neon-cyan
+                                       group-hover:border-neon-cyan/30 group-hover:shadow-[0_0_10px_rgba(0,194,255,0.15)]
+                                       transition-all duration-300">
+                        {link.category}
+                      </span>
+                      {link.isAffiliate && (
+                        <span className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
+                                         bg-gold-500/10 text-gold-400 border border-gold-500/30">
+                          Affiliate
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-1">
                       <div className="w-1.5 h-1.5 rounded-full bg-gray-700
-                                      group-hover:bg-neon-cyan group-hover:shadow-[0_0_8px_rgba(0,255,255,0.8)]
+                                      group-hover:bg-neon-cyan group-hover:shadow-[0_0_6px_rgba(0,194,255,0.6)]
                                       transition-all duration-300" />
                       <div className="w-1.5 h-1.5 rounded-full bg-gray-700
-                                      group-hover:bg-gold-400 group-hover:shadow-[0_0_8px_rgba(255,215,0,0.8)]
+                                      group-hover:bg-neon-cyan/70 group-hover:shadow-[0_0_6px_rgba(0,194,255,0.4)]
                                       transition-all duration-300 delay-75" />
                       <div className="w-1.5 h-1.5 rounded-full bg-gray-700
-                                      group-hover:bg-neon-magenta group-hover:shadow-[0_0_8px_rgba(255,0,255,0.8)]
+                                      group-hover:bg-neon-cyan/40 group-hover:shadow-[0_0_6px_rgba(0,194,255,0.2)]
                                       transition-all duration-300 delay-150" />
                     </div>
                   </div>
                 </div>
               </Link>
-            </motion.div>
-          ))}
+            </motion.article>
+            );
+          })}
         </motion.div>
+
+        {/* Affiliate Disclosure */}
+        <p className="mt-6 text-gray-500 text-xs text-center max-w-2xl mx-auto leading-relaxed">
+          Some links above are affiliate links. If you sign up or make a purchase through them, I may
+          earn a small commission at no extra cost to you. I only recommend products and services I
+          genuinely use or believe in. See the{' '}
+          <Link href="/terms" className="text-neon-cyan hover:underline">Terms of Service</Link> for
+          more details.
+        </p>
 
         {/* Support Section */}
         <motion.div

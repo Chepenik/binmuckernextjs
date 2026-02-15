@@ -1,0 +1,53 @@
+# Binmucker
+
+> Digital portfolio and project hub by Conor Chepenik. Bitcoin educator, builder, and daily writer.
+
+## Identity
+
+- Site: https://binmucker.com
+- Creator: Conor Chepenik
+- Business: Binmucker's LLC
+- Focus: Bitcoin education, open-source tools, browser games, breathing exercises, finance resources
+- Contact email: chepenikconor@gmail.com
+
+## Pages
+
+- [Home](https://binmucker.com/): Curated links to projects, tools, and resources. Support section with Ko-fi and Bitcoin tipping.
+- [About](https://binmucker.com/about): About Conor Chepenik — story, skills, projects, and how to get in touch.
+- [Blog](https://binmucker.com/blog): Thoughts on Bitcoin, building in public, web development, and wellness.
+- [Breathe Better](https://binmucker.com/breathe): Free breathing exercise app with 5 science-backed patterns (Box, 4-7-8, Spiral, Wim Hof, Triangle). No accounts required.
+- [Breathe Practice](https://binmucker.com/breathe/practice): Interactive breathing timer with animated circle visualization and ambient audio.
+- [Space Invaders](https://binmucker.com/space-invaders): Free browser-based retro arcade game with 5 levels, power-ups, boss fights, and endless mode.
+- [Contact](https://binmucker.com/contact): Contact form to reach Conor Chepenik.
+- [Privacy Policy](https://binmucker.com/privacy): How we collect, use, and protect your information.
+- [Terms of Service](https://binmucker.com/terms): Rules governing use of the website and services.
+
+## Featured Projects (external)
+
+- [Bitcoin Coloring Book](https://bitcoincoloring.com/): Fun Bitcoin education for kids and families. Category: Education.
+- [Sound Money Mortgage Calculator](https://soundmoneymortgage.com/): Calculate mortgage payments and view amortization schedules. Category: Finance.
+- [Saylorscope](https://www.saylorscope.com/): Track how investments perform over years. Category: Finance.
+- [My Medium](https://medium.com/@chepenikconor): Daily writing about Bitcoin, technology, and self-improvement. Category: Writing.
+- [My Nostr](https://primal.net/p/npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y): Decentralized social presence on Nostr. Category: Entertainment.
+- [Handwritten Letters](https://quotestoansweryourquestions.replit.app/): Buy personal handwritten letters with sats. Category: Shop.
+
+## Social Profiles
+
+- YouTube: https://www.youtube.com/@ConorChepenik
+- X/Twitter: https://x.com/ConorChepenik
+- GitHub: https://github.com/Chepenik
+- LinkedIn: https://www.linkedin.com/in/conorchepenik/
+- Nostr: npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y
+
+## Support / Tips
+
+- Ko-fi: https://ko-fi.com/chepenik
+- Bitcoin Lightning: https://strike.me/chepenik/
+- Bitcoin on-chain: bc1qfkpu72e6h58puah8m8cmjxhms4swdauzm30naglgm7au4n7ae24s6wvq2w
+
+## Technical
+
+- Stack: Next.js 16, React 19, TypeScript, Tailwind CSS, Framer Motion
+- Hosting: Vercel
+- Sitemap: https://binmucker.com/sitemap.xml
+- Robots: https://binmucker.com/robots.txt

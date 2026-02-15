@@ -8,7 +8,7 @@ import MenuToggle from './MenuToggle';
 import ZapModal from './ZapModal';
 
 export function Header() {
-  const links = ['Game', 'Merch', 'Zap Me'];
+  const links = ['About', 'Blog', 'Game', 'Breathe', 'Merch', 'Zap Me'];
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [showHeader, setShowHeader] = useState(true);
