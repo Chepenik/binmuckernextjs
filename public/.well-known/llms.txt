@@ -1,0 +1,28 @@
+# Binmucker
+
+> Digital portfolio and project hub by Conor Chepenik. Bitcoin educator, builder, and daily writer.
+
+For full details see: https://binmucker.com/llms.txt
+
+## Quick Summary
+
+Binmucker.com is the personal site of Conor Chepenik featuring:
+- Free breathing exercise app (5 patterns, no account needed)
+- Browser-based Space Invaders game (5 levels, power-ups, endless mode)
+- Curated Bitcoin and finance tools
+- Daily writing on Medium
+- Contact form
+
+## Key Links
+
+- Home: https://binmucker.com
+- Breathe Better: https://binmucker.com/breathe
+- Space Invaders: https://binmucker.com/space-invaders
+- Contact: https://binmucker.com/contact
+- Sitemap: https://binmucker.com/sitemap.xml
+
+## Support
+
+- Ko-fi: https://ko-fi.com/chepenik
+- Lightning: https://strike.me/chepenik/
+- Bitcoin: bc1qfkpu72e6h58puah8m8cmjxhms4swdauzm30naglgm7au4n7ae24s6wvq2w

@@ -8,3 +8,7 @@ Disallow: /thank-you
 Disallow: /api/
 
 Sitemap: https://binmucker.com/sitemap.xml
+
+# LLM/AI agent-readable site description
+# https://llmstxt.org/
+LLMs-Txt: https://binmucker.com/llms.txt
