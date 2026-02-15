@@ -114,8 +114,8 @@ export default function TermsOfService() {
             <p>
               If you have questions about these Terms, please reach out via our{' '}
               <a href="/contact" className="text-neon-cyan hover:underline">contact form</a> or email{' '}
-              <a href="mailto:chepenikconor@gmail.com" className="text-neon-cyan hover:underline">
-                chepenikconor@gmail.com
+              <a href="mailto:binmucker@proton.me" className="text-neon-cyan hover:underline">
+                binmucker@proton.me
               </a>.
             </p>
           </section>
