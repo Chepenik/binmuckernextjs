@@ -35,7 +35,8 @@ npm run test     # Run tests (Jest)
 | `/space-invaders` | Retro arcade game with 5 levels and boss fights |
 | `/breathe` | Breathing exercise app with 5 science-backed patterns |
 | `/about` | About page |
-| `/blog` | Blog |
+| `/blog` | Blog index with featured post and animated card grid |
+| `/blog/[slug]` | Individual blog posts (MDX) |
 | `/contact` | Contact form |
 
 ## Project Structure
@@ -45,6 +46,12 @@ src/
 ├── app/
 │   ├── api/audit/        # Audit API route (NVIDIA LLM + web scraping)
 │   ├── audit/            # Audit page
+│   ├── blog/
+│   │   ├── page.tsx          # Blog index (server component, reads MDX files)
+│   │   ├── [slug]/page.tsx   # Individual post page
+│   │   └── components/
+│   │       ├── BlogContent.tsx    # Client component (Framer Motion animations)
+│   │       └── mdx-components.tsx # MDX rendering components
 │   ├── components/
 │   │   ├── audit/        # AuditHero, AuditForm, AuditResults, LoadingState
 │   │   ├── Header.tsx
@@ -54,13 +61,16 @@ src/
 │   │   └── ...
 │   └── ...
 ├── lib/
+│   ├── blog.ts               # Blog post loader (reads content/blog/*.mdx)
 │   ├── scraper.ts            # Website scraping orchestrator
 │   ├── scraper-html.ts       # HTML content extraction
 │   ├── scraper-pagespeed.ts  # PageSpeed Insights integration
 │   ├── ai-readiness.ts       # AI readiness scoring
 │   ├── audit-constants.ts    # Scoring constants
 │   └── ...
-└── types/                    # TypeScript type definitions
+├── types/                    # TypeScript type definitions
+content/
+└── blog/                     # MDX blog posts (parsed by src/lib/blog.ts)
 ```
 
 ## Environment Variables

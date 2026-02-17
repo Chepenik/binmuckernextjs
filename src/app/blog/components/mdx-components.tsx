@@ -52,6 +52,9 @@ export const mdxComponents: MDXComponents = {
   strong: (props) => (
     <strong className="text-white font-semibold" {...props} />
   ),
+  em: (props) => (
+    <em className="text-gray-200 italic" {...props} />
+  ),
   hr: () => (
     <hr className="border-white/10 my-8" />
   ),
