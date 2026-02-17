@@ -8,7 +8,7 @@ import MenuToggle from './MenuToggle';
 import ZapModal from './ZapModal';
 
 export function Header() {
-  const links = ['About', 'Blog', 'Game', 'Breathe', 'Merch', 'Zap Me'];
+  const links = ['Audit', 'About', 'Blog', 'Game', 'Breathe', 'Merch', 'Zap Me'];
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [showHeader, setShowHeader] = useState(true);
@@ -105,8 +105,9 @@ export function Header() {
                 <Link
                   key={link}
                   href={link === 'Game' ? '/space-invaders' : `/${link.toLowerCase()}`}
-                  className="relative font-semibold text-gray-300 hover:text-gold-400
-                             transition-colors duration-300 group py-2"
+                  className={`relative font-semibold hover:text-gold-400
+                             transition-colors duration-300 group py-2
+                             ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
                 >
                   <span className="relative z-10">{link}</span>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5
@@ -170,8 +171,9 @@ export function Header() {
                 <Link
                   key={link}
                   href={link === 'Game' ? '/space-invaders' : `/${link.toLowerCase()}`}
-                  className="relative z-10 text-lg font-semibold text-gray-300
-                             hover:text-gold-400 transition-colors duration-300"
+                  className={`relative z-10 text-lg font-semibold
+                             hover:text-gold-400 transition-colors duration-300
+                             ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
                   onClick={() => toggleOpen()}
                 >
                   {link}

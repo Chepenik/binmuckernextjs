@@ -24,9 +24,16 @@ const categoryGradients: Record<string, string> = {
   'Healthcare': 'from-laser/20 via-neon-magenta/10 to-neon-pink/20',
   'Shop': 'from-gold-400/20 via-gold-500/10 to-bitcoin/20',
   'Hosting': 'from-neon-purple/20 via-neon-blue/10 to-neon-cyan/20',
+  'Tool': 'from-neon-cyan/20 via-electric/10 to-neon-green/20',
 };
 
 const links: BlockLink[] = [
+  {
+    title: 'Free Local SEO Audit',
+    description: 'AI-powered audit that scores your business across 6 categories with real website data. Get actionable recommendations in 90 seconds.',
+    url: '/audit',
+    category: 'Tool',
+  },
   {
     title: 'Bitcoin Coloring Book',
     description: 'A fun introduction to Bitcoin for kids and families. Learn about sound money, self-custody, and the future of finance through engaging coloring activities.',

@@ -304,13 +304,21 @@ const SpaceInvaders: React.FC = () => {
   const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
   const [showAchievements, setShowAchievements] = useState(false);
 
-  // Touch controls state
-  const [touchControls, setTouchControls] = useState({ left: false, right: false, shoot: false });
+  // Touch controls state (ref to avoid re-running game loop effect)
+  const touchControlsRef = useRef({ left: false, right: false, shoot: false });
+
+  // Refs for game loop to avoid stale closures and unnecessary effect re-runs
+  const isPausedRef = useRef(false);
+  const highScoreRef = useRef(0);
 
   // Load saved data on mount
   useEffect(() => {
     const savedHighScore = localStorage.getItem('spaceInvadersHighScore');
-    if (savedHighScore) setHighScore(parseInt(savedHighScore, 10));
+    if (savedHighScore) {
+      const score = parseInt(savedHighScore, 10);
+      setHighScore(score);
+      highScoreRef.current = score;
+    }
 
     const savedAchievements = localStorage.getItem('spaceInvadersAchievements');
     if (savedAchievements) {
@@ -324,6 +332,7 @@ const SpaceInvaders: React.FC = () => {
   useEffect(() => {
     if (displayScore > highScore) {
       setHighScore(displayScore);
+      highScoreRef.current = displayScore;
       localStorage.setItem('spaceInvadersHighScore', displayScore.toString());
     }
   }, [displayScore, highScore]);
@@ -359,6 +368,7 @@ const SpaceInvaders: React.FC = () => {
       powerUpsCollected: 0,
       damageTakenThisLevel: false,
     };
+    isPausedRef.current = false;
     setIsPlaying(true);
     setDisplayScore(0);
     setDisplayLives(3);
@@ -375,7 +385,10 @@ const SpaceInvaders: React.FC = () => {
   }, []);
 
   const togglePause = useCallback(() => {
-    setIsPaused(prev => !prev);
+    setIsPaused(prev => {
+      isPausedRef.current = !prev;
+      return !prev;
+    });
   }, []);
 
   // Prevent arrow key scrolling
@@ -643,7 +656,7 @@ const SpaceInvaders: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       keys[e.key] = true;
       if (e.key === 'p' || e.key === 'P') togglePause();
-      if ((e.key === 'Enter' || e.key === ' ') && (gameOver || gameWon || !isPlaying)) {
+      if ((e.key === 'Enter' || e.key === ' ') && (isGameOver || isWin)) {
         startGame(false);
       }
     };
@@ -702,7 +715,7 @@ const SpaceInvaders: React.FC = () => {
     };
 
     const shootInterval = setInterval(() => {
-      if (isPlaying && !isPaused && !isGameOver && !isWin) {
+      if (isPlaying && !isPausedRef.current && !isGameOver && !isWin) {
         const state = gameStateRef.current;
         const shootChance = 0.15 + (state.level * 0.03) + (state.isEndless ? state.endlessWave * 0.02 : 0);
         if (Math.random() < shootChance) enemyShoot();
@@ -1054,18 +1067,18 @@ const SpaceInvaders: React.FC = () => {
         }
       }
 
-      if (!isPaused && !isGameOver && !isWin) {
+      if (!isPausedRef.current && !isGameOver && !isWin) {
         const speedMod = slowMoActive ? 0.4 : 1;
 
         // Player movement (including touch controls)
         const moveSpeed = 7;
-        if ((keys["ArrowLeft"] || touchControls.left) && playerX > 0) {
+        if ((keys["ArrowLeft"] || touchControlsRef.current.left) && playerX > 0) {
           playerX -= moveSpeed;
         }
-        if ((keys["ArrowRight"] || touchControls.right) && playerX < canvas.width - playerWidth) {
+        if ((keys["ArrowRight"] || touchControlsRef.current.right) && playerX < canvas.width - playerWidth) {
           playerX += moveSpeed;
         }
-        if (keys[" "] || keys["ArrowUp"] || touchControls.shoot) shootBullet();
+        if (keys[" "] || keys["ArrowUp"] || touchControlsRef.current.shoot) shootBullet();
 
         drawPlayerShip(playerX, canvas.height - playerHeight - 10, playerWidth, playerHeight);
 
@@ -1345,13 +1358,16 @@ const SpaceInvaders: React.FC = () => {
           p.vy += 0.15;
           p.life -= 0.025;
 
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+
           ctx.globalAlpha = p.life;
           ctx.fillStyle = p.color;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
           ctx.fill();
-
-          if (p.life <= 0) particles.splice(i, 1);
         }
         ctx.globalAlpha = 1;
 
@@ -1473,7 +1489,7 @@ const SpaceInvaders: React.FC = () => {
       ctx.fillStyle = '#FFD700';
       ctx.shadowColor = '#FFD700';
       ctx.shadowBlur = 5;
-      ctx.fillText(`HIGH: ${highScore.toLocaleString()}`, canvas.width - 12, 28);
+      ctx.fillText(`HIGH: ${highScoreRef.current.toLocaleString()}`, canvas.width - 12, 28);
       ctx.shadowBlur = 0;
 
       // Combo display with animation
@@ -1490,31 +1506,33 @@ const SpaceInvaders: React.FC = () => {
       // Active power-ups
       let yOffset = 75;
       ctx.font = 'bold 14px Arial';
-      if (displayPowerUp && displayPowerUpTimer > 0) {
+      const uiNow = Date.now();
+      if (currentPowerUp && powerUpEndTime > uiNow) {
+        const remaining = Math.ceil((powerUpEndTime - uiNow) / 1000);
         ctx.fillStyle = '#FFD700';
-        ctx.fillText(`${displayPowerUp}: ${displayPowerUpTimer}s`, canvas.width - 12, yOffset);
+        ctx.fillText(`${state.activePowerUp}: ${remaining}s`, canvas.width - 12, yOffset);
         yOffset += 20;
       }
       if (slowMoActive) {
-        const remaining = Math.ceil((slowMoEndTime - now) / 1000);
+        const remaining = Math.ceil((slowMoEndTime - uiNow) / 1000);
         ctx.fillStyle = '#9400D3';
         ctx.fillText(`Slow-Mo: ${remaining}s`, canvas.width - 12, yOffset);
         yOffset += 20;
       }
       if (doublePointsActive) {
-        const remaining = Math.ceil((doublePointsEndTime - now) / 1000);
+        const remaining = Math.ceil((doublePointsEndTime - uiNow) / 1000);
         ctx.fillStyle = '#FFD700';
         ctx.fillText(`2X Points: ${remaining}s`, canvas.width - 12, yOffset);
         yOffset += 20;
       }
       if (piercingActive) {
-        const remaining = Math.ceil((piercingEndTime - now) / 1000);
+        const remaining = Math.ceil((piercingEndTime - uiNow) / 1000);
         ctx.fillStyle = '#FF1493';
         ctx.fillText(`Piercing: ${remaining}s`, canvas.width - 12, yOffset);
         yOffset += 20;
       }
       if (magnetActive) {
-        const remaining = Math.ceil((magnetEndTime - now) / 1000);
+        const remaining = Math.ceil((magnetEndTime - uiNow) / 1000);
         ctx.fillStyle = '#00CED1';
         ctx.fillText(`Magnet: ${remaining}s`, canvas.width - 12, yOffset);
         yOffset += 20;
@@ -1543,7 +1561,7 @@ const SpaceInvaders: React.FC = () => {
         ctx.font = "28px Arial";
         ctx.fillText(`Final Score: ${state.score.toLocaleString()}`, canvas.width / 2, canvas.height / 2);
 
-        if (state.score >= highScore && state.score > 0) {
+        if (state.score >= highScoreRef.current && state.score > 0) {
           ctx.fillStyle = '#FFD700';
           ctx.font = "bold 24px Arial";
           ctx.shadowColor = '#FFD700';
@@ -1579,7 +1597,7 @@ const SpaceInvaders: React.FC = () => {
         ctx.font = "26px Arial";
         ctx.fillText(`Final Score: ${state.score.toLocaleString()}`, canvas.width / 2, canvas.height / 2 + 30);
 
-        if (state.score >= highScore && state.score > 0) {
+        if (state.score >= highScoreRef.current && state.score > 0) {
           ctx.fillStyle = '#FFD700';
           ctx.font = "bold 22px Arial";
           ctx.shadowColor = '#FFD700';
@@ -1599,7 +1617,7 @@ const SpaceInvaders: React.FC = () => {
       }
 
       // Pause screen
-      if (isPaused && !isGameOver && !isWin) {
+      if (isPausedRef.current && !isGameOver && !isWin) {
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.textAlign = 'center';
@@ -1630,16 +1648,17 @@ const SpaceInvaders: React.FC = () => {
       clearInterval(shootInterval);
       cancelAnimationFrame(animationFrame);
     };
-  }, [isPlaying, isPaused, gameOver, gameWon, togglePause, startGame, highScore, touchControls, unlockAchievement]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPlaying, togglePause, startGame, unlockAchievement]);
 
-  // Touch control handlers
-  const handleTouchStart = (control: 'left' | 'right' | 'shoot') => {
-    setTouchControls(prev => ({ ...prev, [control]: true }));
-  };
+  // Touch control handlers (use refs to avoid re-running game loop effect)
+  const handleTouchStart = useCallback((control: 'left' | 'right' | 'shoot') => {
+    touchControlsRef.current[control] = true;
+  }, []);
 
-  const handleTouchEnd = (control: 'left' | 'right' | 'shoot') => {
-    setTouchControls(prev => ({ ...prev, [control]: false }));
-  };
+  const handleTouchEnd = useCallback((control: 'left' | 'right' | 'shoot') => {
+    touchControlsRef.current[control] = false;
+  }, []);
 
   const unlockedCount = achievements.filter(a => a.unlocked).length;
 
