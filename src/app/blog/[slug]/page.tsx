@@ -2,11 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 import { getAllPosts, getPostBySlug } from '@/lib/blog';
-import { mdxComponents } from '../components/mdx-components';
+import { BlogPostContent } from './BlogPostContent';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -107,9 +106,7 @@ export default async function BlogPost({ params }: PageProps) {
             <div className="h-[2px] w-full rounded-full bg-gradient-to-r from-transparent via-neon-cyan/40 to-transparent" />
           </header>
 
-          <div>
-            <MDXRemote source={post.content} components={mdxComponents} />
-          </div>
+          <BlogPostContent content={post.content} />
         </article>
 
         <div className="mt-16 pt-8 border-t border-white/10 text-center">

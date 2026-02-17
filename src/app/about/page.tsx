@@ -80,29 +80,33 @@ export default function AboutPage() {
           </div>
           <div className="glass-dark rounded-2xl border border-white/10 p-8 space-y-5 text-gray-300 leading-relaxed">
             <p>
-              I committed to writing every single day — rain or shine, inspired or not. That daily
-              practice on Medium became the foundation for everything else: the projects, the tools,
-              the books, and this site. Writing forces clarity, and clarity leads to building things
-              that actually help people.
+              I committed to writing every single day, rain or shine, inspired or not. That daily
+              practice on Medium became the foundation for everything else I&apos;ve built. The projects,
+              the tools, the books, and this site all came out of that habit. Writing forces clarity.
+              Clarity forces you to stop lying to yourself. And once things are clear, you can
+              actually build things that work instead of just talking about them.
             </p>
             <p>
-              My Bitcoin journey started with curiosity and turned into conviction. The more I
-              learned about sound money, decentralization, and self-sovereignty, the more I wanted
-              to share that knowledge with others. That led to the{' '}
+              My Bitcoin journey started with curiosity and turned into conviction. The deeper I
+              went into sound money, decentralization, and self-sovereignty, the more I felt
+              compelled to share what I was learning. That impulse turned into the{' '}
               <a href="https://bitcoincoloring.com/" target="_blank" rel="noopener noreferrer" className="text-neon-cyan hover:underline">
                 Bitcoin Coloring Book
               </a>
-              , educational content on YouTube, and tools like the{' '}
+              , educational content, and tools like the{' '}
               <a href="https://soundmoneymortgage.com/" target="_blank" rel="noopener noreferrer" className="text-neon-cyan hover:underline">
                 Sound Money Mortgage Calculator
-              </a>.
+              </a>
+              . Each of those started as a way to make something confusing more concrete, first
+              for me, then for anyone else who found it useful.
             </p>
             <p>
               Today I split my time between building web applications, creating content, and
-              exploring the intersection of technology and personal well-being. The{' '}
-              <Link href="/breathe" className="text-neon-cyan hover:underline">Breathe Better</Link> app
-              is a perfect example — a free tool that helps people take care of themselves, no
-              strings attached.
+              exploring the intersection of technology and personal well-being. I mostly build
+              tools for myself, to solve problems I actually have. My bet is simple: if something
+              is genuinely useful to me, there is a good chance it will be useful to someone else
+              too. That is how I think about value for value. Create real value for yourself, put
+              it into the world, and let others decide if it is worth keeping.
             </p>
           </div>
         </motion.section>

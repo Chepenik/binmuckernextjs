@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     description: 'Privacy Policy for Binmucker — how we collect, use, and protect your information.',
     url: 'https://binmucker.com/privacy',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Privacy Policy | Binmucker',
+    description: 'Privacy Policy for Binmucker — how we collect, use, and protect your information.',
+  },
 };
 
 export default function PrivacyLayout({ children }: { children: React.ReactNode }) {

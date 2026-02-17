@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     description: 'Thoughts on Bitcoin, building in public, web development, and wellness from Conor Chepenik.',
     url: 'https://binmucker.com/blog',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Blog | Binmucker',
+    description: 'Thoughts on Bitcoin, building in public, web development, and wellness from Conor Chepenik.',
+  },
 };
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {

@@ -1,41 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Binmucker
+
+Personal portfolio and tools site built with Next.js 16, React 19, and Tailwind CSS.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Copy environment template and add your keys
+cp .env.example .env.local
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Other commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build    # Production build
+npm run start    # Start production server
+npm run lint     # Run ESLint
+npm run test     # Run tests (Jest)
+```
 
-## Learn More
+## Key Routes
 
-To learn more about Next.js, take a look at the following resources:
+| Route | Description |
+|---|---|
+| `/` | Homepage with Digital Creations link grid |
+| `/audit` | Free AI-powered local business SEO audit |
+| `/space-invaders` | Retro arcade game with 5 levels and boss fights |
+| `/breathe` | Breathing exercise app with 5 science-backed patterns |
+| `/about` | About page |
+| `/blog` | Blog index with featured post and animated card grid |
+| `/blog/[slug]` | Individual blog posts (MDX) |
+| `/contact` | Contact form |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── api/audit/        # Audit API route (NVIDIA LLM + web scraping)
+│   ├── audit/            # Audit page
+│   ├── blog/
+│   │   ├── page.tsx          # Blog index (server component, reads MDX files)
+│   │   ├── [slug]/page.tsx   # Individual post page
+│   │   └── components/
+│   │       ├── BlogContent.tsx    # Client component (Framer Motion animations)
+│   │       └── mdx-components.tsx # MDX rendering components
+│   ├── components/
+│   │   ├── audit/        # AuditHero, AuditForm, AuditResults, LoadingState
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── HomeHero.tsx
+│   │   ├── SpaceInvaders.tsx
+│   │   └── ...
+│   └── ...
+├── lib/
+│   ├── blog.ts               # Blog post loader (reads content/blog/*.mdx)
+│   ├── scraper.ts            # Website scraping orchestrator
+│   ├── scraper-html.ts       # HTML content extraction
+│   ├── scraper-pagespeed.ts  # PageSpeed Insights integration
+│   ├── ai-readiness.ts       # AI readiness scoring
+│   ├── audit-constants.ts    # Scoring constants
+│   └── ...
+├── types/                    # TypeScript type definitions
+content/
+└── blog/                     # MDX blog posts (parsed by src/lib/blog.ts)
+```
 
-## Deploy on Vercel
+## Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See `.env.example` for required variables. Never commit `.env.local` or real API keys.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Purpose |
+|---|---|
+| `NVIDIA_API_KEY` | NVIDIA API key for the audit LLM |
+
+## Contributing
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feat/my-feature`)
+3. Make your changes
+4. Run `npm run build` and `npm run lint` to verify
+5. Commit with a clear message
+6. Open a pull request against `main`
+
+## Security
+
+- Do not commit secrets or API keys. Use environment variables via `.env.local`.
+- `.env.local` is gitignored. `.env.example` contains only placeholder values.
+- If you discover a security issue, please open a GitHub issue or contact the maintainer directly.
+
+## License
+
+The source code in this repository is licensed under the [MIT License](./LICENSE).
+
+## Trademark and Brand
+
+The Binmucker name, logos, copy, visual design assets, and other brand/business materials in this repository are not licensed under the MIT License. All rights to the Binmucker brand are reserved by Binmucker LLC. You may not use the Binmucker name, logos, or brand assets in ways that suggest endorsement or affiliation without prior written permission.
+
 ## Links
 
 - [YouTube](https://www.youtube.com/@ConorChepenik)
-
-# binmuckernextjs
+- [Medium](https://medium.com/@chepenikconor)

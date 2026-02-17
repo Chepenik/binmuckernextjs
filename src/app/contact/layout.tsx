@@ -13,6 +13,12 @@ export const metadata: Metadata = {
       'Get in touch with Conor Chepenik for collaborations, questions, or business inquiries.',
     url: 'https://binmucker.com/contact',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Contact Conor Chepenik | Binmucker',
+    description:
+      'Get in touch with Conor Chepenik for collaborations, questions, or business inquiries.',
+  },
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {

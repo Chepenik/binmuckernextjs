@@ -23,23 +23,23 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Binmucker - Digital Creations by Conor Chepenik',
+    default: 'Binmucker - Tools, Content & Digital Creations by Conor Chepenik',
     template: '%s | Binmucker',
   },
   description:
-    'Binmucker is the digital portfolio of Conor Chepenik. Explore Bitcoin tools, memes, browser games, finance resources, and creative projects.',
+    'Portfolio and tools by Conor Chepenik. Free local business audit, Bitcoin resources, breathing exercises, browser games, and more.',
   keywords: [
     'Binmucker',
     'binmucker.com',
     'Conor Chepenik',
+    'local business audit',
+    'AI consulting',
+    'local SEO',
+    'business audit tool',
+    'digital marketing audit',
+    'Google Business Profile',
     'Bitcoin',
     'digital creations',
-    'memes',
-    'finance tools',
-    'browser games',
-    'Space Invaders',
-    'Lightning Network',
-    'Nostr',
   ],
   authors: [{ name: 'Conor Chepenik', url: 'https://binmucker.com' }],
   creator: 'Conor Chepenik',
@@ -48,9 +48,9 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Binmucker - Digital Creations by Conor Chepenik',
+    title: 'Binmucker - Tools, Content & Digital Creations',
     description:
-      'Explore Bitcoin tools, memes, browser games, and creative digital projects by Conor Chepenik.',
+      'Portfolio and tools by Conor Chepenik. Free local business audit, Bitcoin resources, breathing exercises, browser games, and more.',
     url: 'https://binmucker.com',
     siteName: 'Binmucker',
     images: [
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
         url: 'https://i.nostr.build/lWaH02jqNNEXV0B1.jpg',
         width: 1200,
         height: 630,
-        alt: 'Binmucker - Digital Creations by Conor Chepenik',
+        alt: 'Binmucker - AI-Powered Local Business Audit Tool',
       },
     ],
     locale: 'en_US',
@@ -66,9 +66,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Binmucker - Digital Creations by Conor Chepenik',
+    title: 'Binmucker - Tools, Content & Digital Creations',
     description:
-      'Explore Bitcoin tools, memes, browser games, and creative digital projects.',
+      'Portfolio and tools by Conor Chepenik. Free local business audit, Bitcoin resources, breathing exercises, and more.',
     creator: '@ConorChepenik',
     images: ['https://i.nostr.build/lWaH02jqNNEXV0B1.jpg'],
   },
@@ -100,16 +100,16 @@ const jsonLd = {
       name: 'Binmucker',
       url: 'https://binmucker.com',
       description:
-        'Digital portfolio of Conor Chepenik featuring Bitcoin tools, breathing exercises, browser games, and creative projects.',
+        'AI consulting and local business audit tools by Conor Chepenik. Free audit tool plus Bitcoin tools, breathing exercises, browser games, and creative projects.',
       author: { '@id': 'https://binmucker.com/#person' },
     },
     {
       '@type': 'Organization',
       '@id': 'https://binmucker.com/#organization',
-      name: "Binmucker's LLC",
+      name: 'Binmucker LLC',
       url: 'https://binmucker.com',
       founder: { '@id': 'https://binmucker.com/#person' },
-      description: 'Digital products, Bitcoin education, and creative tools by Conor Chepenik.',
+      description: 'AI consulting, local business audit tools, and digital products by Conor Chepenik.',
     },
     {
       '@type': 'Person',
@@ -117,9 +117,9 @@ const jsonLd = {
       name: 'Conor Chepenik',
       url: 'https://binmucker.com',
       email: 'chepenikconor@gmail.com',
-      jobTitle: 'Bitcoin Educator & Builder',
+      jobTitle: 'AI Consultant & Builder',
       worksFor: { '@id': 'https://binmucker.com/#organization' },
-      knowsAbout: ['Bitcoin', 'Lightning Network', 'Nostr', 'Web Development', 'Breathing Exercises'],
+      knowsAbout: ['AI Consulting', 'Local SEO', 'Bitcoin', 'Lightning Network', 'Nostr', 'Web Development'],
       sameAs: [
         'https://www.linkedin.com/in/conorchepenik/',
         'https://x.com/ConorChepenik',
@@ -128,6 +128,17 @@ const jsonLd = {
         'https://medium.com/@chepenikconor',
         'https://ko-fi.com/chepenik',
       ],
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://binmucker.com/#audit-tool',
+      name: 'Local Business Audit Tool',
+      url: 'https://binmucker.com/#audit',
+      description: 'Free AI-powered local business audit. Analyzes Google Business Profile, website SEO, reviews, content, and competitive position with actionable recommendations.',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Any',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      isPartOf: { '@id': 'https://binmucker.com/#website' },
     },
     {
       '@type': 'WebApplication',
@@ -172,6 +183,9 @@ const jsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://i.nostr.build" />
+      </head>
       <body className="bg-cyber-black min-h-screen">
         <script
           type="application/ld+json"

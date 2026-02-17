@@ -21,7 +21,7 @@ export function Footer() {
           {/* Copyright with gradient */}
           <p className="text-gray-500 text-sm text-center md:text-left">
             <span className="text-gold-500">&copy;</span> {year}{' '}
-            <span className="text-gradient-gold font-semibold">Binmucker&apos;s LLC</span>
+            <span className="text-gradient-gold font-semibold">Binmucker LLC</span>
             . All rights reserved.
           </p>
 

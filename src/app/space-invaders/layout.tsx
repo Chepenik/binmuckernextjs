@@ -13,6 +13,12 @@ export const metadata: Metadata = {
       'Play Space Invaders in your browser. Retro arcade fun with power-ups, combos, and boss fights.',
     url: 'https://binmucker.com/space-invaders',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Space Invaders Game | Binmucker',
+    description:
+      'Play Space Invaders in your browser. Retro arcade fun with power-ups, combos, and boss fights.',
+  },
 };
 
 export default function SpaceInvadersLayout({ children }: { children: React.ReactNode }) {

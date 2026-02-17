@@ -1,7 +1,10 @@
-import React from 'react';
-import type { MDXComponents } from 'mdx/types';
+'use client';
 
-export const mdxComponents: MDXComponents = {
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import type { Components } from 'react-markdown';
+
+const markdownComponents: Components = {
   h1: (props) => (
     <h1 className="text-3xl font-bold text-white mt-10 mb-4" {...props} />
   ),
@@ -14,12 +17,13 @@ export const mdxComponents: MDXComponents = {
   p: (props) => (
     <p className="text-gray-300 leading-relaxed mb-4" {...props} />
   ),
-  a: ({ className: _, target: __, rel: ___, ...rest }) => (
+  a: ({ href, ...rest }) => (
     <a
-      {...rest}
+      href={href}
       className="text-neon-cyan hover:underline"
-      target={rest.href?.startsWith('http') ? '_blank' : undefined}
-      rel={rest.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+      target={href?.startsWith('http') ? '_blank' : undefined}
+      rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+      {...rest}
     />
   ),
   ul: (props) => (
@@ -59,3 +63,13 @@ export const mdxComponents: MDXComponents = {
     <hr className="border-white/10 my-8" />
   ),
 };
+
+export function BlogPostContent({ content }: { content: string }) {
+  return (
+    <div>
+      <ReactMarkdown components={markdownComponents}>
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+}
