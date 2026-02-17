@@ -107,6 +107,7 @@ const config: Config = {
         'float': 'float 6s ease-in-out infinite',
         'border-flow': 'border-flow 3s linear infinite',
         'shimmer': 'shimmer 2s linear infinite',
+        'pulse-slow': 'pulse-slow 8s ease-in-out infinite',
       },
 
       keyframes: {
@@ -138,6 +139,10 @@ const config: Config = {
         'shimmer': {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
+        },
+        'pulse-slow': {
+          '0%, 100%': { opacity: '0.07' },
+          '50%': { opacity: '0.12' },
         },
       },
 
