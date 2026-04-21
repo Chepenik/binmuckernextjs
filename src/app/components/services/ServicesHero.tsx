@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { ServiceCard } from './ServiceCard';
@@ -166,9 +167,9 @@ export function ServicesHero() {
                 paused while I re-scope pricing. If you have a clear project in
                 mind, reach out and we can talk about it on a call first.
               </p>
-              <a href="/contact" className="btn-premium px-8 py-3 inline-block">
+              <Link href="/contact" className="btn-premium px-8 py-3 inline-block">
                 Get in Touch
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>
