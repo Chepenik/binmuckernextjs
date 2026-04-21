@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'i.nostr.build',
       },
+      {
+        protocol: 'https',
+        hostname: '**.microlink.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'iad.microlink.io',
+      },
     ],
   },
 };

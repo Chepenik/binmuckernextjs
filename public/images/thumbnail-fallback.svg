@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-label="Preview unavailable">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A0A0F"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1A0A2E"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00FFFF" stop-opacity="0.0"/>
+      <stop offset="50%" stop-color="#FFD700" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FF00FF" stop-opacity="0.0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#FFD700" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#bg)"/>
+  <rect width="1280" height="800" fill="url(#grid)"/>
+  <rect width="1280" height="800" fill="url(#glow)"/>
+  <rect x="0" y="398" width="1280" height="2" fill="url(#accent)"/>
+  <g transform="translate(640 360)" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <text y="0" font-size="28" fill="#FFD700" fill-opacity="0.85" letter-spacing="6">BINMUCKER</text>
+    <text y="56" font-size="18" fill="#E6EEF3" fill-opacity="0.55" letter-spacing="3">preview unavailable</text>
+  </g>
+</svg>

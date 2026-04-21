@@ -12,6 +12,7 @@ import {
   Zap,
 } from 'lucide-react';
 import ZapModal from './ZapModal';
+import { resolveShotTarget, displayHost } from '@/lib/site-url';
 
 type Status =
   | 'Live'
@@ -31,6 +32,7 @@ interface LinkItem {
   status: Status;
   featured?: boolean;
   isAffiliate?: boolean;
+  thumbnailUrl?: string;
 }
 
 interface LinkSection {
@@ -222,6 +224,7 @@ const sections: LinkSection[] = [
         url: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
         status: 'Partner',
         isAffiliate: true,
+        thumbnailUrl: 'https://www.gemini.com/credit-card',
       },
       {
         title: 'CrowdHealth',
@@ -238,6 +241,7 @@ const sections: LinkSection[] = [
         url: 'https://hostinger.com?REFERRALCODE=1CONOR59',
         status: 'Partner',
         isAffiliate: true,
+        thumbnailUrl: 'https://www.hostinger.com/',
       },
     ],
   },
@@ -333,17 +337,96 @@ const itemVariants = {
 interface LinkCardProps {
   item: LinkItem;
   accent: LinkSection['accent'];
+  eager?: boolean;
 }
 
-function LinkCard({ item, accent }: LinkCardProps) {
+const accentRingClasses: Record<LinkSection['accent'], string> = {
+  gold: 'group-hover:ring-gold-400/50 group-hover:shadow-[0_0_24px_rgba(255,215,0,0.18)]',
+  cyan: 'group-hover:ring-neon-cyan/50 group-hover:shadow-[0_0_24px_rgba(0,194,255,0.18)]',
+  bitcoin: 'group-hover:ring-bitcoin/50 group-hover:shadow-[0_0_24px_rgba(247,147,26,0.20)]',
+  magenta: 'group-hover:ring-neon-magenta/50 group-hover:shadow-[0_0_24px_rgba(255,0,255,0.18)]',
+  purple: 'group-hover:ring-neon-purple/50 group-hover:shadow-[0_0_24px_rgba(191,0,255,0.18)]',
+};
+
+interface CardThumbnailProps {
+  url: string;
+  host: string;
+  accent: LinkSection['accent'];
+  eager?: boolean;
+}
+
+function CardThumbnail({ url, host, accent, eager }: CardThumbnailProps) {
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const src = `/api/thumbnail?url=${encodeURIComponent(url)}`;
+
+  return (
+    <div className="relative border-b border-white/10 overflow-hidden">
+      {/* Browser chrome */}
+      <div className="flex items-center gap-2 px-3 h-[28px] bg-black/60 backdrop-blur-sm border-b border-white/5">
+        <span className="flex gap-1.5" aria-hidden="true">
+          <span className="w-[10px] h-[10px] rounded-full bg-[#FF5F57]" />
+          <span className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]" />
+          <span className="w-[10px] h-[10px] rounded-full bg-[#28C840]" />
+        </span>
+        <span
+          className="ml-2 flex-1 truncate px-2 py-[2px] rounded-md bg-white/5 border border-white/10
+                     font-mono text-[11px] text-gray-400"
+          title={host}
+        >
+          {host}
+        </span>
+      </div>
+
+      {/* Shot frame */}
+      <div
+        className={`relative aspect-[16/10] bg-cyber-black ring-1 ring-white/5 transition-all duration-500
+                    ${accentRingClasses[accent]}`}
+      >
+        {!loaded && !failed && <div className="thumb-shimmer" aria-hidden="true" />}
+        {failed ? (
+          <div className="absolute inset-0 flex items-center justify-center text-[10px] font-mono uppercase tracking-widest text-gray-600">
+            preview unavailable
+          </div>
+        ) : (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={src}
+            alt=""
+            loading={eager ? 'eager' : 'lazy'}
+            decoding="async"
+            onLoad={() => setLoaded(true)}
+            onError={() => setFailed(true)}
+            className={`absolute inset-0 w-full h-full object-cover object-top
+                        transition-[transform,opacity] duration-500 ease-out
+                        motion-reduce:transition-none
+                        group-hover:scale-[1.04] motion-reduce:group-hover:scale-100
+                        ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          />
+        )}
+
+        {/* Subtle top-glare */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-1/3
+                     bg-gradient-to-b from-white/[0.04] to-transparent"
+          aria-hidden="true"
+        />
+      </div>
+    </div>
+  );
+}
+
+function LinkCard({ item, accent, eager }: LinkCardProps) {
   const isExternal = item.url.startsWith('http');
   const accentCfg = accentClasses[accent];
+  const shotTarget = resolveShotTarget(item.url, item.thumbnailUrl);
+  const host = displayHost(item.thumbnailUrl ?? item.url);
 
   return (
     <Link
       href={item.url}
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      className={`group relative block card-premium h-full focus-visible:outline-none
+      className={`group relative block card-premium !p-0 h-full focus-visible:outline-none
                   ${item.featured ? 'border-gold-400/40 shadow-[0_0_24px_rgba(255,215,0,0.08)]' : ''}`}
       aria-label={`${item.title}. ${item.status}${item.isAffiliate ? ', affiliate' : ''}.`}
     >
@@ -355,7 +438,7 @@ function LinkCard({ item, accent }: LinkCardProps) {
 
       {item.featured && (
         <span
-          className="absolute top-3 right-3 z-20 inline-flex items-center gap-1 px-2 py-1 rounded-md
+          className="absolute top-[38px] right-3 z-20 inline-flex items-center gap-1 px-2 py-1 rounded-md
                      text-[10px] font-bold uppercase tracking-widest
                      bg-gold-400/15 text-gold-300 border border-gold-400/40
                      shadow-[0_0_10px_rgba(255,215,0,0.15)]"
@@ -366,47 +449,51 @@ function LinkCard({ item, accent }: LinkCardProps) {
       )}
 
       <div className="relative z-10 flex h-full flex-col">
-        <div className="flex items-center flex-wrap gap-2 mb-3">
-          <span
-            className={`px-2 py-1 rounded-md border text-[10px] font-semibold uppercase tracking-wider
-                        ${statusClasses[item.status]}`}
-          >
-            {item.status}
-          </span>
-          {item.isAffiliate && (
+        <CardThumbnail url={shotTarget} host={host} accent={accent} eager={eager} />
+
+        <div className="flex flex-1 flex-col p-5">
+          <div className="flex items-center flex-wrap gap-2 mb-3">
             <span
-              className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
-                         bg-gold-500/10 text-gold-400 border border-gold-500/30"
+              className={`px-2 py-1 rounded-md border text-[10px] font-semibold uppercase tracking-wider
+                          ${statusClasses[item.status]}`}
             >
-              Affiliate
+              {item.status}
             </span>
-          )}
-          {isExternal && (
-            <span className="text-[10px] text-gray-500 uppercase tracking-widest ml-auto">
-              External
-            </span>
-          )}
-        </div>
+            {item.isAffiliate && (
+              <span
+                className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
+                           bg-gold-500/10 text-gold-400 border border-gold-500/30"
+              >
+                Affiliate
+              </span>
+            )}
+            {isExternal && (
+              <span className="text-[10px] text-gray-500 uppercase tracking-widest ml-auto">
+                External
+              </span>
+            )}
+          </div>
 
-        <div className="flex justify-between items-start gap-4 mb-3">
-          <h3
-            className={`font-semibold text-white text-lg leading-tight transition-colors duration-300
-                        ${accentCfg.hover}`}
-          >
-            {item.title}
-          </h3>
-          <ArrowUpRight
-            className={`text-gray-600 ${accentCfg.hover}
-                       group-hover:translate-x-1 group-hover:-translate-y-1
-                       transition-all duration-300 flex-shrink-0`}
-            size={20}
-            aria-hidden="true"
-          />
-        </div>
+          <div className="flex justify-between items-start gap-4 mb-3">
+            <h3
+              className={`font-semibold text-white text-lg leading-tight transition-colors duration-300
+                          ${accentCfg.hover}`}
+            >
+              {item.title}
+            </h3>
+            <ArrowUpRight
+              className={`text-gray-600 ${accentCfg.hover}
+                         group-hover:translate-x-1 group-hover:-translate-y-1
+                         transition-all duration-300 flex-shrink-0`}
+              size={20}
+              aria-hidden="true"
+            />
+          </div>
 
-        <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-          {item.description}
-        </p>
+          <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+            {item.description}
+          </p>
+        </div>
       </div>
     </Link>
   );
@@ -571,7 +658,7 @@ export function HomeHero() {
               >
                 {section.items.map((item) => (
                   <motion.article key={item.title} variants={itemVariants}>
-                    <LinkCard item={item} accent={section.accent} />
+                    <LinkCard item={item} accent={section.accent} eager={item.featured} />
                   </motion.article>
                 ))}
               </motion.div>

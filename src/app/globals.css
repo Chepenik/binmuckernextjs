@@ -439,6 +439,41 @@ a, button, input, select, textarea {
   50% { transform: translateY(-10px); }
 }
 
+@keyframes thumb-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@layer components {
+  .thumb-shimmer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(22, 27, 34, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%);
+  }
+  .thumb-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 35%,
+      rgba(255, 215, 0, 0.06) 45%,
+      rgba(0, 255, 255, 0.08) 50%,
+      rgba(255, 215, 0, 0.06) 55%,
+      transparent 65%,
+      transparent 100%
+    );
+    animation: thumb-shimmer 1.8s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb-shimmer::after { animation: none; }
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -92,6 +92,28 @@ export function AuditResults({ report, onReset }: AuditResultsProps) {
         <p className="text-gray-400 text-sm leading-relaxed">{report.competitiveInsight}</p>
       </motion.div>
 
+      {/* Upgrade CTA */}
+      <motion.div
+        className="glass rounded-2xl p-6 border border-neon-cyan/30 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <h2 className="text-lg font-display font-semibold text-neon-cyan mb-2">
+          Want Deeper Insights?
+        </h2>
+        <p className="text-gray-400 text-sm mb-4">
+          Upgrade to a Detailed or Competitor audit for comprehensive analysis,
+          90-day action plans, and competitor gap analysis.
+        </p>
+        <a
+          href="/services"
+          className="btn-neon px-6 py-2 text-sm inline-block"
+        >
+          View Premium Tiers
+        </a>
+      </motion.div>
+
       {/* CTA + Reset */}
       <div className="flex flex-col items-center gap-4 pt-4">
         <a

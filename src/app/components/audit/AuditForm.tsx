@@ -3,13 +3,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BUSINESS_TYPES } from '@/lib/audit-constants';
-import type { AuditFormData } from '@/types/audit';
+import type { AuditFormData, AuditTier } from '@/types/audit';
 
 interface AuditFormProps {
   onSubmit: (data: AuditFormData) => void;
+  tier?: AuditTier;
 }
 
-export function AuditForm({ onSubmit }: AuditFormProps) {
+export function AuditForm({ onSubmit, tier = 'free' }: AuditFormProps) {
   const [businessName, setBusinessName] = useState('');
   const [city, setCity] = useState('');
   const [businessType, setBusinessType] = useState('');
@@ -130,13 +131,15 @@ export function AuditForm({ onSubmit }: AuditFormProps) {
       <button
         type="submit"
         disabled={!isValid}
-        className="w-full btn-neon py-4 text-lg font-bold mt-6 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-none"
+        className={`w-full py-4 text-lg font-bold mt-6 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-none ${
+          tier === 'free' ? 'btn-neon' : 'btn-premium'
+        }`}
       >
-        Run Free Audit
+        {tier === 'free' ? 'Run Free Audit' : `Run ${tier.charAt(0).toUpperCase() + tier.slice(1)} Audit`}
       </button>
 
       <p className="text-xs text-gray-600 text-center mt-3">
-        Powered by AI &middot; Results in ~90-120 seconds &middot; No signup required
+        Powered by AI &middot; Results in ~90-120 seconds &middot; {tier === 'free' ? 'No signup required' : 'Lightning payment required'}
       </p>
     </motion.form>
   );

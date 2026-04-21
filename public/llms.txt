@@ -1,20 +1,23 @@
 # Binmucker
 
-> Digital portfolio and project hub by Conor Chepenik. Bitcoin educator, builder, and daily writer.
+> The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin and Lightning projects, health experiments, services priced in sats, and a retro browser game. Bitcoin educator, builder, and daily writer.
 
 ## Identity
 
 - Site: https://binmucker.com
 - Creator: Conor Chepenik
 - Business: Binmucker's LLC
-- Focus: Bitcoin education, open-source tools, browser games, breathing exercises, finance resources
+- Focus: Bitcoin education, AI and Bitcoin consulting, open-source tools, Lightning payments, agent-friendly services
 - Contact email: chepenikconor@gmail.com
 
 ## Pages
 
-- [Home](https://binmucker.com/): Curated links to projects, tools, and resources. Support section with Ko-fi and Bitcoin tipping.
+- [Home](https://binmucker.com/): Grouped link hub organized into five sections: Built by Me, Bitcoin & Lightning, Writing & Ideas, Play & Practice, and Picks & Partners. Plus a Start Here module, About preview, and value-for-value support block with Ko-fi and Lightning.
+- [Services](https://binmucker.com/services): Currently one active offer — a 30-minute consultation for 21,000 sats, paid via Lightning. Larger engagements are being re-priced.
+- [Daily Briefing](https://binmucker.com/briefing): AI-generated Bitcoin innovation ideas, updated daily. Themes: invisible Bitcoin, circular economy, dev infrastructure, agent commerce, onboarding funnels.
+- [Audit](https://binmucker.com/audit): Free AI-powered local business SEO audit. Scores across 6 categories with actionable recommendations. Premium tiers available.
 - [About](https://binmucker.com/about): About Conor Chepenik — story, skills, projects, and how to get in touch.
-- [Blog](https://binmucker.com/blog): Thoughts on Bitcoin, building in public, web development, and wellness.
+- [Blog](https://binmucker.com/blog): Long-form writing on Bitcoin, building in public, web development, and wellness.
 - [Breathe Better](https://binmucker.com/breathe): Free breathing exercise app with 5 science-backed patterns (Box, 4-7-8, Spiral, Wim Hof, Triangle). No accounts required.
 - [Breathe Practice](https://binmucker.com/breathe/practice): Interactive breathing timer with animated circle visualization and ambient audio.
 - [Space Invaders](https://binmucker.com/space-invaders): Free browser-based retro arcade game with 5 levels, power-ups, boss fights, and endless mode.
@@ -22,14 +25,90 @@
 - [Privacy Policy](https://binmucker.com/privacy): How we collect, use, and protect your information.
 - [Terms of Service](https://binmucker.com/terms): Rules governing use of the website and services.
 
+## Homepage Sections
+
+The home page at https://binmucker.com/ is organized into five themed sections, each anchored:
+
+- `#built-by-me` — Built by Me. Original tools, services, and artifacts Conor ships. Includes the Local SEO Audit, AI & Bitcoin Services, Daily Bitcoin Briefing, the Bitcoin Coloring Book, and Handwritten Letters.
+- `#bitcoin-lightning` — Bitcoin & Lightning. Sound Money Mortgage, Saylorscope, Nostr profile, and Fortune Sats.
+- `#writing` — Writing & Ideas. Medium (daily) and the Binmucker Blog.
+- `#play-practice` — Play & Practice. Space Invaders, RyRacer, Breathe Better, GuitarGui.
+- `#picks-partners` — Picks & Partners. Affiliate links (Gemini Credit Card, CrowdHealth, Hostinger) with a clear affiliate disclosure beneath.
+
+## Services
+
+Binmucker offers Bitcoin-native consulting, priced in satoshis and paid via the Lightning Network.
+
+| Service | Price (sats) | Description |
+|---------|-------------|-------------|
+| 30-Minute Consultation | 21,000 | A focused 30-minute call on Bitcoin, Lightning, AI, SEO, or any topic Conor can honestly speak to. Video or Lightning voice. |
+
+Additional scoped offerings (Research & Analysis, Content Creation, SEO Audit Premium, Automation & Tools, Bitcoin Integration Strategy) are intentionally paused while pricing and deliverables are re-scoped. Expect them to return in a future update.
+
+## API Endpoints
+
+### POST /api/audit
+Run an AI-powered local business SEO audit.
+
+**Request body:**
+```json
+{
+  "businessName": "string (required)",
+  "city": "string (required)",
+  "businessType": "string (required, from predefined list)",
+  "websiteUrl": "string (optional)",
+  "additionalContext": "string (optional)"
+}
+```
+
+**Response:** JSON audit report with overallScore, categories, quickWin, topPriorities, competitiveInsight.
+
+**Rate limit:** 10 requests per hour per IP.
+
+### GET /api/briefing
+Get the latest Bitcoin innovation briefings.
+
+**Response:** JSON array of briefings, each with theme, date, and 3-5 innovation ideas.
+
+### POST /api/briefing
+Generate a new daily briefing (protected by CRON_SECRET).
+
+## For AI Agents
+
+This site is designed to be agent-friendly:
+
+1. **Discovery**: This file (`/llms.txt`) and `/.well-known/ai-plugin.json` describe all capabilities.
+2. **Structured Data**: Schema.org JSON-LD on every page (WebSite, Organization, Person, Service, SoftwareApplication, VideoGame, WebApplication).
+3. **API Access**: The `/api/audit` endpoint accepts JSON and returns structured audit reports.
+4. **Briefings**: Daily Bitcoin innovation ideas available via `/api/briefing` GET endpoint.
+5. **Payments**: Services priced in sats. Lightning invoicing is being rolled in; book a consultation and you will receive a Lightning invoice.
+6. **Sitemap**: Machine-readable at https://binmucker.com/sitemap.xml.
+
+To interact programmatically:
+- Run an SEO audit: `POST /api/audit` with business details
+- Get latest briefings: `GET /api/briefing`
+- View services: `GET /services` or read the table above
+- Contact: `POST` to contact form or email chepenikconor@gmail.com
+
 ## Featured Projects (external)
 
 - [Bitcoin Coloring Book](https://bitcoincoloring.com/): Fun Bitcoin education for kids and families. Category: Education.
-- [Sound Money Mortgage Calculator](https://soundmoneymortgage.com/): Calculate mortgage payments and view amortization schedules. Category: Finance.
+- [Sound Money Mortgage Calculator](https://soundmoneymortgage.com/): Calculate mortgage payments and view amortization schedules in Bitcoin terms. Category: Finance.
 - [Saylorscope](https://www.saylorscope.com/): Track how investments perform over years. Category: Finance.
-- [My Medium](https://medium.com/@chepenikconor): Daily writing about Bitcoin, technology, and self-improvement. Category: Writing.
-- [My Nostr](https://primal.net/p/npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y): Decentralized social presence on Nostr. Category: Entertainment.
+- [RyRacer](https://ryracer.com): 3D arcade combat racer with Lightning-powered entries. Free practice laps, 1,000 sats to enter the global leaderboard. Category: Game.
+- [Fortune Sats](https://fortunesats.com): A Lightning-powered fortune teller. 100 sats per fortune. Category: Lightning experiment.
+- [GuitarGui](https://guitargui.com): Free, open-source guitar coach with tuner, metronome, lessons, and songs. MIT-licensed. Category: Music tool.
 - [Handwritten Letters](https://quotestoansweryourquestions.replit.app/): Buy personal handwritten letters with sats. Category: Shop.
+- [My Medium](https://medium.com/@chepenikconor): Daily writing about Bitcoin, technology, and self-improvement. Category: Writing.
+- [My Nostr](https://primal.net/p/npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y): Decentralized social presence on Nostr. Category: Social.
+
+## Affiliate Partners
+
+These are clearly labeled as affiliate links on the homepage `#picks-partners` section. Conor only lists products he actually uses.
+
+- [Gemini Credit Card](https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94): Earn Bitcoin on every purchase. Category: Finance.
+- [CrowdHealth](https://www.joincrowdhealth.com/?referral_code=GQRENX): Community-funded alternative to traditional health insurance. Category: Healthcare.
+- [Hostinger](https://hostinger.com?REFERRALCODE=1CONOR59): Cheap, fast hosting with a free domain and email. 20% off first plan. Category: Hosting.
 
 ## Social Profiles
 
@@ -39,7 +118,7 @@
 - LinkedIn: https://www.linkedin.com/in/conorchepenik/
 - Nostr: npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y
 
-## Support / Tips
+## Support / Value for Value
 
 - Ko-fi: https://ko-fi.com/chepenik
 - Bitcoin Lightning: https://strike.me/chepenik/
@@ -49,5 +128,8 @@
 
 - Stack: Next.js 16, React 19, TypeScript, Tailwind CSS, Framer Motion
 - Hosting: Vercel
+- AI: NVIDIA API (Kimi K2.5) for audits and briefings
+- Storage: Vercel Blob for briefings
+- Payments: Lightning Network (Strike), with a deeper integration in progress
 - Sitemap: https://binmucker.com/sitemap.xml
 - Robots: https://binmucker.com/robots.txt

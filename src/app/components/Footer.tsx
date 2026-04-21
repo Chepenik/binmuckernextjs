@@ -31,7 +31,7 @@ export function Footer() {
               href="https://www.linkedin.com/in/conorchepenik/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-neon-cyan hover:shadow-neon-cyan
+              className="text-gray-500 hover:text-neon-cyan hover:drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]
                          transition-all duration-300 transform hover:scale-110"
               aria-label="LinkedIn"
             >
@@ -41,7 +41,7 @@ export function Footer() {
               href="https://x.com/ConorChepenik"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gold-400 hover:shadow-neon-gold
+              className="text-gray-500 hover:text-gold-400 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.6)]
                          transition-all duration-300 transform hover:scale-110"
               aria-label="X (Twitter)"
             >
@@ -51,7 +51,7 @@ export function Footer() {
               href="https://github.com/Chepenik"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-neon-magenta hover:shadow-neon-magenta
+              className="text-gray-500 hover:text-neon-magenta hover:drop-shadow-[0_0_8px_rgba(255,0,255,0.6)]
                          transition-all duration-300 transform hover:scale-110"
               aria-label="GitHub"
             >
@@ -61,7 +61,7 @@ export function Footer() {
               href="https://www.youtube.com/@ConorChepenik"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-laser hover:shadow-[0_0_20px_rgba(255,7,58,0.5)]
+              className="text-gray-500 hover:text-laser hover:drop-shadow-[0_0_8px_rgba(255,7,58,0.6)]
                          transition-all duration-300 transform hover:scale-110"
               aria-label="YouTube"
             >

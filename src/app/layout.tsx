@@ -172,32 +172,20 @@ const jsonLd = {
     {
       '@type': 'Service',
       '@id': 'https://binmucker.com/#services',
-      name: 'Binmucker AI & Bitcoin Services',
+      name: 'Binmucker Consulting',
       url: 'https://binmucker.com/services',
       provider: { '@id': 'https://binmucker.com/#organization' },
-      description: 'Bitcoin-native consulting, content creation, SEO audits, automation, and Bitcoin integration strategy.',
-      serviceType: ['AI Consulting', 'Content Creation', 'SEO Audit', 'Bitcoin Integration'],
+      description:
+        '30-minute consultations with Conor Chepenik on Bitcoin, Lightning, AI, and SEO. Priced in sats, paid via Lightning. Larger scoped engagements are being re-priced and will return soon.',
+      serviceType: ['Bitcoin Consulting', 'Lightning Strategy', 'AI Consulting', 'SEO Advisory'],
       offers: [
         {
           '@type': 'Offer',
-          name: 'Research & Analysis',
+          name: '30-Minute Consultation',
           priceCurrency: 'BTC',
-          price: '0.0005',
-          description: 'Custom Bitcoin integration research and Lightning Network opportunity analysis',
-        },
-        {
-          '@type': 'Offer',
-          name: 'SEO Audit Premium',
-          priceCurrency: 'BTC',
-          price: '0.00005',
-          description: 'Deep-dive audit with competitor analysis and 90-day action plan',
-        },
-        {
-          '@type': 'Offer',
-          name: 'Bitcoin Integration Strategy',
-          priceCurrency: 'BTC',
-          price: '0.005',
-          description: 'End-to-end consulting on accepting Bitcoin/Lightning payments',
+          price: '0.00021',
+          description:
+            'A focused 30-minute call on whatever you are building, stuck on, or curious about. Payable in 21,000 sats via Lightning.',
         },
       ],
       areaServed: 'Worldwide',

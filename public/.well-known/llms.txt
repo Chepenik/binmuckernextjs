@@ -1,27 +1,47 @@
 # Binmucker
 
-> Digital portfolio and project hub by Conor Chepenik. Bitcoin educator, builder, and daily writer.
+> The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin and Lightning projects, and services priced in sats.
 
 For full details see: https://binmucker.com/llms.txt
 
 ## Quick Summary
 
 Binmucker.com is the personal site of Conor Chepenik featuring:
+- A 30-minute Bitcoin/AI/SEO consultation priced at 21,000 sats, paid via Lightning
+- Daily Bitcoin innovation briefings (AI-generated)
+- Free AI-powered local business SEO audit (with premium tiers)
 - Free breathing exercise app (5 patterns, no account needed)
 - Browser-based Space Invaders game (5 levels, power-ups, endless mode)
-- Curated Bitcoin and finance tools
-- Daily writing on Medium
-- Contact form
+- Curated Bitcoin, Lightning, and music tools (Sound Money Mortgage, Saylorscope, Nostr, Fortune Sats, RyRacer, GuitarGui, Bitcoin Coloring Book, Handwritten Letters)
+- Daily writing on Medium and long-form posts on the Binmucker blog
+
+## Homepage Sections (anchored)
+
+- `#built-by-me` — Built by Me
+- `#bitcoin-lightning` — Bitcoin & Lightning
+- `#writing` — Writing & Ideas
+- `#play-practice` — Play & Practice
+- `#picks-partners` — Picks & Partners (affiliates, disclosed)
 
 ## Key Links
 
 - Home: https://binmucker.com
+- Services: https://binmucker.com/services
+- Daily Briefing: https://binmucker.com/briefing
+- SEO Audit: https://binmucker.com/audit
 - Breathe Better: https://binmucker.com/breathe
 - Space Invaders: https://binmucker.com/space-invaders
+- Blog: https://binmucker.com/blog
+- About: https://binmucker.com/about
 - Contact: https://binmucker.com/contact
 - Sitemap: https://binmucker.com/sitemap.xml
 
-## Support
+## API
+
+- POST /api/audit — Run an SEO audit (JSON in/out)
+- GET /api/briefing — Get latest Bitcoin innovation briefings
+
+## Support / Value for Value
 
 - Ko-fi: https://ko-fi.com/chepenik
 - Lightning: https://strike.me/chepenik/
