@@ -23,23 +23,31 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Binmucker - Tools, Content & Digital Creations by Conor Chepenik',
+    default: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
     template: '%s | Binmucker',
   },
   description:
-    'Portfolio and tools by Conor Chepenik. Free local business audit, Bitcoin resources, breathing exercises, browser games, and more.',
+    'The personal internet home base of Conor Chepenik. Free AI-powered local SEO audit, daily Bitcoin innovation briefings, Bitcoin-native consulting, a coloring book, a breathing app, a retro arcade game, and daily writing on Medium.',
   keywords: [
     'Binmucker',
     'binmucker.com',
     'Conor Chepenik',
+    'personal site',
+    'link tree',
+    'creator portfolio',
+    'Bitcoin educator',
+    'Bitcoin builder',
+    'Lightning Network',
+    'Nostr',
+    'daily writing',
     'local business audit',
+    'local SEO audit',
     'AI consulting',
-    'local SEO',
-    'business audit tool',
-    'digital marketing audit',
-    'Google Business Profile',
-    'Bitcoin',
-    'digital creations',
+    'Bitcoin integration',
+    'sound money',
+    'Breathe Better',
+    'Space Invaders',
+    'Bitcoin Coloring Book',
   ],
   authors: [{ name: 'Conor Chepenik', url: 'https://binmucker.com' }],
   creator: 'Conor Chepenik',
@@ -48,9 +56,9 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Binmucker - Tools, Content & Digital Creations',
+    title: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
     description:
-      'Portfolio and tools by Conor Chepenik. Free local business audit, Bitcoin resources, breathing exercises, browser games, and more.',
+      'The personal home base of Conor Chepenik. Free tools, daily essays, Bitcoin projects, health experiments, a retro game, and services priced in sats.',
     url: 'https://binmucker.com',
     siteName: 'Binmucker',
     images: [
@@ -58,7 +66,7 @@ export const metadata: Metadata = {
         url: 'https://i.nostr.build/lWaH02jqNNEXV0B1.jpg',
         width: 1200,
         height: 630,
-        alt: 'Binmucker - AI-Powered Local Business Audit Tool',
+        alt: 'Binmucker by Conor Chepenik. Tools, writing, Bitcoin, and internet experiments.',
       },
     ],
     locale: 'en_US',
@@ -66,9 +74,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Binmucker - Tools, Content & Digital Creations',
+    title: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
     description:
-      'Portfolio and tools by Conor Chepenik. Free local business audit, Bitcoin resources, breathing exercises, and more.',
+      'A builder\'s home base. Free tools, daily writing, Bitcoin projects, and services priced in sats. By Conor Chepenik.',
     creator: '@ConorChepenik',
     images: ['https://i.nostr.build/lWaH02jqNNEXV0B1.jpg'],
   },
@@ -100,7 +108,7 @@ const jsonLd = {
       name: 'Binmucker',
       url: 'https://binmucker.com',
       description:
-        'AI consulting and local business audit tools by Conor Chepenik. Free audit tool plus Bitcoin tools, breathing exercises, browser games, and creative projects.',
+        'The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin and Lightning projects, health experiments, services priced in sats, and a retro browser game.',
       author: { '@id': 'https://binmucker.com/#person' },
     },
     {
@@ -159,6 +167,40 @@ const jsonLd = {
       gamePlatform: 'Web Browser',
       playMode: 'SinglePlayer',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      isPartOf: { '@id': 'https://binmucker.com/#website' },
+    },
+    {
+      '@type': 'Service',
+      '@id': 'https://binmucker.com/#services',
+      name: 'Binmucker AI & Bitcoin Services',
+      url: 'https://binmucker.com/services',
+      provider: { '@id': 'https://binmucker.com/#organization' },
+      description: 'Bitcoin-native consulting, content creation, SEO audits, automation, and Bitcoin integration strategy.',
+      serviceType: ['AI Consulting', 'Content Creation', 'SEO Audit', 'Bitcoin Integration'],
+      offers: [
+        {
+          '@type': 'Offer',
+          name: 'Research & Analysis',
+          priceCurrency: 'BTC',
+          price: '0.0005',
+          description: 'Custom Bitcoin integration research and Lightning Network opportunity analysis',
+        },
+        {
+          '@type': 'Offer',
+          name: 'SEO Audit Premium',
+          priceCurrency: 'BTC',
+          price: '0.00005',
+          description: 'Deep-dive audit with competitor analysis and 90-day action plan',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Bitcoin Integration Strategy',
+          priceCurrency: 'BTC',
+          price: '0.005',
+          description: 'End-to-end consulting on accepting Bitcoin/Lightning payments',
+        },
+      ],
+      areaServed: 'Worldwide',
       isPartOf: { '@id': 'https://binmucker.com/#website' },
     },
     {
