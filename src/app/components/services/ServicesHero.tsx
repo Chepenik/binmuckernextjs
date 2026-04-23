@@ -9,18 +9,18 @@ import ZapModal from '../ZapModal';
 
 const services = [
   {
-    title: '30-Minute Consultation',
+    title: 'AI SEO Strategy Call',
     description:
-      'A focused 30-minute call on whatever you are building, stuck on, or curious about. Bitcoin, Lightning, AI, SEO, or any topic I can honestly speak to.',
+      'A focused 30-minute working session on getting your business found in Google AND the AI answer engines — ChatGPT, Claude, Perplexity, and Google AI Overviews. We look at your site, your competitors, and what to change this week.',
     features: [
-      '30 minutes of my undivided time',
-      'Video or Lightning voice call',
-      'Bring your questions, leave with straight answers',
+      'Live review of your site\'s AI + SEO signals',
+      'Prioritized fixes you can ship this week',
+      'Competitor visibility comparison',
       'Follow-up notes sent after the call',
     ],
     priceInSats: 21000,
     priceLabel: 'per 30-min call',
-    emoji: '📞',
+    emoji: '🔎',
     actionLabel: 'Book a Call',
   },
   // ---------------------------------------------------------------------------
@@ -122,16 +122,23 @@ export function ServicesHero() {
             <div className="inline-flex items-center gap-3 mb-6 glass-dark px-5 py-2.5 rounded-full border border-white/10">
               <Sparkles className="w-5 h-5 text-neon-cyan/70 animate-pulse" />
               <span className="text-sm font-medium text-gray-400">
-                Human + AI Partnership
+                AI SEO &middot; Built for the new search
               </span>
               <Sparkles className="w-5 h-5 text-neon-cyan/70 animate-pulse" />
             </div>
 
-            <h1 className="heading-display text-gradient-gold mb-4">Services</h1>
+            <h1 className="heading-display text-gradient-gold mb-4">
+              Get found by Google <span className="whitespace-nowrap">and the AI</span>
+            </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-              One focused offer right now: a 30-minute call priced in sats and
-              delivered on Lightning. More scoped engagements are being re-priced
-              and will return soon.
+              Search has changed. Your customers now ask Google, ChatGPT, Claude,
+              Perplexity, and Google AI Overviews — and only the sites the AI
+              trusts get quoted. I help local businesses rank in all of them.
+              Start with the{' '}
+              <Link href="/audit" className="text-neon-cyan hover:underline">
+                free AI SEO audit
+              </Link>
+              , then book a call to turn the findings into a plan.
             </p>
             <div className="mt-6 h-[2px] w-32 mx-auto rounded-full bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
           </motion.div>
@@ -160,12 +167,12 @@ export function ServicesHero() {
           >
             <div className="glass rounded-2xl p-8 border border-gold-500/20 max-w-2xl mx-auto">
               <h3 className="text-xl font-display font-bold text-gold-400 mb-3">
-                Need something specific?
+                Want an ongoing SEO + AI visibility retainer?
               </h3>
               <p className="text-gray-400 text-sm mb-6">
-                Larger engagements, audits, and Bitcoin integration work are
-                paused while I re-scope pricing. If you have a clear project in
-                mind, reach out and we can talk about it on a call first.
+                Deep-dive audits, competitor gap analysis, and month-over-month
+                AI SEO retainers are being re-scoped. If you have a clear project
+                in mind, reach out and we&apos;ll talk it through on a call first.
               </p>
               <Link href="/contact" className="btn-premium px-8 py-3 inline-block">
                 Get in Touch
