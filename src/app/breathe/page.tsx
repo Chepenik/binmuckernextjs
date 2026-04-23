@@ -57,7 +57,7 @@ export default function BreatheLanding() {
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
             Science-backed breathing patterns to reduce stress, improve focus, and bring balance to your day.
-            No accounts, no payments — just breathe.
+            No accounts, no payments. Just breathe.
           </p>
 
           <Link

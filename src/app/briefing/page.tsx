@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'Daily Bitcoin Innovation Briefing',
   description:
     'Daily AI-generated Bitcoin integration ideas for businesses and developers. Fresh innovation briefings covering Lightning Network, agent commerce, circular economies, and more.',
+  alternates: { canonical: '/briefing' },
   openGraph: {
     title: 'Daily Bitcoin Innovation Briefing | Binmucker',
     description:

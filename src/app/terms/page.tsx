@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 
@@ -113,7 +114,7 @@ export default function TermsOfService() {
             <h2 className="text-xl font-semibold text-white mb-3">11. Contact</h2>
             <p>
               If you have questions about these Terms, please reach out via our{' '}
-              <a href="/contact" className="text-neon-cyan hover:underline">contact form</a> or email{' '}
+              <Link href="/contact" className="text-neon-cyan hover:underline">contact form</Link> or email{' '}
               <a href="mailto:binmucker@proton.me" className="text-neon-cyan hover:underline">
                 binmucker@proton.me
               </a>.

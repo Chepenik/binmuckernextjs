@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'Services',
   description:
     'Bitcoin-native consulting, content creation, SEO audits, automation, and Bitcoin integration strategy. All services priced in sats.',
+  alternates: { canonical: '/services' },
   openGraph: {
     title: 'Services | Binmucker',
     description:

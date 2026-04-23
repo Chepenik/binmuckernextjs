@@ -2,17 +2,17 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'About Conor Chepenik — Bitcoin educator, builder, and daily writer behind Binmucker.',
+  description: 'About Conor Chepenik. Bitcoin educator, builder, and daily writer behind Binmucker.',
   alternates: { canonical: '/about' },
   openGraph: {
     title: 'About | Binmucker',
-    description: 'About Conor Chepenik — Bitcoin educator, builder, and daily writer behind Binmucker.',
+    description: 'About Conor Chepenik. Bitcoin educator, builder, and daily writer behind Binmucker.',
     url: 'https://binmucker.com/about',
   },
   twitter: {
     card: 'summary',
     title: 'About | Binmucker',
-    description: 'About Conor Chepenik — Bitcoin educator, builder, and daily writer behind Binmucker.',
+    description: 'About Conor Chepenik. Bitcoin educator, builder, and daily writer behind Binmucker.',
   },
 };
 

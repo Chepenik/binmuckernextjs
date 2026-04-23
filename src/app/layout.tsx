@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import RainbowCursor from './components/RainbowCursor';
 import './globals.css';
 
 const inter = Inter({
@@ -223,6 +224,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {children}
+        <RainbowCursor />
         <Analytics />
       </body>
     </html>
