@@ -18,6 +18,9 @@ function safeEqualStrings(a: string, b: string): boolean {
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 const NVIDIA_MODEL = 'moonshotai/kimi-k2.5';
 
+// Kimi K2.5 reasoning + blob write needs more than Vercel's default 15s.
+export const maxDuration = 300;
+
 function log(level: 'INFO' | 'WARN' | 'ERROR', message: string, data?: Record<string, unknown>) {
   const entry = {
     timestamp: new Date().toISOString(),
