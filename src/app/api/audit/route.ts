@@ -39,14 +39,13 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
   const leadId = generateLeadId();
 
-  // Rate limiting
-  const forwarded = request.headers.get('x-forwarded-for');
-  const realIp = request.headers.get('x-real-ip');
-  const ip = forwarded?.split(',')[0]?.trim() || realIp || 'unknown';
+  // Rate limiting. Do NOT trust x-forwarded-for's leftmost entry from the client.
+  // Vercel's edge sets x-real-ip to the real client IP — that's the trusted source.
+  const ip = request.headers.get('x-real-ip') || 'unknown';
 
   log('INFO', 'Audit request received', { leadId, ip });
 
-  const { allowed, remaining } = checkRateLimit(ip);
+  const { allowed, remaining } = await checkRateLimit(ip);
   if (!allowed) {
     log('WARN', 'Rate limit exceeded', { leadId, ip });
     return NextResponse.json(

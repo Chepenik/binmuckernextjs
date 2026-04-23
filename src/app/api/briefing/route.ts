@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'node:crypto';
 import { put, list } from '@vercel/blob';
 import {
   getTodaysTheme,
@@ -6,6 +7,13 @@ import {
   type Briefing,
   type BriefingIdea,
 } from '@/lib/briefing-constants';
+
+function safeEqualStrings(a: string, b: string): boolean {
+  const aBuf = Buffer.from(a);
+  const bBuf = Buffer.from(b);
+  if (aBuf.length !== bBuf.length) return false;
+  return timingSafeEqual(aBuf, bBuf);
+}
 
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 const NVIDIA_MODEL = 'moonshotai/kimi-k2.5';
@@ -26,11 +34,16 @@ function log(level: 'INFO' | 'WARN' | 'ERROR', message: string, data?: Record<st
 }
 
 export async function POST(request: NextRequest) {
-  // Verify cron secret or manual trigger
-  const authHeader = request.headers.get('authorization');
+  // Verify cron secret. Missing env var = misconfiguration (500), not open access.
   const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) {
+    log('ERROR', 'CRON_SECRET not configured');
+    return NextResponse.json({ error: 'Service misconfigured' }, { status: 500 });
+  }
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  const authHeader = request.headers.get('authorization') ?? '';
+  const expected = `Bearer ${cronSecret}`;
+  if (!safeEqualStrings(authHeader, expected)) {
     log('WARN', 'Unauthorized briefing request');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
