@@ -4,8 +4,10 @@ import { buildAuditPrompt, BUSINESS_TYPES } from '@/lib/audit-constants';
 import { saveLead, generateLeadId, type Lead } from '@/lib/leads';
 import { scrapeWebsite } from '@/lib/scraper';
 import { calculateAiReadiness } from '@/lib/ai-readiness';
+import { fetchGooglePlacesData } from '@/lib/google-places';
 import type { AuditReport, CategoryResult } from '@/types/audit';
 import type { ScrapedData } from '@/types/scraper';
+import type { PlacesData } from '@/types/places';
 
 const MAX_LENGTHS = {
   businessName: 100,
@@ -150,30 +152,53 @@ export async function POST(request: NextRequest) {
     hasContext: !!additionalContext,
   });
 
-  // Scraping phase — only if a website URL is provided
-  let scrapedData: ScrapedData | null = null;
-  if (websiteUrl) {
-    try {
-      log('INFO', 'Starting website scrape', { leadId, websiteUrl });
-      scrapedData = await scrapeWebsite(websiteUrl as string);
-      if (scrapedData) {
-        log('INFO', 'Scraping completed', {
-          leadId,
-          scrapeDurationMs: scrapedData.scrapeDurationMs,
-          hasHtml: !!scrapedData.html,
-          hasPageSpeed: !!scrapedData.pageSpeed,
-          sitemapExists: scrapedData.crawlability.sitemapExists,
-        });
-      } else {
-        log('WARN', 'Scraping returned null, falling back to LLM-only', { leadId });
-      }
-    } catch (scrapeErr) {
-      const msg = scrapeErr instanceof Error ? scrapeErr.message : 'Unknown scrape error';
-      log('WARN', 'Scraping failed, falling back to LLM-only', { leadId, error: msg });
-    }
+  // Data enrichment phase — scrape website AND look up Google Business Profile
+  // in parallel so wall-clock time is max(scrape, places) instead of the sum.
+  const scrapePromise: Promise<ScrapedData | null> = websiteUrl
+    ? scrapeWebsite(websiteUrl as string).catch((scrapeErr) => {
+        const msg = scrapeErr instanceof Error ? scrapeErr.message : 'Unknown scrape error';
+        log('WARN', 'Scraping failed, falling back to LLM-only', { leadId, error: msg });
+        return null;
+      })
+    : Promise.resolve(null);
+
+  const placesPromise: Promise<PlacesData | null> = fetchGooglePlacesData(
+    businessName as string,
+    city as string,
+  ).catch((err) => {
+    const msg = err instanceof Error ? err.message : 'Unknown places error';
+    log('WARN', 'Places lookup failed, continuing without GBP data', { leadId, error: msg });
+    return null;
+  });
+
+  if (websiteUrl) log('INFO', 'Starting website scrape', { leadId, websiteUrl });
+  log('INFO', 'Starting Google Places lookup', { leadId });
+
+  const [scrapedData, placesData] = await Promise.all([scrapePromise, placesPromise]);
+
+  if (scrapedData) {
+    log('INFO', 'Scraping completed', {
+      leadId,
+      scrapeDurationMs: scrapedData.scrapeDurationMs,
+      hasHtml: !!scrapedData.html,
+      hasPageSpeed: !!scrapedData.pageSpeed,
+      sitemapExists: scrapedData.crawlability.sitemapExists,
+    });
+  } else if (websiteUrl) {
+    log('WARN', 'Scraping returned null, falling back to LLM-only', { leadId });
   }
 
-  // Build prompt (with scraped data if available)
+  if (placesData) {
+    log('INFO', 'Places data available', {
+      leadId,
+      placeId: placesData.placeId,
+      rating: placesData.rating,
+      userRatingCount: placesData.userRatingCount,
+      cacheHit: placesData.cacheHit,
+    });
+  }
+
+  // Build prompt (with scraped + places data if available)
   const prompt = buildAuditPrompt(
     businessName as string,
     city as string,
@@ -181,6 +206,7 @@ export async function POST(request: NextRequest) {
     websiteUrl as string | undefined,
     additionalContext as string | undefined,
     scrapedData,
+    placesData,
   );
 
   // Call NVIDIA API with timeout (300s — Kimi K2.5 reasoning takes ~60-120s)
@@ -324,6 +350,11 @@ export async function POST(request: NextRequest) {
       durationMs: totalDurationMs,
       scrapedDataAvailable: !!scrapedData,
       aiReadinessScore,
+      placesDataAvailable: !!placesData,
+      placesCacheHit: placesData?.cacheHit,
+      placeId: placesData?.placeId,
+      googleRating: placesData?.rating ?? undefined,
+      googleReviewCount: placesData?.userRatingCount ?? undefined,
     };
     await saveLead(lead);
 
@@ -338,6 +369,8 @@ export async function POST(request: NextRequest) {
       tokensUsed,
       scrapedDataAvailable: !!scrapedData,
       aiReadinessScore,
+      placesDataAvailable: !!placesData,
+      placesCacheHit: placesData?.cacheHit,
     });
 
     return NextResponse.json(report, {

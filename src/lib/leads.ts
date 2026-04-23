@@ -16,6 +16,11 @@ export interface Lead {
   durationMs: number;
   scrapedDataAvailable?: boolean;
   aiReadinessScore?: number;
+  placesDataAvailable?: boolean;
+  placesCacheHit?: boolean;
+  placeId?: string;
+  googleRating?: number;
+  googleReviewCount?: number;
 }
 
 const DATA_DIR = join(process.cwd(), 'data');

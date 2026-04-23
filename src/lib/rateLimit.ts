@@ -1,4 +1,4 @@
-import { Redis } from '@upstash/redis';
+import { getRedis } from './redis';
 
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const WINDOW_SECONDS = 60 * 60;
@@ -13,29 +13,21 @@ interface RateLimitEntry {
 const rateLimitMap = new Map<string, RateLimitEntry>();
 
 let warnedMissingRedis = false;
-let redisClient: Redis | null = null;
 
-function getRedis(): Redis | null {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) {
-    if (!warnedMissingRedis) {
-      warnedMissingRedis = true;
-      console.warn(
-        JSON.stringify({
-          level: 'WARN',
-          service: 'rateLimit',
-          message:
-            'Redis env vars not set (KV_REST_API_URL/TOKEN or UPSTASH_REDIS_REST_URL/TOKEN). Falling back to in-memory rate limiting — NOT safe on serverless with multiple instances.',
-        }),
-      );
-    }
-    return null;
+function resolveRedis() {
+  const redis = getRedis();
+  if (!redis && !warnedMissingRedis) {
+    warnedMissingRedis = true;
+    console.warn(
+      JSON.stringify({
+        level: 'WARN',
+        service: 'rateLimit',
+        message:
+          'Redis env vars not set (KV_REST_API_URL/TOKEN or UPSTASH_REDIS_REST_URL/TOKEN). Falling back to in-memory rate limiting — NOT safe on serverless with multiple instances.',
+      }),
+    );
   }
-  if (!redisClient) {
-    redisClient = new Redis({ url, token });
-  }
-  return redisClient;
+  return redis;
 }
 
 function checkInMemory(ip: string): { allowed: boolean; remaining: number } {
@@ -61,7 +53,7 @@ export async function checkRateLimit(
   ip: string,
   namespace = 'audit',
 ): Promise<{ allowed: boolean; remaining: number }> {
-  const redis = getRedis();
+  const redis = resolveRedis();
   if (!redis) return checkInMemory(ip);
 
   const key = `rl:${namespace}:${ip}`;

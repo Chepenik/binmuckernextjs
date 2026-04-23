@@ -56,6 +56,7 @@ export function getScoreLabel(score: number): string {
 }
 
 import type { ScrapedData } from '@/types/scraper';
+import type { PlacesData } from '@/types/places';
 
 function sanitizeInput(input: string, maxLength: number): string {
   return input
@@ -94,6 +95,33 @@ function buildScrapedDataBlock(data: ScrapedData): string {
   return lines.join('\n');
 }
 
+function buildPlacesDataBlock(data: PlacesData): string {
+  const lines: string[] = ['REAL GOOGLE BUSINESS PROFILE DATA (from Google Places API):'];
+  lines.push(`- Listing found: Yes (Place ID ${data.placeId})`);
+  lines.push(`- Listed name: ${data.name}`);
+  if (data.formattedAddress) lines.push(`- Address on file: ${data.formattedAddress}`);
+  if (data.businessStatus) lines.push(`- Business status: ${data.businessStatus}`);
+  if (data.rating !== null && data.userRatingCount !== null) {
+    lines.push(`- Google rating: ${data.rating.toFixed(1)} ★ from ${data.userRatingCount} reviews`);
+  } else if (data.userRatingCount !== null) {
+    lines.push(`- Google reviews: ${data.userRatingCount} (no aggregate rating)`);
+  } else {
+    lines.push('- Google reviews: 0 (no reviews yet — major opportunity)');
+  }
+  lines.push(`- Photos on listing: ${data.photoCount}`);
+  if (data.types.length > 0) {
+    lines.push(`- GBP categories: ${data.types.slice(0, 8).join(', ')}`);
+  }
+  if (data.websiteUri) lines.push(`- Website linked on GBP: ${data.websiteUri}`);
+  else lines.push('- Website linked on GBP: NONE (fixable — add website URL to listing)');
+
+  lines.push(
+    '\nUse this real data to score "Google Business Profile" and "Reviews & Reputation" categories. Compare review count vs typical expectations for this business type/city. Be concrete.',
+  );
+
+  return lines.join('\n');
+}
+
 export function buildAuditPrompt(
   businessName: string,
   city: string,
@@ -101,6 +129,7 @@ export function buildAuditPrompt(
   websiteUrl?: string,
   additionalContext?: string,
   scrapedData?: ScrapedData | null,
+  placesData?: PlacesData | null,
 ): string {
   const safeName = sanitizeInput(businessName, 100);
   const safeCity = sanitizeInput(city, 100);
@@ -109,10 +138,11 @@ export function buildAuditPrompt(
   const safeContext = additionalContext ? sanitizeInput(additionalContext, 1000) : undefined;
 
   const scrapedBlock = scrapedData ? `\n\n${buildScrapedDataBlock(scrapedData)}` : '';
+  const placesBlock = placesData ? `\n\n${buildPlacesDataBlock(placesData)}` : '';
 
   return `Local SEO audit. Return ONLY valid JSON, no markdown or explanation.
 
-Business: ${safeName} | ${safeCity} | ${safeType}${safeUrl ? ` | ${safeUrl}` : ''}${safeContext ? `\nContext: ${safeContext}` : ''}${scrapedBlock}
+Business: ${safeName} | ${safeCity} | ${safeType}${safeUrl ? ` | ${safeUrl}` : ''}${safeContext ? `\nContext: ${safeContext}` : ''}${scrapedBlock}${placesBlock}
 
 Score 0-100 per category. 3 actions each with priority (high/medium/low). Be specific and realistic.
 
