@@ -178,16 +178,24 @@ const jsonLd = {
       url: 'https://binmucker.com/services',
       provider: { '@id': 'https://binmucker.com/#organization' },
       description:
-        '30-minute consultations with Conor Chepenik on Bitcoin, Lightning, AI, and SEO. Priced in sats, paid via Lightning. Larger scoped engagements are being re-priced and will return soon.',
-      serviceType: ['Bitcoin Consulting', 'Lightning Strategy', 'AI Consulting', 'SEO Advisory'],
+        'AI SEO strategy calls and an ongoing AI visibility retainer with Conor Chepenik. Priced in sats, paid via Lightning. Get found in Google and the AI answer engines.',
+      serviceType: ['AI SEO', 'Bitcoin Consulting', 'Lightning Strategy', 'AI Consulting', 'SEO Advisory'],
       offers: [
         {
           '@type': 'Offer',
-          name: '30-Minute Consultation',
+          name: 'AI SEO Strategy Call',
           priceCurrency: 'BTC',
-          price: '0.00021',
+          price: '0.003',
           description:
-            'A focused 30-minute call on whatever you are building, stuck on, or curious about. Payable in 21,000 sats via Lightning.',
+            'A focused 30-minute AI SEO working session. Payable in 300,000 sats via Lightning. The call fee is fully credited toward any retainer.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'AI Visibility Retainer',
+          priceCurrency: 'BTC',
+          price: '0.01',
+          description:
+            'Monthly AI + SEO visibility report, prioritized fixes shipped to your site, competitor gap tracking, and direct access. 1,000,000 sats per month, 3-month minimum, limited to 5 clients.',
         },
       ],
       areaServed: 'Worldwide',

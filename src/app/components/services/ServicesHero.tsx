@@ -17,92 +17,20 @@ const services = [
       'Prioritized fixes you can ship this week',
       'Competitor visibility comparison',
       'Follow-up notes sent after the call',
+      'Call fee is fully credited toward any retainer',
     ],
-    priceInSats: 21000,
+    priceInSats: 300000,
     priceLabel: 'per 30-min call',
     emoji: '🔎',
     actionLabel: 'Book a Call',
   },
-  // ---------------------------------------------------------------------------
-  // Offerings below are intentionally paused while I re-scope pricing and
-  // confirm what I can credibly deliver at each tier. Leaving them here so
-  // the structure survives round-trips; will reactivate in a future session.
-  // ---------------------------------------------------------------------------
-  // {
-  //   title: 'Research & Analysis',
-  //   description:
-  //     'Daily Bitcoin/Lightning innovation briefings, market analysis, and technical deep dives tailored to your business.',
-  //   features: [
-  //     'Custom Bitcoin integration research',
-  //     'Lightning Network opportunity analysis',
-  //     'Weekly trend briefings',
-  //     'Competitive landscape mapping',
-  //   ],
-  //   priceInSats: 50000,
-  //   priceLabel: 'per report',
-  //   emoji: '🔬',
-  //   actionLabel: 'Get Started',
-  // },
-  // {
-  //   title: 'Content Creation',
-  //   description:
-  //     'Blog posts, video scripts, technical documentation, and social media content about Bitcoin and technology.',
-  //   features: [
-  //     'SEO-optimized blog posts',
-  //     'YouTube video scripts',
-  //     'Technical documentation',
-  //     'Social media content calendars',
-  //   ],
-  //   priceInSats: 100000,
-  //   priceLabel: 'per piece',
-  //   emoji: '✍️',
-  //   actionLabel: 'Get Started',
-  // },
-  // {
-  //   title: 'SEO Audit Premium',
-  //   description:
-  //     'Deep-dive audit with competitor analysis, technical SEO review, and a 90-day action plan. Upgrade from the free tier.',
-  //   features: [
-  //     'Full technical SEO crawl',
-  //     'Competitor gap analysis',
-  //     '90-day priority action plan',
-  //     'Monthly progress check-in',
-  //   ],
-  //   priceInSats: 5000,
-  //   priceLabel: 'detailed report',
-  //   emoji: '📈',
-  //   actionLabel: 'Upgrade Audit',
-  // },
-  // {
-  //   title: 'Automation & Tools',
-  //   description:
-  //     'Custom workflow automation, tool integration, and AI-powered business process consulting.',
-  //   features: [
-  //     'Workflow analysis & design',
-  //     'Custom tool development',
-  //     'AI integration strategy',
-  //     'Ongoing optimization support',
-  //   ],
-  //   priceInSats: 250000,
-  //   priceLabel: 'per engagement',
-  //   emoji: '⚙️',
-  //   actionLabel: 'Get Started',
-  // },
-  // {
-  //   title: 'Bitcoin Integration Strategy',
-  //   description:
-  //     'End-to-end consulting on accepting Bitcoin/Lightning payments, treasury strategy, and employee Bitcoin benefits.',
-  //   features: [
-  //     'Payment integration roadmap',
-  //     'Treasury management guidance',
-  //     'Employee Bitcoin benefits setup',
-  //     'Compliance & tax considerations',
-  //   ],
-  //   priceInSats: 500000,
-  //   priceLabel: 'per engagement',
-  //   emoji: '₿',
-  //   actionLabel: 'Get Started',
-  // },
+];
+
+const retainerFeatures = [
+  'Monthly AI + SEO visibility report',
+  'Prioritized fixes shipped to your site',
+  'Competitor gap tracking',
+  'Direct access to me',
 ];
 
 export function ServicesHero() {
@@ -160,23 +88,55 @@ export function ServicesHero() {
           </div>
 
           <motion.div
-            className="mt-16 text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
           >
-            <div className="glass rounded-2xl p-8 border border-gold-500/20 max-w-2xl mx-auto">
-              <h3 className="text-xl font-display font-bold text-gold-400 mb-3">
-                Want an ongoing SEO + AI visibility retainer?
-              </h3>
-              <p className="text-gray-400 text-sm mb-6">
-                Deep-dive audits, competitor gap analysis, and month-over-month
-                AI SEO retainers are being re-scoped. If you have a clear project
-                in mind, reach out and we&apos;ll talk it through on a call first.
+            <div className="glass rounded-2xl p-8 md:p-10 border border-gold-500/30 max-w-2xl mx-auto shadow-[0_0_40px_rgba(255,215,0,0.06)]">
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span className="text-3xl" aria-hidden="true">🚀</span>
+                <h3 className="text-2xl font-display font-bold text-white">
+                  AI Visibility Retainer
+                </h3>
+                <span className="ml-auto px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-bitcoin/10 text-bitcoin border border-bitcoin/30">
+                  Limited to 5 clients
+                </span>
+              </div>
+
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                Ongoing AI + SEO visibility work, handled for you month over month.
+                I track where you show up across Google and the AI answer engines,
+                ship the fixes that move the needle, and keep an eye on your
+                competitors so you don&apos;t have to.
               </p>
-              <Link href="/contact" className="btn-premium px-8 py-3 inline-block">
-                Get in Touch
-              </Link>
+
+              <ul className="space-y-2 mb-6">
+                {retainerFeatures.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm text-gray-300">
+                    <span className="text-neon-cyan mt-0.5 shrink-0">&#x2713;</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mb-6 p-4 rounded-xl bg-white/5 border border-gold-500/20">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-gradient-gold">1,000,000</span>
+                  <span className="text-gold-400 text-sm">sats/mo</span>
+                </div>
+                <p className="text-gray-500 text-xs mt-1">
+                  ~$1,000 USD &middot; 3-month minimum
+                </p>
+              </div>
+
+              <button
+                onClick={() => setZapModalOpen(true)}
+                className="w-full btn-premium py-3 text-sm font-semibold"
+              >
+                Book a Call
+              </button>
             </div>
           </motion.div>
         </div>
