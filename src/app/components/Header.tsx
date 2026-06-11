@@ -85,10 +85,10 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/book"
               className="btn-gold-outline px-6 py-2.5 text-sm"
             >
-              Get in Touch
+              Book a Call
             </Link>
           </div>
         </nav>
@@ -121,11 +121,11 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/book"
               className="relative z-10 btn-gold-outline px-6 py-2.5 text-sm mt-2"
               onClick={() => toggleOpen()}
             >
-              Get in Touch
+              Book a Call
             </Link>
           </motion.div>
         )}

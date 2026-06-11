@@ -981,10 +981,10 @@ export function HomeHero() {
                   <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/book"
                   className="btn-neon inline-flex items-center gap-2 text-sm whitespace-nowrap"
                 >
-                  Get in touch
+                  Work with me
                 </Link>
               </div>
             </div>

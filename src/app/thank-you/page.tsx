@@ -30,19 +30,19 @@ export default function ThankYouPage() {
           Thank You!
         </h1>
         <p className="text-lg text-gray-300 mb-4">
-          Your message has been sent successfully.
+          Your request has been sent.
         </p>
         <p className="text-gray-500 mb-8">
-          I appreciate you reaching out and will get back to you as soon as possible.
-          In the meantime, feel free to explore more of my website.
+          I&apos;ll review your details and email your calendar invite &mdash; usually within a
+          day. Want to make the call more productive? Run the free audit while you wait.
         </p>
 
         <div className="space-y-4">
-          <Link href="/" className="block btn-premium py-3">
-            Back to Home
+          <Link href="/audit" className="block btn-premium py-3">
+            Run the free audit
           </Link>
-          <Link href="/contact" className="block btn-neon py-3">
-            Send Another Message
+          <Link href="/" className="block btn-neon py-3">
+            Back to Home
           </Link>
         </div>
       </motion.div>

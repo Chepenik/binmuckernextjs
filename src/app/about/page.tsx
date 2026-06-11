@@ -227,10 +227,10 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
         >
           <Link
-            href="/contact"
+            href="/book"
             className="btn-gold-outline px-8 py-3 text-base inline-block"
           >
-            Get in Touch
+            Work with me
           </Link>
         </motion.div>
       </main>
