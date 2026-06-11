@@ -5,13 +5,17 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   ArrowUpRight,
+  CheckCircle2,
   Coffee,
+  Mail,
   PenLine,
   Sparkles,
   Terminal,
   Zap,
 } from 'lucide-react';
 import ZapModal from './ZapModal';
+import { ScoreRing } from './audit/ScoreRing';
+import { getScoreColor } from '@/lib/audit-constants';
 import { resolveShotTarget, displayHost } from '@/lib/site-url';
 
 type Status =
@@ -216,34 +220,7 @@ const sections: LinkSection[] = [
     ),
     description: 'Affiliate links for things I actually use. If you sign up through them, we both win.',
     accent: 'purple',
-    items: [
-      {
-        title: 'Gemini Credit Card',
-        description:
-          'Earn Bitcoin on every purchase. If you apply through my link and get approved, I earn sats too.',
-        url: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
-        status: 'Partner',
-        isAffiliate: true,
-        thumbnailUrl: 'https://www.gemini.com/credit-card',
-      },
-      {
-        title: 'CrowdHealth',
-        description:
-          'A community-funded alternative to traditional health insurance. My household uses it and it has actually worked.',
-        url: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
-        status: 'Partner',
-        isAffiliate: true,
-      },
-      {
-        title: 'Hostinger',
-        description:
-          'Cheap, fast, reliable hosting with a free domain and email. 20% off on your first plan through my link.',
-        url: 'https://hostinger.com?REFERRALCODE=1CONOR59',
-        status: 'Partner',
-        isAffiliate: true,
-        thumbnailUrl: 'https://www.hostinger.com/',
-      },
-    ],
+    items: [],
   },
 ];
 
@@ -499,6 +476,268 @@ function LinkCard({ item, accent, eager }: LinkCardProps) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Static sample audit used in the "Proof" section. Mirrors the shape and
+// styling of a real /audit result so visitors see exactly what they'll get.
+// ---------------------------------------------------------------------------
+const sampleAudit = {
+  businessName: 'Sample: Jax Coffee Roasters',
+  overallScore: 53,
+  summary:
+    'Solid reputation and a real Google presence, but the website and AI signals are leaving customers on the table. Three focused fixes would move the needle fast.',
+  categories: [
+    { category: 'Google Business Profile', emoji: '📍', score: 72 },
+    { category: 'Website & Technical SEO', emoji: '🌐', score: 54 },
+    { category: 'Reviews & Reputation', emoji: '⭐', score: 81 },
+    { category: 'Content & Social', emoji: '📱', score: 38 },
+    { category: 'Competitive Position', emoji: '🏆', score: 47 },
+    { category: 'AI Readiness', emoji: '🤖', score: 29 },
+  ],
+  fixes: [
+    {
+      priority: 'high' as const,
+      action:
+        'Add LocalBusiness schema with your hours, geo, and menu URL so AI engines can quote you directly.',
+    },
+    {
+      priority: 'medium' as const,
+      action:
+        'Reply to your last 15 Google reviews — recency and response rate both feed local ranking.',
+    },
+    {
+      priority: 'medium' as const,
+      action:
+        'Publish 3 neighborhood pages targeting "coffee roaster near me" searches across Jacksonville.',
+    },
+  ],
+};
+
+const proofPriorityColors: Record<string, { bg: string; text: string; label: string }> = {
+  high: { bg: 'bg-red-500/20', text: 'text-red-400', label: 'High' },
+  medium: { bg: 'bg-yellow-500/20', text: 'text-yellow-400', label: 'Medium' },
+  low: { bg: 'bg-green-500/20', text: 'text-green-400', label: 'Low' },
+};
+
+function ProofSection() {
+  return (
+    <motion.section
+      className="mb-20 scroll-mt-28"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.5 }}
+      aria-labelledby="proof-title"
+    >
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-1 h-14 rounded-full bg-neon-cyan/60 shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
+        <div>
+          <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
+            See it before you run it
+          </p>
+          <h2 id="proof-title" className="heading-section text-white">
+            What the free audit <span className="text-neon-cyan">looks like</span>
+          </h2>
+        </div>
+      </div>
+
+      <div className="glass-dark rounded-2xl border border-white/10 p-6 md:p-8 max-w-3xl">
+        {/* Business + overall score */}
+        <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
+          <div className="shrink-0">
+            <ScoreRing score={sampleAudit.overallScore} size={140} />
+          </div>
+          <div className="text-center sm:text-left">
+            <h3 className="text-lg font-display font-semibold text-gold-400 mb-1">
+              {sampleAudit.businessName}
+            </h3>
+            <p className="text-gray-400 text-sm leading-relaxed">{sampleAudit.summary}</p>
+          </div>
+        </div>
+
+        {/* Category breakdown */}
+        <div className="mb-8">
+          <h4 className="text-sm font-display font-semibold text-gold-400 mb-3">
+            Category Breakdown
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {sampleAudit.categories.map((cat) => {
+              const color = getScoreColor(cat.score);
+              return (
+                <div
+                  key={cat.category}
+                  className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-base" aria-hidden="true">{cat.emoji}</span>
+                      <span className="text-sm text-gray-200 truncate">{cat.category}</span>
+                    </div>
+                    <span className="font-mono font-bold text-sm shrink-0" style={{ color }}>
+                      {cat.score}
+                    </span>
+                  </div>
+                  <div className="mt-2 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${cat.score}%`, backgroundColor: color }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Example fixes */}
+        <div>
+          <h4 className="text-sm font-display font-semibold text-neon-cyan mb-3">
+            Example Fixes
+          </h4>
+          <div className="space-y-3">
+            {sampleAudit.fixes.map((fix, i) => {
+              const p = proofPriorityColors[fix.priority];
+              return (
+                <div key={i} className="flex items-start gap-3">
+                  <span
+                    className={`${p.bg} ${p.text} text-xs font-mono font-semibold px-2 py-0.5 rounded mt-0.5 shrink-0`}
+                  >
+                    {p.label}
+                  </span>
+                  <p className="text-gray-300 text-sm leading-relaxed">{fix.action}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-gray-500 text-xs">
+            Sample report. Your real audit pulls live website and Google Profile data.
+          </p>
+          <Link href="/audit" className="btn-neon px-6 py-2.5 text-sm font-semibold whitespace-nowrap">
+            Run your free audit
+          </Link>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
+
+function NewsletterSignup() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [error, setError] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (status === 'loading' || status === 'success') return;
+    setStatus('loading');
+    setError('');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || 'Something went wrong. Please try again.');
+        setStatus('error');
+        return;
+      }
+      setStatus('success');
+    } catch {
+      setError('Network error. Please try again.');
+      setStatus('error');
+    }
+  }
+
+  return (
+    <motion.section
+      className="mb-20"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.6 }}
+      aria-labelledby="newsletter-title"
+    >
+      <div
+        className="relative rounded-3xl p-8 md:p-10 overflow-hidden
+                   bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/40
+                   border border-bitcoin/30 backdrop-blur-xl
+                   shadow-[0_0_40px_rgba(247,147,26,0.08)]"
+      >
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-bitcoin to-transparent" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-bitcoin/10 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
+
+        <div className="relative z-10 max-w-2xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 mb-4 text-bitcoin">
+            <Mail className="w-5 h-5" aria-hidden="true" />
+            <span className="text-xs font-mono uppercase tracking-widest">Daily Bitcoin Briefing</span>
+          </div>
+          <h2 id="newsletter-title" className="heading-section text-white mb-3">
+            One Bitcoin integration idea, <span className="text-bitcoin">every day.</span>
+          </h2>
+          <p className="text-gray-400 text-sm md:text-base mb-6">
+            One email. One concrete, shippable idea for builders and business owners. No spam,
+            unsubscribe anytime.
+          </p>
+
+          {status === 'success' ? (
+            <div
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl
+                         bg-neon-green/10 border border-neon-green/30 text-neon-green text-sm font-semibold"
+              role="status"
+            >
+              <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
+              You&apos;re in. Watch your inbox for tomorrow&apos;s idea.
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row items-stretch gap-3 max-w-md mx-auto"
+            >
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (status === 'error') setStatus('idle');
+                }}
+                placeholder="you@example.com"
+                autoComplete="email"
+                className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-3
+                           text-white placeholder-gray-500 text-sm
+                           focus:border-bitcoin/50 focus:outline-none focus:ring-1 focus:ring-bitcoin/40
+                           transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="btn-premium px-6 py-3 text-sm font-semibold whitespace-nowrap
+                           disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {status === 'loading' ? 'Subscribing…' : 'Subscribe'}
+              </button>
+            </form>
+          )}
+
+          {status === 'error' && (
+            <p className="mt-3 text-sm text-laser" role="alert">
+              {error}
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.section>
+  );
+}
+
 export function HomeHero() {
   const [isZapModalOpen, setZapModalOpen] = useState(false);
 
@@ -532,29 +771,36 @@ export function HomeHero() {
             can be useful to you too.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <div className="mt-8 flex flex-col items-center gap-4">
             <Link
-              href="#built-by-me"
-              className="btn-premium inline-flex items-center gap-2 text-sm md:text-base"
+              href="/audit"
+              className="btn-premium inline-flex items-center gap-2 text-base md:text-lg px-8 py-3.5"
             >
-              <Terminal className="w-4 h-4" aria-hidden="true" />
-              Explore the tools
+              <Sparkles className="w-5 h-5" aria-hidden="true" />
+              Get your free AI SEO audit
             </Link>
-            <Link
-              href="/blog"
-              className="btn-gold-outline inline-flex items-center gap-2 text-sm md:text-base"
-            >
-              <PenLine className="w-4 h-4" aria-hidden="true" />
-              Read the writing
-            </Link>
-            <button
-              type="button"
-              onClick={() => setZapModalOpen(true)}
-              className="btn-neon inline-flex items-center gap-2 text-sm md:text-base"
-            >
-              <span className="text-lg leading-none" aria-hidden="true">&#9889;</span>
-              Zap me with Bitcoin
-            </button>
+            <div className="flex items-center gap-4 text-sm text-gray-500">
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-neon-cyan
+                           transition-colors duration-200 border-b border-dashed border-white/10
+                           hover:border-neon-cyan/60 pb-px"
+              >
+                <PenLine className="w-3.5 h-3.5" aria-hidden="true" />
+                Read the writing
+              </Link>
+              <span className="text-gray-700" aria-hidden="true">&middot;</span>
+              <button
+                type="button"
+                onClick={() => setZapModalOpen(true)}
+                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gold-400
+                           transition-colors duration-200 border-b border-dashed border-white/10
+                           hover:border-gold-400/60 pb-px"
+              >
+                <span className="text-base leading-none" aria-hidden="true">&#9889;</span>
+                Zap me
+              </button>
+            </div>
           </div>
 
           {/* Recently shipped strip */}
@@ -579,6 +825,9 @@ export function HomeHero() {
             ))}
           </div>
         </motion.div>
+
+        {/* ==================== EMAIL CAPTURE ==================== */}
+        <NewsletterSignup />
 
         {/* ==================== START HERE ==================== */}
         <motion.section
@@ -620,62 +869,73 @@ export function HomeHero() {
         {/* ==================== LINK SECTIONS ==================== */}
         {sections.map((section) => {
           const accentCfg = accentClasses[section.accent];
+          const isPicksPartners = section.id === 'picks-partners';
           return (
-            <motion.section
-              key={section.id}
-              id={section.id}
-              className="mb-20 scroll-mt-28"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.5 }}
-              aria-labelledby={`${section.id}-title`}
-            >
-              <div className="flex items-center gap-4 mb-8">
-                <div className={`w-1 h-14 rounded-full ${accentCfg.bar}`} />
-                <div>
-                  <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
-                    {section.eyebrow}
-                  </p>
-                  <h2
-                    id={`${section.id}-title`}
-                    className="heading-section text-white"
-                  >
-                    {section.title}
-                  </h2>
-                  <p className="text-gray-500 text-sm mt-1 max-w-2xl">
-                    {section.description}
-                  </p>
-                </div>
-              </div>
-
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
+            <React.Fragment key={section.id}>
+              <motion.section
+                id={section.id}
+                className="mb-20 scroll-mt-28"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5 }}
+                aria-labelledby={`${section.id}-title`}
               >
-                {section.items.map((item) => (
-                  <motion.article key={item.title} variants={itemVariants}>
-                    <LinkCard item={item} accent={section.accent} eager={item.featured} />
-                  </motion.article>
-                ))}
-              </motion.div>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className={`w-1 h-14 rounded-full ${accentCfg.bar}`} />
+                  <div>
+                    <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
+                      {section.eyebrow}
+                    </p>
+                    <h2
+                      id={`${section.id}-title`}
+                      className="heading-section text-white"
+                    >
+                      {section.title}
+                    </h2>
+                    <p className="text-gray-500 text-sm mt-1 max-w-2xl">
+                      {section.description}
+                    </p>
+                  </div>
+                </div>
 
-              {section.id === 'picks-partners' && (
-                <p className="mt-6 text-gray-500 text-xs leading-relaxed max-w-3xl">
-                  Affiliate disclosure. The links in this section are affiliate links. If you sign up
-                  or buy through them, I may earn a commission at no extra cost to you. I only list
-                  products I actually use or have used, and I will not recommend something just
-                  because it pays. See the{' '}
-                  <Link href="/terms" className="text-neon-cyan hover:underline">
-                    Terms of Service
-                  </Link>{' '}
-                  for the full version.
-                </p>
-              )}
-            </motion.section>
+                {isPicksPartners ? (
+                  <div className="glass-dark rounded-2xl border border-white/10 p-6 md:p-8 max-w-3xl">
+                    <p className="text-gray-300 leading-relaxed mb-1">
+                      The credit card, hardware wallet, hosting, and services I actually pay for and
+                      earn from now live in one place.
+                    </p>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-5">
+                      Honest affiliate picks, full disclosure, no fluff — just the tools behind the
+                      work.
+                    </p>
+                    <Link
+                      href="/stack"
+                      className="btn-gold-outline inline-flex items-center gap-2 text-sm"
+                    >
+                      See my full stack
+                      <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                    </Link>
+                  </div>
+                ) : (
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-80px' }}
+                  >
+                    {section.items.map((item) => (
+                      <motion.article key={item.title} variants={itemVariants}>
+                        <LinkCard item={item} accent={section.accent} eager={item.featured} />
+                      </motion.article>
+                    ))}
+                  </motion.div>
+                )}
+              </motion.section>
+
+              {section.id === 'built-by-me' && <ProofSection />}
+            </React.Fragment>
           );
         })}
 
