@@ -12,9 +12,8 @@ export function Footer() {
 
   return (
     <footer className="relative bg-cyber-black border-t border-gold-500/30 py-12">
-      {/* Art Deco diamond rule at top */}
-      <div className="deco-divider absolute top-0 left-0 right-0" />
-      <div className="absolute top-[3px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
+      {/* Gold rule at top */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/70 to-transparent" />
 
       {/* Aurora background */}
       <div className="absolute inset-0 bg-aurora opacity-40 pointer-events-none" />
@@ -56,7 +55,7 @@ export function Footer() {
         </div>
 
         {/* Divider above main footer row */}
-        <div className="deco-divider mb-8" />
+        <div className="mb-8 h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Copyright with gradient */}
@@ -129,7 +128,7 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="deco-divider mt-8 mb-6" />
+        <div className="mt-8 mb-6 h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
 
         {/* Built with credit */}
         <div className="text-center">

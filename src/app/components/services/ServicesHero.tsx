@@ -110,7 +110,7 @@ export function ServicesHero() {
         </motion.div>
 
         {/* ============== OFFERS ============== */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto items-stretch">
           {services.map((service) => (
             <ServiceCard key={service.title} {...service} />
           ))}

@@ -41,10 +41,9 @@ export function Header() {
         {/* Animated mesh gradient overlay */}
         <div className="absolute inset-0 bg-mesh-gradient opacity-50 pointer-events-none" />
 
-        {/* Art Deco double-rule + center diamond at top */}
+        {/* Art Deco double-rule at top */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
         <div className="absolute top-[5px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/25 to-transparent" />
-        <span className="deco-diamond absolute top-[1px] left-1/2 -translate-x-1/2 z-20" aria-hidden="true" />
         {/* Bottom glow line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/30 to-transparent" />
 

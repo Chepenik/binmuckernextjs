@@ -7,7 +7,6 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Coffee,
-  Mail,
   PenLine,
   Sparkles,
   Terminal,
@@ -623,35 +622,7 @@ function ProofSection() {
   );
 }
 
-function NewsletterSignup() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [error, setError] = useState('');
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (status === 'loading' || status === 'success') return;
-    setStatus('loading');
-    setError('');
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setError(data.error || 'Something went wrong. Please try again.');
-        setStatus('error');
-        return;
-      }
-      setStatus('success');
-    } catch {
-      setError('Network error. Please try again.');
-      setStatus('error');
-    }
-  }
-
+function BriefingPromo() {
   return (
     <motion.section
       className="mb-20"
@@ -659,7 +630,7 @@ function NewsletterSignup() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6 }}
-      aria-labelledby="newsletter-title"
+      aria-labelledby="briefing-title"
     >
       <div
         className="deco-corners relative rounded-3xl p-8 md:p-10 overflow-hidden
@@ -672,66 +643,24 @@ function NewsletterSignup() {
 
         <div className="relative z-10 max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 text-bitcoin">
-            <Mail className="w-5 h-5" aria-hidden="true" />
+            <Zap className="w-5 h-5" aria-hidden="true" />
             <span className="text-xs font-mono uppercase tracking-widest">Daily Bitcoin Briefing</span>
           </div>
-          <h2 id="newsletter-title" className="heading-section text-white mb-3">
+          <h2 id="briefing-title" className="heading-section text-white mb-3">
             One Bitcoin integration idea, <span className="text-bitcoin">every day.</span>
           </h2>
           <p className="text-gray-400 text-sm md:text-base mb-6">
-            One email. One concrete, shippable idea for builders and business owners. No spam,
-            unsubscribe anytime.
+            A fresh, concrete, shippable idea for builders and business owners — published daily.
+            Free to read, no signup.
           </p>
 
-          {status === 'success' ? (
-            <div
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl
-                         bg-neon-green/10 border border-neon-green/30 text-neon-green text-sm font-semibold"
-              role="status"
-            >
-              <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
-              You&apos;re in. Watch your inbox for tomorrow&apos;s idea.
-            </div>
-          ) : (
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col sm:flex-row items-stretch gap-3 max-w-md mx-auto"
-            >
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (status === 'error') setStatus('idle');
-                }}
-                placeholder="you@example.com"
-                autoComplete="email"
-                className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-3
-                           text-white placeholder-gray-500 text-sm
-                           focus:border-bitcoin/50 focus:outline-none focus:ring-1 focus:ring-bitcoin/40
-                           transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="btn-premium px-6 py-3 text-sm font-semibold whitespace-nowrap
-                           disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {status === 'loading' ? 'Subscribing…' : 'Subscribe'}
-              </button>
-            </form>
-          )}
-
-          {status === 'error' && (
-            <p className="mt-3 text-sm text-laser" role="alert">
-              {error}
-            </p>
-          )}
+          <Link
+            href="/briefing"
+            className="btn-premium inline-flex items-center gap-2 text-sm font-semibold"
+          >
+            Read today&apos;s briefing
+            <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </motion.section>
@@ -894,8 +823,8 @@ export function HomeHero() {
           </div>
         </motion.section>
 
-        {/* ==================== EMAIL CAPTURE ==================== */}
-        <NewsletterSignup />
+        {/* ==================== DAILY BRIEFING PROMO ==================== */}
+        <BriefingPromo />
 
         {/* ==================== START HERE ==================== */}
         <motion.section

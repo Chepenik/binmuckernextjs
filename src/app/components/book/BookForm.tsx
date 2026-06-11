@@ -139,7 +139,7 @@ export function BookForm({ offer = 'call' }: { offer?: OfferKey }) {
               type="tel"
               id="phone"
               name="phone"
-              placeholder="Only if you&apos;d rather I text the invite"
+              placeholder="Only if you'd rather I text the invite"
               className="input-cyber"
             />
             <p className="text-xs text-gray-500 mt-1.5">
