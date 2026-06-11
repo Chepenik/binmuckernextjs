@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Header } from '@/app/components/Header';
+import { Footer } from '@/app/components/Footer';
 import { ServicesHero } from '@/app/components/services/ServicesHero';
 
 export const metadata: Metadata = {
@@ -35,13 +36,59 @@ export const metadata: Metadata = {
   },
 };
 
+// FAQPage structured data — mirrors the visible FAQ in ServicesHero so the
+// answer engines can quote it directly (and so this page practices what it sells).
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How do I pay?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'In sats over the Lightning Network. Once we lock a time I send a Lightning invoice — no cards, no chasing. New to Bitcoin? I will walk you through paying in about two minutes.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What exactly do I get on the call?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A live review of your AI and SEO signals, a prioritized list of fixes you can ship this week, a competitor comparison, and written follow-up notes afterward.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'I am not technical. Will this still help?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. I translate every fix into plain steps. And if you would rather not touch your site at all, the retainer exists so I can just ship the fixes for you.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do you do the work, or just advise?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The call is advisory — you leave with the plan. The AI Visibility Retainer is done-for-you: I ship the prioritized fixes to your site month over month.',
+      },
+    },
+  ],
+};
+
 export default function ServicesPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Header />
       <main>
         <ServicesHero />
       </main>
+      <Footer />
     </>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 interface ServiceCardProps {
@@ -10,8 +11,11 @@ interface ServiceCardProps {
   priceInSats: number;
   priceLabel: string;
   emoji: string;
-  onAction: () => void;
   actionLabel: string;
+  /** Where the CTA links to. Provide this for navigation (preferred). */
+  actionHref?: string;
+  /** Fallback click handler when no href is supplied. */
+  onAction?: () => void;
 }
 
 export function ServiceCard({
@@ -21,8 +25,9 @@ export function ServiceCard({
   priceInSats,
   priceLabel,
   emoji,
-  onAction,
   actionLabel,
+  actionHref,
+  onAction,
 }: ServiceCardProps) {
   return (
     <motion.div
@@ -59,9 +64,18 @@ export function ServiceCard({
             </p>
           </div>
 
-          <button onClick={onAction} className="w-full btn-neon py-3 text-sm font-semibold">
-            {actionLabel}
-          </button>
+          {actionHref ? (
+            <Link
+              href={actionHref}
+              className="w-full btn-neon py-3 text-sm font-semibold inline-flex items-center justify-center"
+            >
+              {actionLabel}
+            </Link>
+          ) : (
+            <button onClick={onAction} className="w-full btn-neon py-3 text-sm font-semibold">
+              {actionLabel}
+            </button>
+          )}
         </div>
       </div>
     </motion.div>
