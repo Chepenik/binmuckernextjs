@@ -92,40 +92,38 @@ export function AuditResults({ report, onReset }: AuditResultsProps) {
         <p className="text-gray-400 text-sm leading-relaxed">{report.competitiveInsight}</p>
       </motion.div>
 
-      {/* Upgrade CTA */}
+      {/* Book-a-call CTA */}
       <motion.div
-        className="glass rounded-2xl p-6 border border-neon-cyan/30 text-center"
+        className="glass rounded-2xl p-6 md:p-8 border border-neon-cyan/30 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
         <h2 className="text-lg font-display font-semibold text-neon-cyan mb-2">
-          Want Deeper Insights?
+          Want me to fix these for you?
         </h2>
-        <p className="text-gray-400 text-sm mb-4">
-          Upgrade to a Detailed or Competitor audit for comprehensive analysis,
-          90-day action plans, and competitor gap analysis.
+        <p className="text-gray-400 text-sm mb-5 max-w-xl mx-auto">
+          Book a 30-minute AI SEO strategy call and we&apos;ll turn this audit into a
+          prioritized plan you can ship this week. You&apos;ll leave with at least 3
+          implementable fixes — guaranteed — and the call fee is fully credited toward any
+          retainer.
         </p>
-        <a
-          href="/services"
-          className="btn-neon px-6 py-2 text-sm inline-block"
-        >
-          View Premium Tiers
-        </a>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/book?offer=call"
+            className="btn-premium px-8 py-3.5 text-base font-bold inline-block text-center"
+          >
+            Book a strategy call
+          </a>
+          <a href="/services" className="btn-neon px-6 py-3 text-sm inline-block">
+            See services &amp; pricing
+          </a>
+        </div>
       </motion.div>
 
-      {/* CTA + Reset */}
-      <div className="flex flex-col items-center gap-4 pt-4">
-        <a
-          href="/contact"
-          className="btn-premium px-8 py-4 text-lg font-bold inline-block text-center"
-        >
-          Get Expert Help Implementing These
-        </a>
-        <button
-          onClick={onReset}
-          className="btn-neon px-6 py-3 text-sm"
-        >
+      {/* Reset */}
+      <div className="flex justify-center pt-2">
+        <button onClick={onReset} className="btn-neon px-6 py-3 text-sm">
           Run New Audit
         </button>
       </div>
