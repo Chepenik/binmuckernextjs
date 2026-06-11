@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
+import { Inter, Orbitron, JetBrains_Mono, Cinzel } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import RainbowCursor from './components/RainbowCursor';
 import './globals.css';
@@ -20,6 +20,14 @@ const orbitron = Orbitron({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains',
+  display: 'swap',
+});
+
+// Engraved Art Deco display face for headings.
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cinzel',
   display: 'swap',
 });
 
@@ -222,7 +230,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrainsMono.variable} ${cinzel.variable}`}>
       <head>
         <link rel="preconnect" href="https://i.nostr.build" />
       </head>

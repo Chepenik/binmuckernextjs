@@ -401,15 +401,19 @@ a, button, input, select, textarea {
     outline: none;
   }
 
-  /* ===== TYPOGRAPHY ===== */
+  /* ===== TYPOGRAPHY (Art Deco engraved display) ===== */
   .heading-display {
-    @apply font-display font-bold tracking-tight;
-    font-size: clamp(2rem, 5vw, 4rem);
+    @apply font-display font-bold;
+    font-size: clamp(2.1rem, 5.2vw, 4.25rem);
+    letter-spacing: 0.005em;
+    line-height: 1.06;
   }
 
   .heading-section {
-    @apply font-display font-semibold tracking-tight;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    @apply font-display font-semibold;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    letter-spacing: 0.012em;
+    line-height: 1.15;
   }
 }
 
@@ -483,4 +487,148 @@ a, button, input, select, textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* =================================================================== */
+/* ===== ART DECO × PSYCHEDELIC ORNAMENT SYSTEM ===================== */
+/* Engraved gold + geometric symmetry layered over the neon/lava base. */
+/* =================================================================== */
+
+@keyframes deco-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Engraved metallic gold — vertical banknote gradient with depth.
+   Reads "finance pro" beside the brighter, playful .text-gradient-gold. */
+.text-deco-gold {
+  background: linear-gradient(180deg, #FBE3A1 0%, #F1C654 38%, #C8860C 52%, #8B5A0B 70%, #E8A912 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+}
+
+/* Gold that shimmers into holographic — finance base, psychedelic fun. */
+.text-holo-gold {
+  background: linear-gradient(110deg, #E8A912 0%, #FFD700 18%, #00FFFF 38%, #FF00FF 58%, #FFD700 80%, #E8A912 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 7s ease infinite;
+}
+
+/* Diamond rule — Art Deco section divider. */
+.deco-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 169, 18, 0.55) 35%, rgba(232, 169, 18, 0.55) 65%, transparent);
+}
+.deco-divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold-light);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+}
+
+/* Standalone Deco diamond ornament (for eyebrows / inline accents). */
+.deco-diamond {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: var(--gold-light);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* Rotating sunburst rays — the psychedelic-Deco centerpiece behind heroes.
+   Drop as an absolute child of a `relative overflow-hidden` parent. */
+.deco-sunburst {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.deco-sunburst::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 220%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(232, 169, 18, 0.10) 0deg 2.2deg,
+    transparent 2.2deg 9deg
+  );
+  -webkit-mask: radial-gradient(circle at center, #000 0%, transparent 62%);
+  mask: radial-gradient(circle at center, #000 0%, transparent 62%);
+  animation: deco-spin 140s linear infinite;
+}
+/* Counter-rotating holographic rays for the psychedelic shimmer. */
+.deco-sunburst::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(0, 255, 255, 0.05) 0deg 1.5deg,
+    transparent 1.5deg 14deg
+  );
+  -webkit-mask: radial-gradient(circle at center, #000 0%, transparent 55%);
+  mask: radial-gradient(circle at center, #000 0%, transparent 55%);
+  animation: deco-spin 200s linear infinite reverse;
+}
+
+/* Stepped gold corner brackets — Deco frame signal, no extra markup.
+   Parent must be position: relative. */
+.deco-corners::before,
+.deco-corners::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgba(232, 169, 18, 0.55);
+  pointer-events: none;
+  z-index: 1;
+}
+.deco-corners::before {
+  top: 12px;
+  left: 12px;
+  border-left: 1.5px solid;
+  border-top: 1.5px solid;
+}
+.deco-corners::after {
+  bottom: 12px;
+  right: 12px;
+  border-right: 1.5px solid;
+  border-bottom: 1.5px solid;
+}
+
+/* Inset double-rule gold frame. Parent must be position: relative. */
+.deco-frame::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(232, 169, 18, 0.25);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Refined tracking on premium buttons for the Deco feel. */
+.btn-premium,
+.btn-neon,
+.btn-gold-outline {
+  letter-spacing: 0.02em;
 }

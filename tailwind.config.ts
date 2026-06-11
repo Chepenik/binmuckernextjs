@@ -63,7 +63,10 @@ const config: Config = {
 
       fontFamily: {
         sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['var(--font-orbitron)', 'Orbitron', 'Inter', 'sans-serif'],
+        // Engraved Art Deco display face — luxe, finance-pro headings.
+        display: ['var(--font-cinzel)', 'Cinzel', 'Georgia', 'serif'],
+        // Retained futuristic face for techy accents (numbers, eyebrows, logo).
+        tech: ['var(--font-orbitron)', 'Orbitron', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'JetBrains Mono', 'Fira Code', 'monospace'],
       },
 
