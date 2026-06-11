@@ -24,8 +24,6 @@ export function ServiceCard({
   onAction,
   actionLabel,
 }: ServiceCardProps) {
-  const usdApprox = Math.round(priceInSats * 0.001);
-
   return (
     <motion.div
       className="card-premium h-full flex flex-col"
@@ -57,7 +55,7 @@ export function ServiceCard({
               <span className="text-gold-400 text-sm">sats</span>
             </div>
             <p className="text-gray-500 text-xs mt-1">
-              ~${usdApprox} USD &middot; {priceLabel}
+              {priceLabel}
             </p>
           </div>
 
