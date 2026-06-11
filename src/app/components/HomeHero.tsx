@@ -662,7 +662,7 @@ function NewsletterSignup() {
       aria-labelledby="newsletter-title"
     >
       <div
-        className="relative rounded-3xl p-8 md:p-10 overflow-hidden
+        className="deco-corners relative rounded-3xl p-8 md:p-10 overflow-hidden
                    bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/40
                    border border-bitcoin/30 backdrop-blur-xl
                    shadow-[0_0_40px_rgba(247,147,26,0.08)]"
@@ -746,11 +746,15 @@ export function HomeHero() {
       <section className="max-w-6xl mx-auto px-4 md:px-8">
         {/* ==================== HERO ==================== */}
         <motion.div
-          className="pt-4 md:pt-10 pb-14 md:pb-20 text-center"
+          className="relative pt-4 md:pt-10 pb-14 md:pb-20 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
+          {/* Art Deco rotating sunburst behind the headline */}
+          <div className="deco-sunburst" aria-hidden="true" />
+
+          <div className="relative z-10">
           <div
             className="inline-flex items-center gap-2 mb-8 glass-dark px-4 py-2 rounded-full
                        border border-white/10 text-xs md:text-sm text-gray-300 font-mono tracking-wide"
@@ -763,13 +767,15 @@ export function HomeHero() {
 
           <h1 className="heading-display text-[#E6EEF3] mb-5 drop-shadow-[0_0_30px_rgba(0,194,255,0.15)]">
             A builder&apos;s home base{' '}
-            <span className="text-gradient-gold">on the internet.</span>
+            <span className="text-deco-gold">on the internet.</span>
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Free tools, daily essays, Bitcoin projects, breathing exercises, a retro game, and a few
             experiments that defy category. If something is genuinely useful to me, I ship it so it
             can be useful to you too.
           </p>
+
+          <div className="deco-divider w-44 mx-auto mt-8" />
 
           <div className="mt-8 flex flex-col items-center gap-4">
             <Link
@@ -824,6 +830,7 @@ export function HomeHero() {
               </React.Fragment>
             ))}
           </div>
+          </div>
         </motion.div>
 
         {/* ==================== SERVICES LANE (for local businesses) ==================== */}
@@ -836,7 +843,7 @@ export function HomeHero() {
           aria-labelledby="services-lane-title"
         >
           <div
-            className="relative rounded-3xl p-8 md:p-10 overflow-hidden
+            className="deco-corners relative rounded-3xl p-8 md:p-10 overflow-hidden
                        bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/40
                        border border-neon-cyan/30 backdrop-blur-xl
                        shadow-[0_0_40px_rgba(0,194,255,0.08)]"
@@ -1089,7 +1096,7 @@ export function HomeHero() {
               </div>
               <h2
                 id="support-title"
-                className="text-2xl md:text-3xl font-display font-bold text-gradient-gold mb-2
+                className="text-2xl md:text-3xl font-display font-bold text-holo-gold mb-2
                            drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]"
               >
                 Value for value

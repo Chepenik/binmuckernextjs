@@ -52,21 +52,25 @@ export function AuditHero() {
       <div className="max-w-4xl mx-auto">
         {/* Section header — always visible */}
         <motion.div
-          className="text-center mb-12"
+          className="relative text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-neon-cyan font-mono text-sm tracking-widest uppercase mb-3">
-            Free AI-Powered Analysis
-          </p>
-          <h1 className="heading-display text-gradient-gold mb-4">
-            Local Business Audit
-          </h1>
-          <p className="text-gray-400 max-w-xl mx-auto">
-            Get a comprehensive audit of your local business presence in seconds.
-            Scored across 5-6 key categories with actionable recommendations.
-          </p>
+          <div className="deco-sunburst" aria-hidden="true" />
+          <div className="relative z-10">
+            <p className="text-neon-cyan font-mono text-sm tracking-widest uppercase mb-3">
+              Free AI-Powered Analysis
+            </p>
+            <h1 className="heading-display text-deco-gold mb-4">
+              Local Business Audit
+            </h1>
+            <p className="text-gray-400 max-w-xl mx-auto">
+              Get a comprehensive audit of your local business presence in seconds.
+              Scored across 5-6 key categories with actionable recommendations.
+            </p>
+            <div className="deco-divider w-40 mx-auto mt-6" />
+          </div>
         </motion.div>
 
         {/* Tier selector + State machine */}

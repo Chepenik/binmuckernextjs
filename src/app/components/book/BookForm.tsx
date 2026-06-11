@@ -37,7 +37,7 @@ export function BookForm({ offer = 'call' }: { offer?: OfferKey }) {
           <CalendarCheck className="w-4 h-4" aria-hidden="true" />
           Book your call
         </div>
-        <h1 className="heading-display text-gradient-gold mb-4">
+        <h1 className="heading-display text-deco-gold mb-4">
           Let&apos;s get your business found.
         </h1>
         <p className="text-gray-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
@@ -49,7 +49,7 @@ export function BookForm({ offer = 'call' }: { offer?: OfferKey }) {
 
       {/* Selected offer summary */}
       <motion.div
-        className="glass rounded-2xl p-5 mb-6 border border-gold-500/25 flex items-center gap-4"
+        className="deco-corners relative glass rounded-2xl p-5 mb-6 border border-gold-500/25 flex items-center gap-4"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.05 }}

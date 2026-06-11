@@ -77,11 +77,13 @@ export function ServicesHero() {
     <section className="py-16 md:py-24 px-4">
       <div className="max-w-6xl mx-auto">
         <motion.div
-          className="text-center mb-16"
+          className="relative text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
+          <div className="deco-sunburst" aria-hidden="true" />
+          <div className="relative z-10">
           <div className="inline-flex items-center gap-3 mb-6 glass-dark px-5 py-2.5 rounded-full border border-white/10">
             <Sparkles className="w-5 h-5 text-neon-cyan/70 animate-pulse" />
             <span className="text-sm font-medium text-gray-400">
@@ -90,7 +92,7 @@ export function ServicesHero() {
             <Sparkles className="w-5 h-5 text-neon-cyan/70 animate-pulse" />
           </div>
 
-          <h1 className="heading-display text-gradient-gold mb-4">
+          <h1 className="heading-display text-deco-gold mb-4">
             Get found by Google <span className="whitespace-nowrap">and the AI</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -103,7 +105,8 @@ export function ServicesHero() {
             </Link>
             , then book a call to turn the findings into a plan.
           </p>
-          <div className="mt-6 h-[2px] w-32 mx-auto rounded-full bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
+          <div className="deco-divider w-40 mx-auto mt-6" />
+          </div>
         </motion.div>
 
         {/* ============== OFFERS ============== */}
@@ -120,7 +123,7 @@ export function ServicesHero() {
             transition={{ duration: 0.5 }}
             className="h-full"
           >
-            <div className="glass rounded-2xl p-6 md:p-7 border border-gold-500/30 h-full flex flex-col shadow-[0_0_40px_rgba(255,215,0,0.06)]">
+            <div className="deco-corners relative glass rounded-2xl p-6 md:p-7 border border-gold-500/30 h-full flex flex-col shadow-[0_0_40px_rgba(255,215,0,0.06)]">
               <div className="flex flex-wrap items-center gap-3 mb-3">
                 <span className="text-3xl" aria-hidden="true">🚀</span>
                 <h3 className="text-xl font-display font-bold text-white">
@@ -175,7 +178,7 @@ export function ServicesHero() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="relative rounded-2xl p-6 md:p-7 overflow-hidden glass-dark border border-neon-green/30 shadow-[0_0_30px_rgba(57,255,20,0.06)]">
+          <div className="deco-corners relative rounded-2xl p-6 md:p-7 overflow-hidden glass-dark border border-neon-green/30 shadow-[0_0_30px_rgba(57,255,20,0.06)]">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green/60 to-transparent" />
             <div className="flex items-start gap-4">
               <div className="shrink-0 w-11 h-11 rounded-xl bg-neon-green/10 border border-neon-green/30 flex items-center justify-center">

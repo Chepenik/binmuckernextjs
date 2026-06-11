@@ -23,12 +23,12 @@ interface Blob {
 const BLOBS: Blob[] = [
   { cx: 0.22, cy: 0.18, r: 0.54, color: [0, 245, 255],   fx1:0.08,fy1:0.10, fx2:0.025,fy2:0.035, px1:0.0,py1:0.5, px2:2.1,py2:3.4, amp1:0.13,amp2:0.07, breatheAmp:0.09, breatheFreq:0.48, phase:0.0,  peakAlpha:0.48 },
   { cx: 0.78, cy: 0.24, r: 0.46, color: [255, 40, 220],  fx1:0.07,fy1:0.09, fx2:0.022,fy2:0.032, px1:1.4,py1:2.3, px2:4.3,py2:0.9, amp1:0.11,amp2:0.06, breatheAmp:0.07, breatheFreq:0.41, phase:1.6,  peakAlpha:0.52 },
-  { cx: 0.48, cy: 0.78, r: 0.49, color: [50, 255, 180],  fx1:0.09,fy1:0.06, fx2:0.028,fy2:0.019, px1:2.8,py1:1.0, px2:5.4,py2:2.6, amp1:0.12,amp2:0.08, breatheAmp:0.10, breatheFreq:0.54, phase:3.1,  peakAlpha:0.47 },
+  { cx: 0.48, cy: 0.78, r: 0.49, color: [255, 184, 48],  fx1:0.09,fy1:0.06, fx2:0.028,fy2:0.019, px1:2.8,py1:1.0, px2:5.4,py2:2.6, amp1:0.12,amp2:0.08, breatheAmp:0.10, breatheFreq:0.54, phase:3.1,  peakAlpha:0.44 },
   { cx: 0.16, cy: 0.64, r: 0.38, color: [140, 80, 255],  fx1:0.06,fy1:0.12, fx2:0.020,fy2:0.036, px1:3.9,py1:3.1, px2:0.5,py2:5.3, amp1:0.10,amp2:0.06, breatheAmp:0.07, breatheFreq:0.43, phase:4.3,  peakAlpha:0.45 },
-  { cx: 0.72, cy: 0.58, r: 0.37, color: [255, 90, 130],  fx1:0.10,fy1:0.06, fx2:0.032,fy2:0.015, px1:5.2,py1:4.2, px2:2.4,py2:1.3, amp1:0.11,amp2:0.07, breatheAmp:0.08, breatheFreq:0.50, phase:5.5,  peakAlpha:0.49 },
+  { cx: 0.72, cy: 0.58, r: 0.37, color: [20, 210, 150],  fx1:0.10,fy1:0.06, fx2:0.032,fy2:0.015, px1:5.2,py1:4.2, px2:2.4,py2:1.3, amp1:0.11,amp2:0.07, breatheAmp:0.08, breatheFreq:0.50, phase:5.5,  peakAlpha:0.47 },
 
   // accents — brighter, lower alpha
-  { cx: 0.38, cy: 0.42, r: 0.24, color: [0, 255, 200],   fx1:0.12,fy1:0.08, fx2:0.040,fy2:0.024, px1:1.1,py1:3.5, px2:4.9,py2:1.8, amp1:0.15,amp2:0.09, breatheAmp:0.11, breatheFreq:0.62, phase:0.9,  peakAlpha:0.32 },
+  { cx: 0.38, cy: 0.42, r: 0.24, color: [255, 214, 92],  fx1:0.12,fy1:0.08, fx2:0.040,fy2:0.024, px1:1.1,py1:3.5, px2:4.9,py2:1.8, amp1:0.15,amp2:0.09, breatheAmp:0.11, breatheFreq:0.62, phase:0.9,  peakAlpha:0.30 },
   { cx: 0.64, cy: 0.36, r: 0.21, color: [220, 60, 255],  fx1:0.11,fy1:0.14, fx2:0.034,fy2:0.044, px1:2.3,py1:5.7, px2:1.0,py2:4.0, amp1:0.14,amp2:0.08, breatheAmp:0.10, breatheFreq:0.58, phase:3.8,  peakAlpha:0.28 },
 ];
 

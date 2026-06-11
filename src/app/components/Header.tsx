@@ -41,8 +41,10 @@ export function Header() {
         {/* Animated mesh gradient overlay */}
         <div className="absolute inset-0 bg-mesh-gradient opacity-50 pointer-events-none" />
 
-        {/* Sharp accent line at top */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+        {/* Art Deco double-rule + center diamond at top */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
+        <div className="absolute top-[5px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/25 to-transparent" />
+        <span className="deco-diamond absolute top-[1px] left-1/2 -translate-x-1/2 z-20" aria-hidden="true" />
         {/* Bottom glow line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/30 to-transparent" />
 
@@ -68,12 +70,12 @@ export function Header() {
             <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-7">
             {links.map((link) => (
               <Link
                 key={link}
                 href={`/${link.toLowerCase()}`}
-                className={`relative font-semibold hover:text-gold-400
+                className={`relative text-[13px] font-medium uppercase tracking-[0.18em] hover:text-gold-400
                            transition-colors duration-300 group py-2
                            ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
               >
@@ -111,7 +113,7 @@ export function Header() {
               <Link
                 key={link}
                 href={`/${link.toLowerCase()}`}
-                className={`relative z-10 text-lg font-semibold
+                className={`relative z-10 text-base font-medium uppercase tracking-[0.16em]
                            hover:text-gold-400 transition-colors duration-300
                            ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
                 onClick={() => toggleOpen()}
