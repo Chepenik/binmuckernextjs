@@ -5,15 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useCycle } from 'framer-motion';
 import MenuToggle from './MenuToggle';
-import ZapModal from './ZapModal';
 
 export function Header() {
-  const links = ['Audit', 'Services', 'About', 'Blog', 'Game', 'Breathe', 'Merch', 'Zap Me'];
+  const links = ['Audit', 'Services', 'Stack', 'Blog', 'About'];
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isZapModalOpen, setZapModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,51 +69,20 @@ export function Header() {
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            {links.map((link) =>
-              link === 'Zap Me' ? (
-                <button
-                  key={link}
-                  onClick={() => setZapModalOpen(true)}
-                  className="relative font-semibold text-gray-300 hover:text-gold-400
-                             transition-colors duration-300 group py-2"
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <span className="text-lg">&#9889;</span>
-                    {link}
-                  </span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5
-                                   bg-gradient-to-r from-neon-cyan to-gold-400
-                                   group-hover:w-full transition-all duration-300" />
-                </button>
-              ) : link === 'Merch' ? (
-                <a
-                  key={link}
-                  href="https://chep.creator-spring.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative font-semibold text-gray-300 hover:text-gold-400
-                             transition-colors duration-300 group py-2"
-                >
-                  <span className="relative z-10">{link}</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5
-                                   bg-gradient-to-r from-neon-cyan to-gold-400
-                                   group-hover:w-full transition-all duration-300" />
-                </a>
-              ) : (
-                <Link
-                  key={link}
-                  href={link === 'Game' ? '/space-invaders' : `/${link.toLowerCase()}`}
-                  className={`relative font-semibold hover:text-gold-400
-                             transition-colors duration-300 group py-2
-                             ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
-                >
-                  <span className="relative z-10">{link}</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5
-                                   bg-gradient-to-r from-neon-cyan to-gold-400
-                                   group-hover:w-full transition-all duration-300" />
-                </Link>
-              )
-            )}
+            {links.map((link) => (
+              <Link
+                key={link}
+                href={`/${link.toLowerCase()}`}
+                className={`relative font-semibold hover:text-gold-400
+                           transition-colors duration-300 group py-2
+                           ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
+              >
+                <span className="relative z-10">{link}</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5
+                                 bg-gradient-to-r from-neon-cyan to-gold-400
+                                 group-hover:w-full transition-all duration-300" />
+              </Link>
+            ))}
             <Link
               href="/contact"
               className="btn-gold-outline px-6 py-2.5 text-sm"
@@ -140,46 +107,18 @@ export function Header() {
             {/* Mobile mesh gradient */}
             <div className="absolute inset-0 bg-mesh-gradient opacity-30 pointer-events-none" />
 
-            {links.map((link) =>
-              link === 'Zap Me' ? (
-                <button
-                  key={link}
-                  onClick={() => {
-                    setZapModalOpen(true);
-                    toggleOpen(0);
-                  }}
-                  className="relative z-10 text-lg font-semibold text-gray-300
-                             hover:text-gold-400 transition-colors duration-300
-                             flex items-center gap-2"
-                >
-                  <span className="text-xl">&#9889;</span>
-                  {link}
-                </button>
-              ) : link === 'Merch' ? (
-                <a
-                  key={link}
-                  href="https://chep.creator-spring.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative z-10 text-lg font-semibold text-gray-300
-                             hover:text-gold-400 transition-colors duration-300"
-                  onClick={() => toggleOpen()}
-                >
-                  {link}
-                </a>
-              ) : (
-                <Link
-                  key={link}
-                  href={link === 'Game' ? '/space-invaders' : `/${link.toLowerCase()}`}
-                  className={`relative z-10 text-lg font-semibold
-                             hover:text-gold-400 transition-colors duration-300
-                             ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
-                  onClick={() => toggleOpen()}
-                >
-                  {link}
-                </Link>
-              )
-            )}
+            {links.map((link) => (
+              <Link
+                key={link}
+                href={`/${link.toLowerCase()}`}
+                className={`relative z-10 text-lg font-semibold
+                           hover:text-gold-400 transition-colors duration-300
+                           ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
+                onClick={() => toggleOpen()}
+              >
+                {link}
+              </Link>
+            ))}
             <Link
               href="/contact"
               className="relative z-10 btn-gold-outline px-6 py-2.5 text-sm mt-2"
@@ -190,9 +129,6 @@ export function Header() {
           </motion.div>
         )}
       </motion.header>
-
-      {/* Zap Modal */}
-      <ZapModal isOpen={isZapModalOpen} onClose={() => setZapModalOpen(false)} />
     </>
   );
 }

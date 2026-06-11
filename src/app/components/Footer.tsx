@@ -1,12 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaLinkedin, FaGithub, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import ZapModal from './ZapModal';
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const [isZapModalOpen, setZapModalOpen] = useState(false);
 
   return (
     <footer className="relative bg-cyber-black border-t border-gold-500/30 py-12">
@@ -17,6 +19,44 @@ export function Footer() {
       <div className="absolute inset-0 bg-aurora opacity-40 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 relative z-10">
+        {/* Play column */}
+        <div className="mb-8 flex flex-col items-center md:items-start gap-3">
+          <p className="text-xs font-mono uppercase tracking-widest text-gray-500">Play</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+            <Link
+              href="/space-invaders"
+              className="text-gray-400 hover:text-neon-magenta transition-colors duration-300"
+            >
+              Game
+            </Link>
+            <Link
+              href="/breathe"
+              className="text-gray-400 hover:text-neon-cyan transition-colors duration-300"
+            >
+              Breathe
+            </Link>
+            <a
+              href="https://chep.creator-spring.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gold-400 transition-colors duration-300"
+            >
+              Merch
+            </a>
+            <button
+              type="button"
+              onClick={() => setZapModalOpen(true)}
+              className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gold-400 transition-colors duration-300"
+            >
+              <span className="text-base" aria-hidden="true">&#9889;</span>
+              Zap Me
+            </button>
+          </div>
+        </div>
+
+        {/* Divider above main footer row */}
+        <div className="mb-8 h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
+
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Copyright with gradient */}
           <p className="text-gray-500 text-sm text-center md:text-left">
@@ -98,6 +138,8 @@ export function Footer() {
           </p>
         </div>
       </div>
+
+      <ZapModal isOpen={isZapModalOpen} onClose={() => setZapModalOpen(false)} />
     </footer>
   );
 }
