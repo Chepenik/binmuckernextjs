@@ -826,6 +826,67 @@ export function HomeHero() {
           </div>
         </motion.div>
 
+        {/* ==================== SERVICES LANE (for local businesses) ==================== */}
+        <motion.section
+          className="mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+          aria-labelledby="services-lane-title"
+        >
+          <div
+            className="relative rounded-3xl p-8 md:p-10 overflow-hidden
+                       bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/40
+                       border border-neon-cyan/30 backdrop-blur-xl
+                       shadow-[0_0_40px_rgba(0,194,255,0.08)]"
+          >
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-cyan to-transparent" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-neon-cyan/10 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
+
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 md:gap-10 items-center">
+              <div>
+                <p className="text-xs font-mono uppercase tracking-widest text-neon-cyan/80 mb-2">
+                  Run a local business?
+                </p>
+                <h2 id="services-lane-title" className="heading-section text-white mb-3">
+                  Get found by Google <span className="text-neon-cyan">and the AI engines.</span>
+                </h2>
+                <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-5 max-w-xl">
+                  Your customers now ask ChatGPT, Claude, Perplexity, and Google AI Overviews
+                  where to go. I help local businesses show up in all of them — starting with a
+                  free 90-second audit.
+                </p>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                  {['Free AI SEO audit', '30-min strategy call', '3-fix guarantee'].map((point) => (
+                    <li key={point} className="inline-flex items-center gap-1.5 text-sm text-gray-300">
+                      <CheckCircle2 className="w-4 h-4 text-neon-green shrink-0" aria-hidden="true" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-col gap-3 md:min-w-[210px]">
+                <Link
+                  href="/audit"
+                  className="btn-premium inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                >
+                  <Sparkles className="w-4 h-4" aria-hidden="true" />
+                  Get your free audit
+                </Link>
+                <Link
+                  href="/book?offer=call"
+                  className="btn-neon inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                >
+                  Book a strategy call
+                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
         {/* ==================== EMAIL CAPTURE ==================== */}
         <NewsletterSignup />
 
