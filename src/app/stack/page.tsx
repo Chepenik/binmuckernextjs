@@ -15,10 +15,7 @@ export const metadata: Metadata = {
     'Gemini credit card',
     'CrowdHealth',
     'Hostinger',
-    'Fold',
-    'River',
-    'Coldcard',
-    'hardware wallet',
+    'VPS hosting',
   ],
   alternates: { canonical: 'https://binmucker.com/stack' },
   openGraph: {
@@ -66,30 +63,6 @@ const tools: StackItem[] = [
     href: 'https://hostinger.com?REFERRALCODE=1CONOR59',
     cta: 'Get 20% off',
   },
-  // TODO: replace href="#" with real affiliate referral links once enrolled.
-  {
-    name: 'Fold',
-    description:
-      'The debit card I use to earn Bitcoin back on everyday spending without thinking about it.',
-    href: '#',
-    cta: 'Coming soon',
-  },
-  // TODO: replace href="#" with real affiliate referral link once enrolled.
-  {
-    name: 'River',
-    description:
-      'Where I buy Bitcoin with zero-fee recurring orders and support that actually answers.',
-    href: '#',
-    cta: 'Coming soon',
-  },
-  // TODO: replace href="#" with real affiliate referral link once enrolled.
-  {
-    name: 'Coldcard',
-    description:
-      'The air-gapped hardware wallet I trust for serious, long-term cold storage of Bitcoin.',
-    href: '#',
-    cta: 'Coming soon',
-  },
   // TODO: replace href="#" with real affiliate referral link once enrolled.
   {
     name: 'VPS Provider',
@@ -135,15 +108,9 @@ export default function StackPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {tools.map((tool) => {
                 const isPlaceholder = tool.href === '#';
-                return (
-                  <a
-                    key={tool.name}
-                    href={tool.href}
-                    target="_blank"
-                    rel="sponsored noopener"
-                    className="group relative block card-premium h-full focus-visible:outline-none"
-                    aria-label={`${tool.name}. Affiliate link.`}
-                  >
+
+                const cardInner = (
+                  <>
                     <div
                       className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neon-purple/15 via-neon-magenta/10 to-electric/15
                                  opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -157,15 +124,16 @@ export default function StackPage() {
                         >
                           Affiliate
                         </span>
-                        {isPlaceholder && (
+                        {isPlaceholder ? (
                           <span className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
                                            bg-white/5 text-gray-400 border border-white/15">
                             Soon
                           </span>
+                        ) : (
+                          <span className="text-[10px] text-gray-500 uppercase tracking-widest ml-auto">
+                            External
+                          </span>
                         )}
-                        <span className="text-[10px] text-gray-500 uppercase tracking-widest ml-auto">
-                          External
-                        </span>
                       </div>
 
                       <h2 className="font-semibold text-white text-lg leading-tight mb-2 group-hover:text-neon-purple transition-colors duration-300">
@@ -175,11 +143,43 @@ export default function StackPage() {
                         {tool.description}
                       </p>
 
-                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-neon-cyan group-hover:gap-2 transition-all duration-300">
+                      <span
+                        className={`mt-4 inline-flex items-center gap-1 text-sm font-semibold ${
+                          isPlaceholder
+                            ? 'text-gray-500'
+                            : 'text-neon-cyan group-hover:gap-2 transition-all duration-300'
+                        }`}
+                      >
                         {tool.cta}
-                        <span aria-hidden="true">&rarr;</span>
+                        {!isPlaceholder && <span aria-hidden="true">&rarr;</span>}
                       </span>
                     </div>
+                  </>
+                );
+
+                // Placeholders render as a non-interactive card so we never ship a
+                // dead href="#" link that opens a blank tab.
+                if (isPlaceholder) {
+                  return (
+                    <div
+                      key={tool.name}
+                      className="group relative block card-premium h-full"
+                    >
+                      {cardInner}
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={tool.name}
+                    href={tool.href}
+                    target="_blank"
+                    rel="sponsored noopener"
+                    className="group relative block card-premium h-full focus-visible:outline-none"
+                    aria-label={`${tool.name}. Affiliate link.`}
+                  >
+                    {cardInner}
                   </a>
                 );
               })}
