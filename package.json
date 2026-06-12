@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "scorecard": "node scripts/scorecard.mjs",
+    "verify": "next build && node scripts/scorecard.mjs --gate"
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0",
