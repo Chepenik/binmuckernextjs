@@ -12,6 +12,7 @@ import {
   Terminal,
   Zap,
 } from 'lucide-react';
+import { FaXTwitter } from 'react-icons/fa6';
 import ZapModal from './ZapModal';
 import { ScoreRing } from './audit/ScoreRing';
 import { getScoreColor } from '@/lib/audit-constants';
@@ -73,14 +74,6 @@ const sections: LinkSection[] = [
           'Consulting, content, audits, and Bitcoin integration work. Priced in sats, because I practice what I write.',
         url: '/services',
         status: 'Live',
-        featured: true,
-      },
-      {
-        title: 'Daily Bitcoin Briefing',
-        description:
-          'A new Bitcoin integration idea every day. Concrete, shippable concepts for builders and business owners.',
-        url: '/briefing',
-        status: 'Daily',
         featured: true,
       },
       {
@@ -272,9 +265,9 @@ const statusClasses: Record<Status, string> = {
 };
 
 const recentShips = [
-  { label: 'Daily Bitcoin Briefing', href: '/briefing' },
   { label: 'AI Audit Tool', href: '/audit' },
   { label: 'Services priced in sats', href: '/services' },
+  { label: 'My Stack', href: '/stack' },
 ];
 
 const startHere = [
@@ -622,7 +615,7 @@ function ProofSection() {
   );
 }
 
-function BriefingPromo() {
+function FollowOnXPromo() {
   return (
     <motion.section
       className="mb-20"
@@ -630,37 +623,39 @@ function BriefingPromo() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6 }}
-      aria-labelledby="briefing-title"
+      aria-labelledby="follow-x-title"
     >
       <div
         className="deco-corners relative rounded-3xl p-8 md:p-10 overflow-hidden
                    bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/40
-                   border border-bitcoin/30 backdrop-blur-xl
-                   shadow-[0_0_40px_rgba(247,147,26,0.08)]"
+                   border border-neon-purple/30 backdrop-blur-xl
+                   shadow-[0_0_40px_rgba(191,0,255,0.08)]"
       >
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-bitcoin to-transparent" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-bitcoin/10 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-purple to-transparent" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-neon-purple/10 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
 
         <div className="relative z-10 max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 mb-4 text-bitcoin">
-            <Zap className="w-5 h-5" aria-hidden="true" />
-            <span className="text-xs font-mono uppercase tracking-widest">Daily Bitcoin Briefing</span>
+          <div className="inline-flex items-center gap-2 mb-4 text-neon-purple">
+            <FaXTwitter className="w-5 h-5" aria-hidden="true" />
+            <span className="text-xs font-mono uppercase tracking-widest">Where I&apos;m most active</span>
           </div>
-          <h2 id="briefing-title" className="heading-section text-white mb-3">
-            One Bitcoin integration idea, <span className="text-bitcoin">every day.</span>
+          <h2 id="follow-x-title" className="heading-section text-white mb-3">
+            The day-to-day lives <span className="text-neon-purple">on X.</span>
           </h2>
           <p className="text-gray-400 text-sm md:text-base mb-6">
-            A fresh, concrete, shippable idea for builders and business owners — published daily.
-            Free to read, no signup.
+            Builds in progress, Bitcoin takes, and half-formed ideas — posted in real time.
+            It&apos;s the fastest way to follow the work and reach me.
           </p>
 
-          <Link
-            href="/briefing"
+          <a
+            href="https://x.com/ConorChepenik"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-premium inline-flex items-center gap-2 text-sm font-semibold"
           >
-            Read today&apos;s briefing
-            <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
+            <FaXTwitter className="w-4 h-4" aria-hidden="true" />
+            Follow @ConorChepenik on X
+          </a>
         </div>
       </div>
     </motion.section>
@@ -823,8 +818,8 @@ export function HomeHero() {
           </div>
         </motion.section>
 
-        {/* ==================== DAILY BRIEFING PROMO ==================== */}
-        <BriefingPromo />
+        {/* ==================== FOLLOW ON X PROMO ==================== */}
+        <FollowOnXPromo />
 
         {/* ==================== START HERE ==================== */}
         <motion.section

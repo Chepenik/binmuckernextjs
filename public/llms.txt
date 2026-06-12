@@ -14,7 +14,6 @@
 
 - [Home](https://binmucker.com/): Grouped link hub organized into five sections: Built by Me, Bitcoin & Lightning, Writing & Ideas, Play & Practice, and Picks & Partners. Plus a Start Here module, About preview, and value-for-value support block with Ko-fi and Lightning.
 - [Services](https://binmucker.com/services): Currently one active offer — a 30-minute consultation for 21,000 sats, paid via Lightning. Larger engagements are being re-priced.
-- [Daily Briefing](https://binmucker.com/briefing): AI-generated Bitcoin innovation ideas, updated daily. Themes: invisible Bitcoin, circular economy, dev infrastructure, agent commerce, onboarding funnels.
 - [Audit](https://binmucker.com/audit): Free AI-powered local business SEO audit. Scores across 6 categories with actionable recommendations. Premium tiers available.
 - [About](https://binmucker.com/about): About Conor Chepenik — story, skills, projects, and how to get in touch.
 - [Blog](https://binmucker.com/blog): Long-form writing on Bitcoin, building in public, web development, and wellness.
@@ -29,7 +28,7 @@
 
 The home page at https://binmucker.com/ is organized into five themed sections, each anchored:
 
-- `#built-by-me` — Built by Me. Original tools, services, and artifacts Conor ships. Includes the Local SEO Audit, AI & Bitcoin Services, Daily Bitcoin Briefing, the Bitcoin Coloring Book, and Handwritten Letters.
+- `#built-by-me` — Built by Me. Original tools, services, and artifacts Conor ships. Includes the Local SEO Audit, AI & Bitcoin Services, the Bitcoin Coloring Book, and Handwritten Letters.
 - `#bitcoin-lightning` — Bitcoin & Lightning. Sound Money Mortgage, Saylorscope, Nostr profile, and Fortune Sats.
 - `#writing` — Writing & Ideas. Medium (daily) and the Binmucker Blog.
 - `#play-practice` — Play & Practice. Space Invaders, RyRacer, Breathe Better, GuitarGui.
@@ -65,14 +64,6 @@ Run an AI-powered local business SEO audit.
 
 **Rate limit:** 10 requests per hour per IP.
 
-### GET /api/briefing
-Get the latest Bitcoin innovation briefings.
-
-**Response:** JSON array of briefings, each with theme, date, and 3-5 innovation ideas.
-
-### POST /api/briefing
-Generate a new daily briefing (protected by CRON_SECRET).
-
 ## For AI Agents
 
 This site is designed to be agent-friendly:
@@ -80,13 +71,11 @@ This site is designed to be agent-friendly:
 1. **Discovery**: This file (`/llms.txt`) and `/.well-known/ai-plugin.json` describe all capabilities.
 2. **Structured Data**: Schema.org JSON-LD on every page (WebSite, Organization, Person, Service, SoftwareApplication, VideoGame, WebApplication).
 3. **API Access**: The `/api/audit` endpoint accepts JSON and returns structured audit reports.
-4. **Briefings**: Daily Bitcoin innovation ideas available via `/api/briefing` GET endpoint.
-5. **Payments**: Services priced in sats. Lightning invoicing is being rolled in; book a consultation and you will receive a Lightning invoice.
-6. **Sitemap**: Machine-readable at https://binmucker.com/sitemap.xml.
+4. **Payments**: Services priced in sats. Lightning invoicing is being rolled in; book a consultation and you will receive a Lightning invoice.
+5. **Sitemap**: Machine-readable at https://binmucker.com/sitemap.xml.
 
 To interact programmatically:
 - Run an SEO audit: `POST /api/audit` with business details
-- Get latest briefings: `GET /api/briefing`
 - View services: `GET /services` or read the table above
 - Contact: `POST` to contact form or email chepenikconor@gmail.com
 
@@ -128,8 +117,7 @@ These are clearly labeled as affiliate links on the homepage `#picks-partners` s
 
 - Stack: Next.js 16, React 19, TypeScript, Tailwind CSS, Framer Motion
 - Hosting: Vercel
-- AI: NVIDIA API (Kimi K2.5) for audits and briefings
-- Storage: Vercel Blob for briefings
+- AI: NVIDIA API (Kimi K2.5) for audits
 - Payments: Lightning Network (Strike), with a deeper integration in progress
 - Sitemap: https://binmucker.com/sitemap.xml
 - Robots: https://binmucker.com/robots.txt
