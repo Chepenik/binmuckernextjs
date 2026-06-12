@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 import { LavaBackground } from '@/app/components/LavaBackground';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'My Stack',
@@ -25,12 +26,14 @@ export const metadata: Metadata = {
     url: 'https://binmucker.com/stack',
     siteName: 'Binmucker',
     type: 'website',
+    images: [OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'My Stack | Binmucker',
     description:
       'The tools I actually use and earn from. Honest affiliate picks, priced in trust.',
+    images: [OG_IMAGE_URL],
   },
 };
 

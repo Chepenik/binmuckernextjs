@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -8,11 +9,13 @@ export const metadata: Metadata = {
     title: 'About | Binmucker',
     description: 'About Conor Chepenik. Bitcoin educator, builder, and daily writer behind Binmucker.',
     url: 'https://binmucker.com/about',
+    images: [OG_IMAGE],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'About | Binmucker',
     description: 'About Conor Chepenik. Bitcoin educator, builder, and daily writer behind Binmucker.',
+    images: [OG_IMAGE_URL],
   },
 };
 

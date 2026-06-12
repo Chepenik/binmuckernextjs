@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 import { ServicesHero } from '@/app/components/services/ServicesHero';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'AI SEO Services',
@@ -27,12 +28,14 @@ export const metadata: Metadata = {
     description:
       'Help your business show up in Google and the AI answer engines. 30-minute AI SEO strategy calls by Conor Chepenik, priced in sats.',
     url: 'https://binmucker.com/services',
+    images: [OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI SEO Services | Binmucker',
     description:
       'AI SEO strategy calls. Rank in Google, Perplexity, ChatGPT, and Google AI Overviews. 30 minutes, priced in sats.',
+    images: [OG_IMAGE_URL],
   },
 };
 

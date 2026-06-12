@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter, Orbitron, JetBrains_Mono, Cinzel } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import RainbowCursor from './components/RainbowCursor';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 import './globals.css';
 
 const inter = Inter({
@@ -71,14 +72,7 @@ export const metadata: Metadata = {
       'The personal home base of Conor Chepenik. Free tools, daily essays, Bitcoin projects, health experiments, a retro game, and services priced in sats.',
     url: 'https://binmucker.com',
     siteName: 'Binmucker',
-    images: [
-      {
-        url: 'https://i.nostr.build/lWaH02jqNNEXV0B1.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Binmucker by Conor Chepenik. Tools, writing, Bitcoin, and internet experiments.',
-      },
-    ],
+    images: [OG_IMAGE],
     locale: 'en_US',
     type: 'website',
   },
@@ -88,7 +82,7 @@ export const metadata: Metadata = {
     description:
       'A builder\'s home base. Free tools, daily writing, Bitcoin projects, and services priced in sats. By Conor Chepenik.',
     creator: '@ConorChepenik',
-    images: ['https://i.nostr.build/lWaH02jqNNEXV0B1.jpg'],
+    images: [OG_IMAGE_URL],
   },
   robots: {
     index: true,
