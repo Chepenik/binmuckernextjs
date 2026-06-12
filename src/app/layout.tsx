@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     template: '%s | Binmucker',
   },
   description:
-    'The personal internet home base of Conor Chepenik. Free AI-powered local SEO audit, daily Bitcoin innovation briefings, Bitcoin-native consulting, a coloring book, a breathing app, a retro arcade game, and daily writing on Medium.',
+    'The personal internet home base of Conor Chepenik. Free AI-powered local SEO audit, Bitcoin-native consulting, a coloring book, a breathing app, a retro arcade game, and daily writing on Medium.',
   keywords: [
     'Binmucker',
     'binmucker.com',

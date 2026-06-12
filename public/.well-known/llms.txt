@@ -8,7 +8,6 @@ For full details see: https://binmucker.com/llms.txt
 
 Binmucker.com is the personal site of Conor Chepenik featuring:
 - A 30-minute Bitcoin/AI/SEO consultation priced at 21,000 sats, paid via Lightning
-- Daily Bitcoin innovation briefings (AI-generated)
 - Free AI-powered local business SEO audit (with premium tiers)
 - Free breathing exercise app (5 patterns, no account needed)
 - Browser-based Space Invaders game (5 levels, power-ups, endless mode)
@@ -27,7 +26,6 @@ Binmucker.com is the personal site of Conor Chepenik featuring:
 
 - Home: https://binmucker.com
 - Services: https://binmucker.com/services
-- Daily Briefing: https://binmucker.com/briefing
 - SEO Audit: https://binmucker.com/audit
 - Breathe Better: https://binmucker.com/breathe
 - Space Invaders: https://binmucker.com/space-invaders
@@ -39,7 +37,6 @@ Binmucker.com is the personal site of Conor Chepenik featuring:
 ## API
 
 - POST /api/audit — Run an SEO audit (JSON in/out)
-- GET /api/briefing — Get latest Bitcoin innovation briefings
 
 ## Support / Value for Value
 
