@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'Free Local Business Audit',
@@ -12,12 +13,14 @@ export const metadata: Metadata = {
     url: 'https://binmucker.com/audit',
     siteName: 'Binmucker',
     type: 'website',
+    images: [OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Free Local Business Audit | Binmucker',
     description:
       'Free AI-powered audit scoring your local business across SEO, reviews, content, and more.',
+    images: [OG_IMAGE_URL],
   },
 };
 
