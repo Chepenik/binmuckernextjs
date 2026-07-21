@@ -35,5 +35,3 @@ export interface AuditReport {
 }
 
 export type AuditState = 'idle' | 'loading' | 'success' | 'error';
-
-export type AuditTier = 'free' | 'detailed' | 'competitor' | 'monthly';

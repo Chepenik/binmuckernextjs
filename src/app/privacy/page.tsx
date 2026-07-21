@@ -14,12 +14,8 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">1. Information We Collect</h2>
             <p className="mb-3">
-              We collect minimal information. When you use our contact form, we receive your name,
-              email address, and message content. This data is processed by{' '}
-              <a href="https://formsubmit.co/" target="_blank" rel="noopener noreferrer" className="text-neon-cyan hover:underline">
-                FormSubmit.co
-              </a>{' '}
-              and delivered to our email. We do not store form submissions in a database.
+              We collect minimal information. The site does not operate a contact or booking form,
+              so we do not receive your name, email, or message content through it.
             </p>
             <p>
               We do not require account creation, and we do not collect passwords, payment card
@@ -30,9 +26,8 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">2. How We Use Your Information</h2>
             <p>
-              Information submitted through the contact form is used solely to respond to your
-              inquiry. We do not sell, rent, or share your personal information with third parties
-              for marketing purposes.
+              We do not sell, rent, or share your personal information with third parties for
+              marketing purposes.
             </p>
           </section>
 
@@ -41,7 +36,6 @@ export default function PrivacyPolicy() {
             <p className="mb-3">Our site uses the following third-party services:</p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li><strong className="text-white">Vercel</strong> — Hosting and deployment. Subject to Vercel&apos;s privacy policy.</li>
-              <li><strong className="text-white">FormSubmit.co</strong> — Contact form processing. Your form data passes through their servers.</li>
               <li><strong className="text-white">Strike.me</strong> — Bitcoin Lightning payments. Subject to Strike&apos;s privacy policy.</li>
               <li><strong className="text-white">Affiliate Partners</strong> — Links to CrowdHealth, Gemini, and Hostinger include referral codes. These partners may use cookies on their own sites.</li>
             </ul>

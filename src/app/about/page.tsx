@@ -226,12 +226,14 @@ export default function AboutPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <Link
-            href="/book"
+          <a
+            href="https://x.com/ConorChepenik"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-gold-outline px-8 py-3 text-base inline-block"
           >
-            Work with me
-          </Link>
+            Say hi on X
+          </a>
         </motion.div>
       </main>
       <Footer />

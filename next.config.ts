@@ -1,12 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      // The general contact form is gone — route everyone to the booking flow.
-      { source: '/contact', destination: '/book', permanent: true },
-    ];
-  },
   images: {
     remotePatterns: [
       {

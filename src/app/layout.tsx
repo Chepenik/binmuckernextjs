@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     template: '%s | Binmucker',
   },
   description:
-    'The personal internet home base of Conor Chepenik. Free AI-powered local SEO audit, Bitcoin-native consulting, a coloring book, a breathing app, a retro arcade game, and daily writing on Medium.',
+    'The personal internet home base of Conor Chepenik. Free AI-powered local SEO audit, Bitcoin projects, a coloring book, a breathing app, a retro arcade game, and daily writing on Medium.',
   keywords: [
     'Binmucker',
     'binmucker.com',
@@ -53,8 +53,6 @@ export const metadata: Metadata = {
     'daily writing',
     'local business audit',
     'local SEO audit',
-    'AI consulting',
-    'Bitcoin integration',
     'sound money',
     'Breathe Better',
     'Space Invaders',
@@ -69,7 +67,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
     description:
-      'The personal home base of Conor Chepenik. Free tools, daily essays, Bitcoin projects, health experiments, a retro game, and services priced in sats.',
+      'The personal home base of Conor Chepenik. Free tools, daily essays, Bitcoin projects, health experiments, and a retro game.',
     url: 'https://binmucker.com',
     siteName: 'Binmucker',
     images: [OG_IMAGE],
@@ -80,7 +78,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
     description:
-      'A builder\'s home base. Free tools, daily writing, Bitcoin projects, and services priced in sats. By Conor Chepenik.',
+      'A builder\'s home base. Free tools, daily writing, and Bitcoin projects. By Conor Chepenik.',
     creator: '@ConorChepenik',
     images: [OG_IMAGE_URL],
   },
@@ -112,7 +110,7 @@ const jsonLd = {
       name: 'Binmucker',
       url: 'https://binmucker.com',
       description:
-        'The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin and Lightning projects, health experiments, services priced in sats, and a retro browser game.',
+        'The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin and Lightning projects, health experiments, and a retro browser game.',
       author: { '@id': 'https://binmucker.com/#person' },
     },
     {
@@ -121,7 +119,7 @@ const jsonLd = {
       name: 'Binmucker LLC',
       url: 'https://binmucker.com',
       founder: { '@id': 'https://binmucker.com/#person' },
-      description: 'AI consulting, local business audit tools, and digital products by Conor Chepenik.',
+      description: 'Free local business audit tools and digital products by Conor Chepenik.',
     },
     {
       '@type': 'Person',
@@ -129,9 +127,9 @@ const jsonLd = {
       name: 'Conor Chepenik',
       url: 'https://binmucker.com',
       email: 'chepenikconor@gmail.com',
-      jobTitle: 'AI Consultant & Builder',
+      jobTitle: 'Builder',
       worksFor: { '@id': 'https://binmucker.com/#organization' },
-      knowsAbout: ['AI Consulting', 'Local SEO', 'Bitcoin', 'Lightning Network', 'Nostr', 'Web Development'],
+      knowsAbout: ['Local SEO', 'Bitcoin', 'Lightning Network', 'Nostr', 'Web Development'],
       sameAs: [
         'https://www.linkedin.com/in/conorchepenik/',
         'https://x.com/ConorChepenik',
@@ -171,36 +169,6 @@ const jsonLd = {
       gamePlatform: 'Web Browser',
       playMode: 'SinglePlayer',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      isPartOf: { '@id': 'https://binmucker.com/#website' },
-    },
-    {
-      '@type': 'Service',
-      '@id': 'https://binmucker.com/#services',
-      name: 'Binmucker Consulting',
-      url: 'https://binmucker.com/services',
-      provider: { '@id': 'https://binmucker.com/#organization' },
-      description:
-        'AI SEO strategy calls and an ongoing AI visibility retainer with Conor Chepenik. Priced in sats, paid via Lightning. Get found in Google and the AI answer engines.',
-      serviceType: ['AI SEO', 'Bitcoin Consulting', 'Lightning Strategy', 'AI Consulting', 'SEO Advisory'],
-      offers: [
-        {
-          '@type': 'Offer',
-          name: 'AI SEO Strategy Call',
-          priceCurrency: 'BTC',
-          price: '0.003',
-          description:
-            'A focused 30-minute AI SEO working session. Payable in 300,000 sats via Lightning. The call fee is fully credited toward any retainer.',
-        },
-        {
-          '@type': 'Offer',
-          name: 'AI Visibility Retainer',
-          priceCurrency: 'BTC',
-          price: '0.01',
-          description:
-            'Monthly AI + SEO visibility report, prioritized fixes shipped to your site, competitor gap tracking, and direct access. 1,000,000 sats per month, 3-month minimum, limited to 5 clients.',
-        },
-      ],
-      areaServed: 'Worldwide',
       isPartOf: { '@id': 'https://binmucker.com/#website' },
     },
     {

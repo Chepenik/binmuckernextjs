@@ -19,7 +19,7 @@ This is a Next.js 16 portfolio/showcase application using the App Router pattern
 
 - `src/app/` - App Router pages and components
   - `components/` - Reusable React components (Header, Footer, ZapModal, HomeHero, SpaceInvaders, etc.)
-  - Page routes: contact, space-invaders, thank-you
+  - Page routes: audit, about, blog, stack, space-invaders, breathe
 
 ### Key Patterns
 
@@ -30,7 +30,6 @@ This is a Next.js 16 portfolio/showcase application using the App Router pattern
 
 ### External Integrations
 
-- **FormSubmit.co**: Contact form handling (posts to external service)
 - **Bitcoin/Lightning**: ZapModal provides Bitcoin address and Strike.me link for payments
 - **Ko-fi**: External donation link
 - **Spring Merch**: Creator merchandise store (chep.creator-spring.com)

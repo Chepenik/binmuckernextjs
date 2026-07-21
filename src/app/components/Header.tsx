@@ -7,7 +7,7 @@ import { motion, useCycle } from 'framer-motion';
 import MenuToggle from './MenuToggle';
 
 export function Header() {
-  const links = ['Audit', 'Services', 'Stack', 'Blog', 'About'];
+  const links = ['Audit', 'Stack', 'Blog', 'About'];
 
   const [isOpen, toggleOpen] = useCycle(false, true);
   const [showHeader, setShowHeader] = useState(true);
@@ -84,12 +84,6 @@ export function Header() {
                                  group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
-            <Link
-              href="/book"
-              className="btn-gold-outline px-6 py-2.5 text-sm"
-            >
-              Book a Call
-            </Link>
           </div>
         </nav>
 
@@ -120,13 +114,6 @@ export function Header() {
                 {link}
               </Link>
             ))}
-            <Link
-              href="/book"
-              className="relative z-10 btn-gold-outline px-6 py-2.5 text-sm mt-2"
-              onClick={() => toggleOpen()}
-            >
-              Book a Call
-            </Link>
           </motion.div>
         )}
       </motion.header>

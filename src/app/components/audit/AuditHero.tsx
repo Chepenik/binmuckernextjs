@@ -5,14 +5,12 @@ import { motion } from 'framer-motion';
 import { AuditForm } from './AuditForm';
 import { LoadingState } from './LoadingState';
 import { AuditResults } from './AuditResults';
-import { TierSelector } from './TierSelector';
-import type { AuditFormData, AuditReport, AuditState, AuditTier } from '@/types/audit';
+import type { AuditFormData, AuditReport, AuditState } from '@/types/audit';
 
 export function AuditHero() {
   const [state, setState] = useState<AuditState>('idle');
   const [report, setReport] = useState<AuditReport | null>(null);
   const [error, setError] = useState('');
-  const [tier, setTier] = useState<AuditTier>('free');
 
   const handleSubmit = async (data: AuditFormData) => {
     setState('loading');
@@ -44,7 +42,6 @@ export function AuditHero() {
     setState('idle');
     setReport(null);
     setError('');
-    setTier('free');
   };
 
   return (
@@ -73,13 +70,8 @@ export function AuditHero() {
           </div>
         </motion.div>
 
-        {/* Tier selector + State machine */}
-        {state === 'idle' && (
-          <>
-            <TierSelector selected={tier} onSelect={setTier} />
-            <AuditForm onSubmit={handleSubmit} tier={tier} />
-          </>
-        )}
+        {/* State machine */}
+        {state === 'idle' && <AuditForm onSubmit={handleSubmit} />}
 
         {state === 'loading' && <LoadingState />}
 
