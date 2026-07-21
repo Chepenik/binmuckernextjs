@@ -38,15 +38,6 @@ export function Header() {
   return (
     <>
       <motion.header className={headerStyling}>
-        {/* Animated mesh gradient overlay */}
-        <div className="absolute inset-0 bg-mesh-gradient opacity-50 pointer-events-none" />
-
-        {/* Art Deco double-rule at top */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
-        <div className="absolute top-[5px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/25 to-transparent" />
-        {/* Bottom glow line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/30 to-transparent" />
-
         <nav className="max-w-6xl mx-auto px-4 flex items-center justify-between h-[80px] relative z-10">
           <Link href="/" className="hover:opacity-90 transition-opacity group">
             <div className="relative">
@@ -99,14 +90,11 @@ export function Header() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Mobile mesh gradient */}
-            <div className="absolute inset-0 bg-mesh-gradient opacity-30 pointer-events-none" />
-
             {links.map((link) => (
               <Link
                 key={link}
                 href={`/${link.toLowerCase()}`}
-                className={`relative z-10 text-base font-medium uppercase tracking-[0.16em]
+                className={`text-base font-medium uppercase tracking-[0.16em]
                            hover:text-gold-400 transition-colors duration-300
                            ${link === 'Audit' ? 'text-neon-cyan' : 'text-gray-300'}`}
                 onClick={() => toggleOpen()}

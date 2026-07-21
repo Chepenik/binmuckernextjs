@@ -212,34 +212,34 @@ const accentClasses: Record<
   { bar: string; hover: string; text: string; cardGradient: string }
 > = {
   gold: {
-    bar: 'bg-gold-400/70 shadow-[0_0_10px_rgba(255,215,0,0.35)]',
+    bar: 'bg-gold-400/70',
     hover: 'group-hover:text-gold-300',
     text: 'text-gold-300',
-    cardGradient: 'from-gold-500/15 via-bitcoin/10 to-gold-600/15',
+    cardGradient: 'from-white/[0.06] to-transparent',
   },
   cyan: {
-    bar: 'bg-neon-cyan/60 shadow-[0_0_10px_rgba(0,194,255,0.3)]',
+    bar: 'bg-neon-cyan/60',
     hover: 'group-hover:text-neon-cyan',
     text: 'text-neon-cyan',
-    cardGradient: 'from-neon-cyan/15 via-electric/10 to-neon-blue/15',
+    cardGradient: 'from-white/[0.06] to-transparent',
   },
   bitcoin: {
-    bar: 'bg-bitcoin/70 shadow-[0_0_10px_rgba(247,147,26,0.35)]',
+    bar: 'bg-bitcoin/70',
     hover: 'group-hover:text-bitcoin',
     text: 'text-bitcoin',
-    cardGradient: 'from-bitcoin/15 via-gold-500/10 to-bitcoin/15',
+    cardGradient: 'from-white/[0.06] to-transparent',
   },
   magenta: {
-    bar: 'bg-neon-magenta/60 shadow-[0_0_10px_rgba(255,0,255,0.3)]',
+    bar: 'bg-neon-magenta/60',
     hover: 'group-hover:text-neon-magenta',
     text: 'text-neon-magenta',
-    cardGradient: 'from-neon-magenta/15 via-neon-pink/10 to-neon-purple/15',
+    cardGradient: 'from-white/[0.06] to-transparent',
   },
   purple: {
-    bar: 'bg-neon-purple/60 shadow-[0_0_10px_rgba(191,0,255,0.3)]',
+    bar: 'bg-neon-purple/60',
     hover: 'group-hover:text-neon-purple',
     text: 'text-neon-purple',
-    cardGradient: 'from-neon-purple/15 via-neon-magenta/10 to-electric/15',
+    cardGradient: 'from-white/[0.06] to-transparent',
   },
 };
 
@@ -300,11 +300,11 @@ interface LinkCardProps {
 }
 
 const accentRingClasses: Record<LinkSection['accent'], string> = {
-  gold: 'group-hover:ring-gold-400/50 group-hover:shadow-[0_0_24px_rgba(255,215,0,0.18)]',
-  cyan: 'group-hover:ring-neon-cyan/50 group-hover:shadow-[0_0_24px_rgba(0,194,255,0.18)]',
-  bitcoin: 'group-hover:ring-bitcoin/50 group-hover:shadow-[0_0_24px_rgba(247,147,26,0.20)]',
-  magenta: 'group-hover:ring-neon-magenta/50 group-hover:shadow-[0_0_24px_rgba(255,0,255,0.18)]',
-  purple: 'group-hover:ring-neon-purple/50 group-hover:shadow-[0_0_24px_rgba(191,0,255,0.18)]',
+  gold: 'group-hover:ring-white/20',
+  cyan: 'group-hover:ring-white/20',
+  bitcoin: 'group-hover:ring-white/20',
+  magenta: 'group-hover:ring-white/20',
+  purple: 'group-hover:ring-white/20',
 };
 
 interface CardThumbnailProps {
@@ -511,7 +511,7 @@ function ProofSection() {
       aria-labelledby="proof-title"
     >
       <div className="flex items-center gap-4 mb-8">
-        <div className="w-1 h-14 rounded-full bg-neon-cyan/60 shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
+        <div className="w-1 h-14 rounded-full bg-neon-cyan/60" />
         <div>
           <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
             See it before you run it
@@ -615,16 +615,8 @@ function FollowOnXPromo() {
       transition={{ duration: 0.6 }}
       aria-labelledby="follow-x-title"
     >
-      <div
-        className="deco-corners relative rounded-3xl p-8 md:p-10 overflow-hidden
-                   bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/40
-                   border border-neon-purple/30 backdrop-blur-xl
-                   shadow-[0_0_40px_rgba(191,0,255,0.08)]"
-      >
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-purple to-transparent" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-neon-purple/10 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
-
-        <div className="relative z-10 max-w-2xl mx-auto text-center">
+      <div className="glass-dark rounded-2xl border border-white/10 p-8 md:p-10">
+        <div className="max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 text-neon-purple">
             <FaXTwitter className="w-5 h-5" aria-hidden="true" />
             <span className="text-xs font-mono uppercase tracking-widest">Where I&apos;m most active</span>
@@ -665,9 +657,6 @@ export function HomeHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Art Deco rotating sunburst behind the headline */}
-          <div className="deco-sunburst" aria-hidden="true" />
-
           <div className="relative z-10">
           <div
             className="inline-flex items-center gap-2 mb-8 glass-dark px-4 py-2 rounded-full
@@ -760,7 +749,7 @@ export function HomeHero() {
           aria-labelledby="start-here-title"
         >
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-1 h-12 bg-neon-cyan/60 rounded-full shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
+            <div className="w-1 h-12 bg-neon-cyan/60 rounded-full" />
             <div>
               <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
                 New here? Five seconds.
@@ -870,7 +859,7 @@ export function HomeHero() {
           aria-labelledby="about-preview-title"
         >
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-1 h-12 bg-gold-400/70 rounded-full shadow-[0_0_10px_rgba(255,215,0,0.35)]" />
+            <div className="w-1 h-12 bg-gold-400/70 rounded-full" />
             <div>
               <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
                 Behind the site
@@ -927,36 +916,20 @@ export function HomeHero() {
           transition={{ duration: 0.6 }}
           aria-labelledby="support-title"
         >
-          <div
-            className="relative rounded-3xl p-8 md:p-10 overflow-hidden
-                       bg-gradient-to-br from-cyber-800/80 via-cyber-black/90 to-night-purple/50
-                       border border-gold-500/40 backdrop-blur-xl
-                       shadow-[0_0_50px_rgba(255,215,0,0.1),inset_0_1px_0_rgba(255,215,0,0.1)]"
-          >
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
-
-            <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-gold-500/50 rounded-tl-lg" aria-hidden="true" />
-            <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-neon-cyan/50 rounded-tr-lg" aria-hidden="true" />
-            <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-neon-cyan/50 rounded-bl-lg" aria-hidden="true" />
-            <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-gold-500/50 rounded-br-lg" aria-hidden="true" />
-
-            <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-radial from-gold-500/15 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
-            <div className="absolute bottom-0 left-0 w-56 h-56 bg-gradient-radial from-neon-cyan/10 to-transparent blur-3xl pointer-events-none" aria-hidden="true" />
-
-            <div className="relative z-10 text-center">
+          <div className="glass-dark rounded-2xl border border-white/10 p-8 md:p-10">
+            <div className="text-center">
               <div className="inline-block mb-3">
-                <span className="text-4xl md:text-5xl drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]" aria-hidden="true">
+                <span className="text-4xl md:text-5xl" aria-hidden="true">
                   &#8383;
                 </span>
               </div>
               <h2
                 id="support-title"
-                className="text-2xl md:text-3xl font-display font-bold text-holo-gold mb-2
-                           drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]"
+                className="text-2xl md:text-3xl font-display font-bold text-gradient-gold mb-2"
               >
                 Value for value
               </h2>
-              <div className="accent-line w-24 mx-auto mb-5 rounded-full" />
+              <div className="deco-divider w-24 mx-auto mb-5" />
               <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 If something here saved you time, taught you something, or made you laugh, you can
                 send sats. Not required. I keep building either way. This is just how you
@@ -968,8 +941,7 @@ export function HomeHero() {
                   href="https://ko-fi.com/chepenik"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-premium inline-flex items-center gap-2 shadow-[0_0_20px_rgba(255,215,0,0.3)]
-                             hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]"
+                  className="btn-premium inline-flex items-center gap-2"
                 >
                   <Coffee className="w-5 h-5" aria-hidden="true" />
                   <span>Buy me a coffee</span>
@@ -979,7 +951,7 @@ export function HomeHero() {
                 <button
                   type="button"
                   onClick={() => setZapModalOpen(true)}
-                  className="btn-neon inline-flex items-center gap-2 hover:shadow-[0_0_25px_rgba(0,255,255,0.4)]"
+                  className="btn-neon inline-flex items-center gap-2"
                 >
                   <span className="text-xl" aria-hidden="true">&#9889;</span>
                   <span>Zap with Bitcoin</span>
