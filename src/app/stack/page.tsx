@@ -46,6 +46,13 @@ interface StackItem {
 
 const tools: StackItem[] = [
   {
+    name: 'Venice AI',
+    description:
+      'Private, unrestricted AI models. When you join Pro, you receive a $10 welcome bonus and I receive $10 in compute credits.',
+    href: 'https://venice.ai/chat?ref=pnaIip',
+    cta: 'Give $10, get $10',
+  },
+  {
     name: 'Gemini Credit Card',
     description:
       'The card I run everyday purchases through to stack sats automatically on every swipe.',

@@ -2,7 +2,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Orbitron, JetBrains_Mono, Cinzel } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
-import RainbowCursor from './components/RainbowCursor';
 import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 import './globals.css';
 
@@ -34,11 +33,11 @@ const cinzel = Cinzel({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
+    default: 'Binmucker | Useful Things for a More Sovereign Life',
     template: '%s | Binmucker',
   },
   description:
-    'The personal internet home base of Conor Chepenik. Free AI-powered local SEO audit, Bitcoin projects, a coloring book, a breathing app, a retro arcade game, and daily writing on Medium.',
+    'Conor Chepenik\'s internet home base: useful tools, daily writing, Bitcoin projects, breathing practice, experiments, and the ideas behind them.',
   keywords: [
     'Binmucker',
     'binmucker.com',
@@ -65,9 +64,9 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
+    title: 'Binmucker | Useful Things for a More Sovereign Life',
     description:
-      'The personal home base of Conor Chepenik. Free tools, daily essays, Bitcoin projects, health experiments, and a retro game.',
+      'Useful tools, daily writing, Bitcoin projects, breathing practice, and experiments by Conor Chepenik.',
     url: 'https://binmucker.com',
     siteName: 'Binmucker',
     images: [OG_IMAGE],
@@ -76,9 +75,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Binmucker | Tools, Writing, Bitcoin, and Weird Useful Internet Projects',
+    title: 'Binmucker | Useful Things for a More Sovereign Life',
     description:
-      'A builder\'s home base. Free tools, daily writing, and Bitcoin projects. By Conor Chepenik.',
+      'Useful tools, daily writing, Bitcoin projects, and experiments by Conor Chepenik.',
     creator: '@ConorChepenik',
     images: [OG_IMAGE_URL],
   },
@@ -176,7 +175,7 @@ const jsonLd = {
       name: 'Featured Projects & Resources',
       description: 'Curated collection of projects, tools, and resources by Conor Chepenik.',
       url: 'https://binmucker.com',
-      numberOfItems: 7,
+      numberOfItems: 12,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'About', url: 'https://binmucker.com/about' },
         { '@type': 'ListItem', position: 2, name: 'Blog', url: 'https://binmucker.com/blog' },
@@ -185,6 +184,11 @@ const jsonLd = {
         { '@type': 'ListItem', position: 5, name: 'Saylorscope', url: 'https://www.saylorscope.com/' },
         { '@type': 'ListItem', position: 6, name: 'Medium Blog', url: 'https://medium.com/@chepenikconor' },
         { '@type': 'ListItem', position: 7, name: 'Nostr Profile', url: 'https://primal.net/p/npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y' },
+        { '@type': 'ListItem', position: 8, name: 'Breathe Better', url: 'https://binmucker.com/breathe' },
+        { '@type': 'ListItem', position: 9, name: 'Space Invaders', url: 'https://binmucker.com/space-invaders' },
+        { '@type': 'ListItem', position: 10, name: 'GuitarGui', url: 'https://guitargui.com/' },
+        { '@type': 'ListItem', position: 11, name: 'Venice AI', url: 'https://venice.ai/chat?ref=pnaIip' },
+        { '@type': 'ListItem', position: 12, name: 'Gemini Credit Card', url: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94' },
       ],
     },
   ],
@@ -202,7 +206,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {children}
-        <RainbowCursor />
         <Analytics />
       </body>
     </html>
