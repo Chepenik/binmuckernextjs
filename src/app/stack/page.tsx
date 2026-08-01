@@ -1,29 +1,20 @@
-import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArrowUpRight, Bot, CreditCard, Server, ShieldCheck, type LucideIcon } from 'lucide-react';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
-import { LavaBackground } from '@/app/components/LavaBackground';
 import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'My Stack',
   description:
-    'The tools I actually use and earn from — the credit card, hardware wallet, hosting, and services behind Binmucker. Honest affiliate picks, no fluff.',
-  keywords: [
-    'Bitcoin tools',
-    'affiliate',
-    'Gemini credit card',
-    'CrowdHealth',
-    'Hostinger',
-    'VPS hosting',
-  ],
-  alternates: { canonical: 'https://binmucker.com/stack' },
+    'Services and products Conor Chepenik actually uses, with clear referral disclosures for Venice AI, Gemini Credit Card, CrowdHealth, and Hostinger.',
+  keywords: ['Conor Chepenik stack', 'Bitcoin tools', 'Venice AI referral', 'Gemini credit card', 'CrowdHealth', 'Hostinger'],
+  alternates: { canonical: '/stack' },
   openGraph: {
     title: 'My Stack | Binmucker',
-    description:
-      'The tools I actually use and earn from — the credit card, hardware wallet, hosting, and services behind Binmucker.',
-    url: 'https://binmucker.com/stack',
+    description: 'Services and products I actually use, with clear referral disclosures and no mystery recommendations.',
+    url: 'https://www.binmucker.com/stack',
     siteName: 'Binmucker',
     type: 'website',
     images: [OG_IMAGE],
@@ -31,8 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'My Stack | Binmucker',
-    description:
-      'The tools I actually use and earn from. Honest affiliate picks, priced in trust.',
+    description: 'Services and products I actually use, with clear referral disclosures.',
     images: [OG_IMAGE_URL],
   },
 };
@@ -40,164 +30,109 @@ export const metadata: Metadata = {
 interface StackItem {
   name: string;
   description: string;
+  disclosure: string;
   href: string;
   cta: string;
+  icon: LucideIcon;
+  tone: string;
 }
 
 const tools: StackItem[] = [
   {
     name: 'Venice AI',
-    description:
-      'Private, unrestricted AI models. When you join Pro, you receive a $10 welcome bonus and I receive $10 in compute credits.',
+    description: 'Private AI models and a tool I use when I want a different approach to working with AI.',
+    disclosure: 'Join Pro through this link and you receive a $10 welcome bonus; I receive $10 in compute credits.',
     href: 'https://venice.ai/chat?ref=pnaIip',
     cta: 'Give $10, get $10',
+    icon: Bot,
+    tone: 'stack-card-venice',
   },
   {
     name: 'Gemini Credit Card',
-    description:
-      'The card I run everyday purchases through to stack sats automatically on every swipe.',
+    description: 'The card I use for everyday purchases to earn Bitcoin rewards automatically.',
+    disclosure: 'This is my referral application link. Provider terms, eligibility, and rewards can change.',
     href: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
-    cta: 'Apply with my link',
+    cta: 'View the card',
+    icon: CreditCard,
+    tone: 'stack-card-gemini',
   },
   {
     name: 'CrowdHealth',
-    description:
-      'What my household actually uses instead of traditional health insurance — and it has worked.',
+    description: 'The community-powered health funding option my household actually uses.',
+    disclosure: 'This is a referral link. Review CrowdHealth’s current terms and model before deciding whether it fits you.',
     href: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
-    cta: 'Join CrowdHealth',
+    cta: 'Explore CrowdHealth',
+    icon: ShieldCheck,
+    tone: 'stack-card-crowd',
   },
   {
     name: 'Hostinger',
-    description:
-      'Where I host side projects when I want cheap, fast, and reliable with a free domain and email.',
+    description: 'Hosting I use for side projects when I want a straightforward place to get something online.',
+    disclosure: 'This is an affiliate link. Plans, discounts, and included features are set by Hostinger and can change.',
     href: 'https://hostinger.com?REFERRALCODE=1CONOR59',
-    cta: 'Get 20% off',
-  },
-  // TODO: replace href="#" with real affiliate referral link once enrolled.
-  {
-    name: 'VPS Provider',
-    description:
-      'Where I spin up nodes and always-on services I fully control, away from the big clouds.',
-    href: '#',
-    cta: 'Coming soon',
+    cta: 'See the current offer',
+    icon: Server,
+    tone: 'stack-card-hostinger',
   },
 ];
 
 export default function StackPage() {
   return (
-    <div className="min-h-screen bg-cyber-black">
-      <LavaBackground />
-      <div className="relative z-10">
-        <Header />
-        <main className="flex-grow pt-[80px] px-4">
-          <section className="max-w-6xl mx-auto px-4 md:px-8 py-16 md:py-20">
-            {/* Header */}
-            <div className="max-w-3xl mb-10">
-              <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-3">
-                Value for value, transparent
-              </p>
-              <h1 className="heading-display text-[#E6EEF3] mb-5">
-                My Stack &mdash;{' '}
-                <span className="text-gradient-gold">tools I actually use and earn from.</span>
-              </h1>
-
-              {/* Affiliate disclosure (copied from the homepage) */}
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Affiliate disclosure. The links on this page are affiliate links. If you sign up
-                or buy through them, I may earn a commission at no extra cost to you. I only list
-                products I actually use or have used, and I will not recommend something just
-                because it pays. See the{' '}
-                <Link href="/terms" className="text-neon-cyan hover:underline">
-                  Terms of Service
-                </Link>{' '}
-                for the full version.
-              </p>
-            </div>
-
-            {/* Card grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {tools.map((tool) => {
-                const isPlaceholder = tool.href === '#';
-
-                const cardInner = (
-                  <>
-                    <div
-                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neon-purple/15 via-neon-magenta/10 to-electric/15
-                                 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      aria-hidden="true"
-                    />
-                    <div className="relative z-10 flex h-full flex-col">
-                      <div className="flex items-center flex-wrap gap-2 mb-3">
-                        <span
-                          className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
-                                     bg-gold-500/10 text-gold-400 border border-gold-500/30"
-                        >
-                          Affiliate
-                        </span>
-                        {isPlaceholder ? (
-                          <span className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
-                                           bg-white/5 text-gray-400 border border-white/15">
-                            Soon
-                          </span>
-                        ) : (
-                          <span className="text-[10px] text-gray-500 uppercase tracking-widest ml-auto">
-                            External
-                          </span>
-                        )}
-                      </div>
-
-                      <h2 className="font-semibold text-white text-lg leading-tight mb-2 group-hover:text-neon-purple transition-colors duration-300">
-                        {tool.name}
-                      </h2>
-                      <p className="text-sm text-gray-400 leading-relaxed flex-1 group-hover:text-gray-300 transition-colors duration-300">
-                        {tool.description}
-                      </p>
-
-                      <span
-                        className={`mt-4 inline-flex items-center gap-1 text-sm font-semibold ${
-                          isPlaceholder
-                            ? 'text-gray-500'
-                            : 'text-neon-cyan group-hover:gap-2 transition-all duration-300'
-                        }`}
-                      >
-                        {tool.cta}
-                        {!isPlaceholder && <span aria-hidden="true">&rarr;</span>}
-                      </span>
-                    </div>
-                  </>
-                );
-
-                // Placeholders render as a non-interactive card so we never ship a
-                // dead href="#" link that opens a blank tab.
-                if (isPlaceholder) {
-                  return (
-                    <div
-                      key={tool.name}
-                      className="group relative block card-premium h-full"
-                    >
-                      {cardInner}
-                    </div>
-                  );
-                }
-
-                return (
-                  <a
-                    key={tool.name}
-                    href={tool.href}
-                    target="_blank"
-                    rel="sponsored noopener"
-                    className="group relative block card-premium h-full focus-visible:outline-none"
-                    aria-label={`${tool.name}. Affiliate link.`}
-                  >
-                    {cardInner}
-                  </a>
-                );
-              })}
-            </div>
+    <div className="home-page min-h-screen">
+      <Header />
+      <main>
+        <div className="home-shell stack-shell">
+          <section className="stack-hero" aria-labelledby="stack-title">
+            <p className="home-eyebrow">Used by me · disclosed to you</p>
+            <h1 id="stack-title">My stack, without the mystery endorsements.</h1>
+            <p>
+              These are services and products I actually use. Every card explains what it is,
+              why it is here, and what I may receive if you use the link.
+            </p>
           </section>
-        </main>
-        <Footer />
-      </div>
+
+          <aside className="stack-disclosure" aria-label="Affiliate disclosure">
+            <strong>How referrals work</strong>
+            <p>
+              These links may earn me credit or compensation at no extra cost to you. A listing is
+              not a promise that a product is right for everyone. Check the provider’s current terms
+              before signing up. Read the <Link href="/terms">full disclosure</Link>.
+            </p>
+          </aside>
+
+          <section className="stack-grid" aria-label="Services and products Conor uses">
+            {tools.map(({ name, description, disclosure, href, cta, icon: Icon, tone }) => (
+              <a
+                key={name}
+                href={href}
+                target="_blank"
+                rel="sponsored noopener noreferrer"
+                className={`stack-card ${tone}`}
+              >
+                <span className="stack-card-top">
+                  <span className="stack-card-icon"><Icon size={22} strokeWidth={1.5} aria-hidden="true" /></span>
+                  <span className="home-chip">Referral</span>
+                </span>
+                <span className="stack-card-copy">
+                  <strong>{name}</strong>
+                  <span>{description}</span>
+                </span>
+                <small>{disclosure}</small>
+                <span className="stack-card-link">{cta} <ArrowUpRight size={17} aria-hidden="true" /></span>
+              </a>
+            ))}
+          </section>
+
+          <section className="stack-close" aria-labelledby="stack-close-title">
+            <div>
+              <p className="home-eyebrow">The complete drawer</p>
+              <h2 id="stack-close-title">Looking for the tools I built instead?</h2>
+            </div>
+            <Link href="/#directory">Browse every link <ArrowUpRight size={17} aria-hidden="true" /></Link>
+          </section>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }

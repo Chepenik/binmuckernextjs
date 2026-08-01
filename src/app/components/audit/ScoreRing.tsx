@@ -42,13 +42,12 @@ export function ScoreRing({ score, size = 200 }: ScoreRingProps) {
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset: offset }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
-          style={{ filter: `drop-shadow(0 0 8px ${color})` }}
         />
       </svg>
       {/* Center text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <motion.span
-          className="font-mono text-5xl font-bold"
+          className="text-5xl font-bold"
           style={{ color }}
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}

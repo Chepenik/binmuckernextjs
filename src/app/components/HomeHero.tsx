@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -33,8 +34,9 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { FaGithub, FaMedium, FaXTwitter, FaYoutube } from 'react-icons/fa6';
-import ZapModal from './ZapModal';
-import RainbowCursor from './RainbowCursor';
+
+const RainbowCursor = dynamic(() => import('./RainbowCursor'), { ssr: false });
+const ZapModal = dynamic(() => import('./ZapModal'), { ssr: false });
 
 type Category = 'Build' | 'Bitcoin' | 'Writing' | 'Play' | 'Stack' | 'Connect';
 
@@ -267,6 +269,7 @@ export function HomeHero() {
   const [isZapModalOpen, setZapModalOpen] = useState(false);
   const [weirdMode, setWeirdMode] = useState(false);
   const [easterMessage, setEasterMessage] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const dateKey = new Date().toISOString().slice(0, 10);
@@ -303,6 +306,8 @@ export function HomeHero() {
     let messageTimer = 0;
 
     const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.matches('input, textarea, select, [contenteditable="true"]')) return;
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       position = key === sequence[position] ? position + 1 : key === sequence[0] ? 1 : 0;
       if (position === sequence.length) {
@@ -318,6 +323,23 @@ export function HomeHero() {
       window.removeEventListener('keydown', onKeyDown);
       window.clearTimeout(messageTimer);
     };
+  }, []);
+
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const isTyping = target?.matches('input, textarea, select, [contenteditable="true"]');
+      const isShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
+      const isSlash = event.key === '/' && !isTyping;
+      if (!isShortcut && !isSlash) return;
+      event.preventDefault();
+      searchRef.current?.focus();
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      searchRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    };
+
+    window.addEventListener('keydown', focusSearch);
+    return () => window.removeEventListener('keydown', focusSearch);
   }, []);
 
   const filteredLinks = useMemo(() => {
@@ -359,8 +381,9 @@ export function HomeHero() {
   }
 
   function toggleWeirdMode() {
-    setWeirdMode((current) => !current);
-    setEasterMessage(weirdMode ? 'Back to quiet mode.' : 'Weird mode engaged. Click anywhere.');
+    const next = !weirdMode;
+    setWeirdMode(next);
+    setEasterMessage(next ? 'Weird mode engaged. Click anywhere.' : 'Back to quiet mode.');
     window.setTimeout(() => setEasterMessage(''), 2800);
   }
 
@@ -371,14 +394,14 @@ export function HomeHero() {
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-kicker">
             <span className="home-status-dot" aria-hidden="true" />
-            Conor Chepenik · Building in public
+            Conor Chepenik · Builder, daily writer, Bitcoiner
           </div>
           <h1 id="home-title">
             Useful things for a <span>more sovereign life.</span>
           </h1>
           <p className="home-intro">
-            I write every day and build tools around Bitcoin, better businesses, clearer thinking,
-            and feeling good in your own body. This is the map.
+            I build small, useful software, write every day to think clearly, and explore Bitcoin,
+            better businesses, health, and the weird edges between them. This is where it all lives.
           </p>
           <div className="home-hero-actions">
             <a href="#directory" className="home-primary-button">
@@ -484,11 +507,13 @@ export function HomeHero() {
               <Search size={17} aria-hidden="true" />
               <span className="sr-only">Search links</span>
               <input
+                ref={searchRef}
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Find a project, idea, or tool"
               />
+              {!query && <kbd aria-hidden="true">⌘ K</kbd>}
               {query && (
                 <button type="button" onClick={() => setQuery('')} aria-label="Clear search">
                   <X size={15} />
@@ -510,7 +535,10 @@ export function HomeHero() {
             </div>
           </div>
 
-          <div className="home-link-list" aria-live="polite">
+          <p className="sr-only" role="status" aria-live="polite">
+            {filteredLinks.length} {filteredLinks.length === 1 ? 'link' : 'links'} shown.
+          </p>
+          <div className="home-link-list">
             {filteredLinks.map((item) => {
               const Icon = item.icon;
               const external = isExternal(item.href);
@@ -572,7 +600,7 @@ export function HomeHero() {
               <div className="home-panel-heading">
                 <div>
                   <span>Today&apos;s loop</span>
-                  <p>{Object.values(completed).filter(Boolean).length} of {habits.length} complete</p>
+                  <p aria-live="polite">{Object.values(completed).filter(Boolean).length} of {habits.length} complete</p>
                 </div>
                 <span className="home-loop-count">{Object.values(completed).filter(Boolean).length}/{habits.length}</span>
               </div>
@@ -607,7 +635,7 @@ export function HomeHero() {
                 aria-label="Private idea note"
               />
               <div className="home-note-footer">
-                <span>Saved only on this device.</span>
+                <span role="status" aria-live="polite">{saved ? 'Thought saved on this device.' : 'Saved only on this device.'}</span>
                 <button type="button" onClick={saveNote}>
                   {saved ? <><Check size={14} /> Saved</> : 'Save thought'}
                 </button>

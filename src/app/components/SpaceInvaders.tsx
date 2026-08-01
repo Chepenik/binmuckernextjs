@@ -288,16 +288,16 @@ const SpaceInvaders: React.FC = () => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [displayScore, setDisplayScore] = useState(0);
-  const [displayLives, setDisplayLives] = useState(3);
+  const [, setDisplayLives] = useState(3);
   const [gameOver, setGameOver] = useState(false);
   const [displayLevel, setDisplayLevel] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
+  const [, setIsPaused] = useState(false);
   const [gameWon, setGameWon] = useState(false);
-  const [displayCombo, setDisplayCombo] = useState(0);
+  const [, setDisplayCombo] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [displayShield, setDisplayShield] = useState(false);
-  const [displayPowerUp, setDisplayPowerUp] = useState<string | null>(null);
-  const [displayPowerUpTimer, setDisplayPowerUpTimer] = useState(0);
+  const [, setDisplayShield] = useState(false);
+  const [, setDisplayPowerUp] = useState<string | null>(null);
+  const [, setDisplayPowerUpTimer] = useState(0);
   const [isEndless, setIsEndless] = useState(false);
   const [endlessWave, setEndlessWave] = useState(0);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -1648,7 +1648,6 @@ const SpaceInvaders: React.FC = () => {
       clearInterval(shootInterval);
       cancelAnimationFrame(animationFrame);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, togglePause, startGame, unlockAchievement]);
 
   // Touch control handlers (use refs to avoid re-running game loop effect)
@@ -1663,11 +1662,10 @@ const SpaceInvaders: React.FC = () => {
   const unlockedCount = achievements.filter(a => a.unlocked).length;
 
   return (
-    <div className="flex flex-col items-center">
-      {/* Achievement notification */}
+    <div className="space-invaders-game flex flex-col items-center">
       {newAchievement && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
-          <div className="bg-gradient-to-r from-yellow-500 to-amber-500 text-black px-6 py-3 rounded-lg shadow-lg flex items-center gap-3">
+        <div className="game-achievement-toast" role="status" aria-live="polite">
+          <div>
             <span className="text-2xl">{newAchievement.icon}</span>
             <div>
               <div className="font-bold">Achievement Unlocked!</div>
@@ -1677,23 +1675,22 @@ const SpaceInvaders: React.FC = () => {
         </div>
       )}
 
-      {/* Achievements modal */}
       {showAchievements && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-cyber-900 rounded-xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto border border-gold-500/30">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-gold-400">Achievements ({unlockedCount}/{achievements.length})</h3>
-              <button onClick={() => setShowAchievements(false)} className="text-gray-400 hover:text-white text-2xl">&times;</button>
+        <div className="ui-dialog-backdrop">
+          <div className="ui-dialog game-achievements-dialog" role="dialog" aria-modal="true" aria-labelledby="achievements-title">
+            <div className="game-achievements-heading">
+              <h3 id="achievements-title">Achievements <span>{unlockedCount}/{achievements.length}</span></h3>
+              <button type="button" onClick={() => setShowAchievements(false)} className="ui-icon-button" aria-label="Close achievements">&times;</button>
             </div>
-            <div className="space-y-3">
+            <div className="game-achievements-list">
               {achievements.map(a => (
-                <div key={a.id} className={`flex items-center gap-3 p-3 rounded-lg ${a.unlocked ? 'bg-gold-500/20' : 'bg-gray-800/50 opacity-50'}`}>
+                <div key={a.id} className={a.unlocked ? 'is-unlocked' : ''}>
                   <span className="text-2xl">{a.icon}</span>
                   <div>
-                    <div className={`font-semibold ${a.unlocked ? 'text-gold-400' : 'text-gray-400'}`}>{a.name}</div>
-                    <div className="text-sm text-gray-400">{a.description}</div>
+                    <strong>{a.name}</strong>
+                    <p>{a.description}</p>
                   </div>
-                  {a.unlocked && <span className="ml-auto text-green-400">&#10003;</span>}
+                  {a.unlocked && <span className="game-unlocked-mark" aria-label="Unlocked">&#10003;</span>}
                 </div>
               ))}
             </div>
@@ -1702,29 +1699,32 @@ const SpaceInvaders: React.FC = () => {
       )}
 
       {!isPlaying && !gameOver && !gameWon ? (
-        <div className="text-center mb-4">
-          <p className="text-gray-300 mb-2">Arrow keys to move | Space to shoot | P to pause</p>
-          <p className="text-gold-400 mb-2 text-sm">Collect power-ups | Build combos | Hunt UFOs for bonus points!</p>
+        <div className="game-launcher">
+          <p>Arrow keys to move · Space to shoot · P to pause</p>
+          <p className="game-launcher-note">Collect power-ups · Build combos · Hunt UFOs</p>
           {highScore > 0 && (
-            <p className="text-neon-cyan mb-4 text-lg">High Score: {highScore.toLocaleString()}</p>
+            <p className="game-high-score">High score: {highScore.toLocaleString()}</p>
           )}
-          <div className="flex gap-4 justify-center flex-wrap">
+          <div className="game-launch-actions">
             <button
+              type="button"
               onClick={() => startGame(false)}
-              className="btn-premium px-8 py-3 text-lg"
+              className="ui-button"
             >
               Start Game
             </button>
             <button
+              type="button"
               onClick={() => startGame(true)}
-              className="btn-gold-outline px-6 py-3"
+              className="ui-button-secondary"
             >
               Endless Mode
             </button>
           </div>
           <button
+            type="button"
             onClick={() => setShowAchievements(true)}
-            className="mt-4 text-sm text-gray-400 hover:text-gold-400 transition-colors"
+            className="game-achievements-trigger"
           >
             Achievements ({unlockedCount}/{achievements.length})
           </button>
@@ -1733,51 +1733,56 @@ const SpaceInvaders: React.FC = () => {
 
       <canvas
         ref={canvasRef}
-        className="bg-cyber-black border-2 border-gold-500/30 rounded-lg shadow-neon-gold touch-none"
+        className="game-canvas touch-none"
       />
 
-      {/* Mobile touch controls */}
       {isPlaying && !gameOver && !gameWon && (
         <>
-          <div className="md:hidden flex justify-center gap-4 mt-4 select-none">
+          <div className="game-touch-controls md:hidden">
             <button
+              type="button"
               onTouchStart={() => handleTouchStart('left')}
               onTouchEnd={() => handleTouchEnd('left')}
               onMouseDown={() => handleTouchStart('left')}
               onMouseUp={() => handleTouchEnd('left')}
               onMouseLeave={() => handleTouchEnd('left')}
-              className="w-16 h-16 rounded-full bg-cyber-700 border-2 border-neon-cyan/50 flex items-center justify-center text-2xl active:bg-neon-cyan/30 touch-none"
+              className="game-touch-button touch-none"
+              aria-label="Move left"
             >
               &#8592;
             </button>
             <button
+              type="button"
               onTouchStart={() => handleTouchStart('shoot')}
               onTouchEnd={() => handleTouchEnd('shoot')}
               onMouseDown={() => handleTouchStart('shoot')}
               onMouseUp={() => handleTouchEnd('shoot')}
               onMouseLeave={() => handleTouchEnd('shoot')}
-              className="w-20 h-16 rounded-full bg-red-600/80 border-2 border-red-400/50 flex items-center justify-center text-xl font-bold active:bg-red-500 touch-none"
+              className="game-touch-button game-touch-fire touch-none"
+              aria-label="Fire"
             >
               FIRE
             </button>
             <button
+              type="button"
               onTouchStart={() => handleTouchStart('right')}
               onTouchEnd={() => handleTouchEnd('right')}
               onMouseDown={() => handleTouchStart('right')}
               onMouseUp={() => handleTouchEnd('right')}
               onMouseLeave={() => handleTouchEnd('right')}
-              className="w-16 h-16 rounded-full bg-cyber-700 border-2 border-neon-cyan/50 flex items-center justify-center text-2xl active:bg-neon-cyan/30 touch-none"
+              className="game-touch-button touch-none"
+              aria-label="Move right"
             >
               &#8594;
             </button>
           </div>
-          <div className="text-gray-400 mt-4 text-center text-sm hidden md:block">
+          <div className="game-desktop-controls hidden md:block">
             <p>&#8592; &#8594; Move | Space: Shoot | P: Pause</p>
             {isEndless && (
-              <p className="text-purple-400 font-bold mt-2">Endless Mode - Wave {endlessWave}</p>
+              <p className="game-state-note">Endless mode · Wave {endlessWave}</p>
             )}
             {displayLevel === 5 && !isEndless && (
-              <p className="text-gold-400 font-bold mt-2">Final Level - Defeat the Bosses!</p>
+              <p className="game-state-note">Final level · Defeat the bosses</p>
             )}
           </div>
         </>
@@ -1787,4 +1792,3 @@ const SpaceInvaders: React.FC = () => {
 };
 
 export default SpaceInvaders;
-

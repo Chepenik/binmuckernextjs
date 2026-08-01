@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { AuditForm } from './AuditForm';
 import { LoadingState } from './LoadingState';
 import { AuditResults } from './AuditResults';
@@ -45,30 +44,16 @@ export function AuditHero() {
   };
 
   return (
-    <section id="audit" className="py-16 md:py-24 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section id="audit">
+      <div className="site-shell route-main audit-shell">
         {/* Section header — always visible */}
-        <motion.div
-          className="relative text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="deco-sunburst" aria-hidden="true" />
-          <div className="relative z-10">
-            <p className="text-neon-cyan font-mono text-sm tracking-widest uppercase mb-3">
-              Free AI-Powered Analysis
-            </p>
-            <h1 className="heading-display text-deco-gold mb-4">
-              Local Business Audit
-            </h1>
-            <p className="text-gray-400 max-w-xl mx-auto">
-              Get a comprehensive audit of your local business presence in seconds.
-              Scored across 5-6 key categories with actionable recommendations.
-            </p>
-            <div className="deco-divider w-40 mx-auto mt-6" />
-          </div>
-        </motion.div>
+        <header className="route-hero route-hero-centered audit-hero">
+          <p className="route-eyebrow">Free tool · no signup</p>
+          <h1 className="route-title">See how discoverable your business really is.</h1>
+          <p className="route-lede">
+            Review local search, reputation, content, technical SEO, and AI readiness. Get a clear score and a prioritized next move.
+          </p>
+        </header>
 
         {/* State machine */}
         {state === 'idle' && <AuditForm onSubmit={handleSubmit} />}
@@ -80,16 +65,12 @@ export function AuditHero() {
         )}
 
         {state === 'error' && (
-          <motion.div
-            className="text-center py-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <p className="text-laser text-lg mb-4">{error}</p>
-            <button onClick={handleReset} className="btn-neon px-6 py-3">
+          <div className="audit-error" role="alert">
+            <p>{error}</p>
+            <button onClick={handleReset} className="ui-button-secondary">
               Try Again
             </button>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

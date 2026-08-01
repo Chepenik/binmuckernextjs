@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Privacy Policy | Binmucker',
     description: 'Privacy Policy for Binmucker. How we collect, use, and protect your information.',
-    url: 'https://binmucker.com/privacy',
+    url: 'https://www.binmucker.com/privacy',
   },
   twitter: {
     card: 'summary',

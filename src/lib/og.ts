@@ -4,7 +4,7 @@
 // `openGraph` object it replaces the root's entirely, dropping the inherited
 // image. So every page that sets `openGraph` must re-declare `images` with this
 // constant, or its shared links render as a bare URL with no preview card.
-export const OG_IMAGE_URL = 'https://binmucker.com/og.png';
+export const OG_IMAGE_URL = 'https://www.binmucker.com/og.png';
 
 export const OG_IMAGE = {
   url: OG_IMAGE_URL,

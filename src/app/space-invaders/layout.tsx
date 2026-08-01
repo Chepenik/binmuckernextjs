@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'Space Invaders Game',
@@ -11,13 +12,15 @@ export const metadata: Metadata = {
     title: 'Space Invaders Game | Binmucker',
     description:
       'Play Space Invaders in your browser. Retro arcade fun with power-ups, combos, and boss fights.',
-    url: 'https://binmucker.com/space-invaders',
+    url: 'https://www.binmucker.com/space-invaders',
+    images: [OG_IMAGE],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Space Invaders Game | Binmucker',
     description:
       'Play Space Invaders in your browser. Retro arcade fun with power-ups, combos, and boss fights.',
+    images: [OG_IMAGE_URL],
   },
 };
 

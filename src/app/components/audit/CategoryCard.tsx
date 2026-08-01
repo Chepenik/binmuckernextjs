@@ -21,41 +21,39 @@ export function CategoryCard({ category }: CategoryCardProps) {
   const color = getScoreColor(category.score);
 
   return (
-    <motion.div
-      className="card-premium cursor-pointer"
+    <motion.button
+      type="button"
+      className="audit-category ui-card ui-card-interactive"
       onClick={() => setIsOpen(!isOpen)}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsOpen(!isOpen); } }}
-      role="button"
-      tabIndex={0}
       aria-expanded={isOpen}
-      aria-label={`${category.category} - Score ${category.score}. Click to ${isOpen ? 'collapse' : 'expand'} details.`}
+      aria-label={`${category.category}. Score ${category.score}. ${isOpen ? 'Collapse' : 'Expand'} details.`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{category.emoji}</span>
-          <h3 className="font-semibold text-gray-200">{category.category}</h3>
+      <div className="audit-category-heading">
+        <div>
+          <span aria-hidden="true">{category.emoji}</span>
+          <h3>{category.category}</h3>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="font-mono font-bold text-lg" style={{ color }}>
+        <div className="audit-category-score">
+          <strong style={{ color }}>
             {category.score}
-          </span>
+          </strong>
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.2 }}
           >
-            <ChevronDown size={20} className="text-gray-500" />
+            <ChevronDown size={18} />
           </motion.div>
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="mt-3 h-1.5 rounded-full bg-white/5 overflow-hidden">
+      <div className="audit-progress">
         <motion.div
-          className="h-full rounded-full"
+          className="audit-progress-value"
           style={{ backgroundColor: color }}
           initial={{ width: 0 }}
           animate={{ width: `${category.score}%` }}
@@ -73,19 +71,19 @@ export function CategoryCard({ category }: CategoryCardProps) {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="mt-4 space-y-3 pt-4 border-t border-gold-500/10">
+            <div className="audit-category-actions">
               {category.actions.map((action, i) => {
                 const priority = priorityColors[action.priority] || priorityColors.medium;
                 return (
-                  <div key={i} className="flex items-start gap-3">
+                  <div key={i} className="audit-action-row">
                     <span
-                      className={`${priority.bg} ${priority.text} text-xs font-mono font-semibold px-2 py-0.5 rounded mt-0.5 shrink-0`}
+                      className={`${priority.bg} ${priority.text} audit-priority`}
                     >
                       {priority.label}
                     </span>
                     <div>
-                      <p className="text-gray-300 text-sm">{action.action}</p>
-                      <p className="text-gray-500 text-xs mt-0.5">{action.estimatedImpact}</p>
+                      <p>{action.action}</p>
+                      <small>{action.estimatedImpact}</small>
                     </div>
                   </div>
                 );
@@ -94,6 +92,6 @@ export function CategoryCard({ category }: CategoryCardProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </motion.button>
   );
 }

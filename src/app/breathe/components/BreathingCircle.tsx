@@ -10,15 +10,6 @@ interface BreathingCircleProps {
   isRunning: boolean;
 }
 
-function getBorderColor(phase: Phase): string {
-  switch (phase) {
-    case 'inhale': return 'border-blue-400';
-    case 'hold': return 'border-yellow-400';
-    case 'exhale': return 'border-purple-400';
-    case 'holdAfterExhale': return 'border-gray-400';
-  }
-}
-
 export default function BreathingCircle({ phase, timeRemaining, phaseDuration, isRunning }: BreathingCircleProps) {
   const config = PHASE_CONFIG[phase];
   const progress = isRunning && phaseDuration > 0 ? 1 - timeRemaining / phaseDuration : 0;
@@ -38,12 +29,13 @@ export default function BreathingCircle({ phase, timeRemaining, phaseDuration, i
   return (
     <div className="flex items-center justify-center">
       <motion.div
-        className={`relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-full
-                    bg-cyber-black/60 backdrop-blur-md border-2 ${getBorderColor(phase)}
-                    flex flex-col items-center justify-center`}
+        className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-full
+                   bg-[#111216] border border-white/10 flex flex-col items-center justify-center"
         animate={{
           scale: currentScale,
-          boxShadow: `0 0 40px ${config.glowColor}, 0 0 80px ${config.glowColor}`,
+          boxShadow: isRunning
+            ? '0 0 0 12px rgba(143, 181, 244, 0.035), 0 24px 70px rgba(0, 0, 0, 0.34)'
+            : '0 18px 60px rgba(0, 0, 0, 0.28)',
         }}
         transition={{
           scale: { duration: 0.1, ease: 'linear' },

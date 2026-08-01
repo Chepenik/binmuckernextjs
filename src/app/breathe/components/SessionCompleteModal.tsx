@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import { useDialogFocus } from '@/app/hooks/useDialogFocus';
 
 interface SessionCompleteModalProps {
   isOpen: boolean;
@@ -35,19 +35,13 @@ export default function SessionCompleteModal({
   onAgain,
   onClose,
 }: SessionCompleteModalProps) {
-  // Escape key to close
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isOpen, onClose]);
+  const dialogRef = useDialogFocus<HTMLDivElement>(isOpen, onClose);
 
   const handleShare = async () => {
     const text = `Just completed a ${formatDuration(duration)} breathing session with ${patternName} on binmucker.com/breathe`;
     if (navigator.share) {
       try {
-        await navigator.share({ text, url: 'https://binmucker.com/breathe' });
+        await navigator.share({ text, url: 'https://www.binmucker.com/breathe' });
       } catch {
         // User cancelled
       }
@@ -60,56 +54,52 @@ export default function SessionCompleteModal({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="ui-dialog-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0" onClick={onClose} />
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Session complete"
-            className="relative bg-cyber-black border border-white/10 rounded-2xl p-8 max-w-sm w-full text-center"
+            aria-labelledby="session-complete-title"
+            className="ui-dialog text-center"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
           >
-            <div className="flex justify-center mb-4">
-              <CheckCircle className="w-16 h-16 text-green-400" />
+            <div className="ui-dialog-icon">
+              <CheckCircle size={28} strokeWidth={1.5} />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Well done!</h2>
-            <p className="text-gray-400 mb-6">{getEncouragement(duration)}</p>
+            <h2 id="session-complete-title">Well done.</h2>
+            <p className="mt-3">{getEncouragement(duration)}</p>
 
-            <div className="flex justify-center gap-8 mb-6">
+            <div className="session-stats">
               <div>
-                <div className="text-2xl font-bold font-mono text-white">{formatDuration(duration)}</div>
-                <div className="text-sm text-gray-500">Duration</div>
+                <strong>{formatDuration(duration)}</strong>
+                <span>Duration</span>
               </div>
               <div>
-                <div className="text-2xl font-bold font-mono text-white">{cycles}</div>
-                <div className="text-sm text-gray-500">Cycles</div>
+                <strong>{cycles}</strong>
+                <span>Cycles</span>
               </div>
             </div>
 
-            <div className="text-sm text-gray-500 mb-6">{patternName}</div>
+            <div className="session-pattern">{patternName}</div>
 
-            <div className="flex gap-3">
+            <div className="ui-dialog-actions">
               <button
                 onClick={onAgain}
-                className="flex-1 px-6 py-3 rounded-xl font-semibold text-white
-                           bg-gradient-to-r from-pink-500 to-violet-500
-                           hover:from-pink-400 hover:to-violet-400
-                           transition-all duration-200"
+                className="ui-button"
               >
                 Again
               </button>
               <button
                 onClick={handleShare}
-                className="flex-1 px-6 py-3 rounded-xl font-semibold text-white
-                           border border-white/20 hover:bg-white/10
-                           transition-all duration-200"
+                className="ui-button-secondary"
               >
                 Share
               </button>

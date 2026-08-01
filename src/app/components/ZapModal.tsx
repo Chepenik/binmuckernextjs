@@ -1,144 +1,124 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, ExternalLink, X, Check } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { Check, Copy, ExternalLink, X, Zap } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ZapModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ZapModal: React.FC<ZapModalProps> = ({ isOpen, onClose }) => {
+export default function ZapModal({ isOpen, onClose }: ZapModalProps) {
   const btcAddress = 'bc1qfkpu72e6h58puah8m8cmjxhms4swdauzm30naglgm7au4n7ae24s6wvq2w';
   const lightningAddress = 'https://strike.me/chepenik/';
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  const reduceMotion = useReducedMotion();
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      })
-      .catch((error) => {
-        console.error('Failed to copy BTC Address', error);
-      });
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previouslyFocused?.focus();
+    };
+  }, [isOpen]);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(btcAddress);
+      setCopyError(false);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy BTC address', error);
+      setCopyError(true);
+    }
   };
-
-  if (!isOpen) return null;
 
   return (
     <AnimatePresence>
-      <div
-        className="fixed inset-0 bg-void/90 backdrop-blur-sm
-                   flex items-center justify-center p-4 z-50"
-        role="dialog"
-        aria-modal="true"
-        onClick={onClose}
-      >
-        <motion.div
-          className="relative max-w-md w-full"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Animated border glow */}
-          <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-neon-cyan via-gold-400 to-neon-magenta opacity-75 blur-sm animate-gradient-shift" style={{ backgroundSize: '200% 200%' }} />
-
-          {/* Modal content */}
-          <div className="relative bg-cyber-black/95 backdrop-blur-xl
-                          rounded-3xl p-8 border border-gold-500/20 overflow-hidden">
-
-            {/* Background decorations */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-gold-500/10 to-transparent blur-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-radial from-neon-cyan/10 to-transparent blur-2xl pointer-events-none" />
-
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-gray-500 hover:text-neon-cyan
-                         transition-colors p-2 rounded-full hover:bg-white/5"
-              aria-label="Close modal"
-            >
-              <X size={24} />
+      {isOpen && (
+        <div className="ui-dialog-backdrop" onMouseDown={onClose}>
+          <motion.div
+            ref={dialogRef}
+            className="ui-dialog support-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="support-dialog-title"
+            aria-describedby="support-dialog-description"
+            initial={{ y: reduceMotion ? 0 : 12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: reduceMotion ? 0 : 8, opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <button ref={closeButtonRef} type="button" className="ui-icon-button support-dialog-close" onClick={onClose} aria-label="Close support dialog">
+              <X size={18} />
             </button>
 
-            {/* Header with Bitcoin icon */}
-            <div className="text-center mb-8 relative z-10">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full
-                              bg-gradient-to-br from-gold-400 to-bitcoin
-                              flex items-center justify-center shadow-neon-gold">
-                <span className="text-3xl text-cyber-black font-bold">&#8383;</span>
-              </div>
-              <h2 className="text-2xl font-display font-bold text-gradient-gold">
-                Support The Binmucker
-              </h2>
+            <div className="ui-dialog-icon support-dialog-icon" aria-hidden="true">
+              <Zap size={22} />
             </div>
+            <p className="route-eyebrow">Support the work</p>
+            <h2 id="support-dialog-title">Send a zap</h2>
+            <p id="support-dialog-description" className="support-dialog-copy">
+              If something here helped you, Lightning is the quickest way to help fund the next useful experiment.
+            </p>
 
-            {/* Lightning Button - Primary CTA */}
-            <a
-              href={lightningAddress}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center w-full py-4 px-6
-                         rounded-xl font-bold text-cyber-black
-                         bg-gradient-to-r from-gold-400 via-metallic to-gold-500
-                         hover:shadow-neon-gold hover:scale-[1.02]
-                         transition-all duration-300 mb-6 group relative z-10"
-            >
-              <span className="text-2xl mr-2 group-hover:animate-pulse">&#9889;</span>
-              Pay with Lightning
-              <ExternalLink size={20} className="ml-2" />
+            <a href={lightningAddress} target="_blank" rel="noopener noreferrer" className="ui-button support-lightning-link">
+              Pay with Lightning <ExternalLink size={16} />
             </a>
 
-            {/* Divider */}
-            <div className="flex items-center gap-4 my-6 relative z-10">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
-              <span className="text-gray-500 text-sm">or</span>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
-            </div>
-
-            {/* Bitcoin Address */}
-            <div className="text-center relative z-10">
-              <h3 className="text-lg font-semibold text-gold-400 mb-3">
-                Bitcoin On-Chain
-              </h3>
-              <div className="glass-gold rounded-xl p-4 mb-4">
-                <p className="text-xs text-gray-400 font-mono break-all leading-relaxed select-all">
-                  {btcAddress}
-                </p>
-              </div>
-              <button
-                onClick={() => copyToClipboard(btcAddress)}
-                className="btn-neon text-sm inline-flex items-center gap-2 px-4 py-2"
-              >
-                {copied ? (
-                  <>
-                    <Check size={16} className="text-neon-green" />
-                    <span className="text-neon-green">Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy size={16} />
-                    Copy Address
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Footer */}
-            <p className="text-center text-gray-500 text-sm mt-8 relative z-10">
-              Thank you for supporting the Binmucker!{' '}
-              <span className="text-gold-400">&#128591;</span>
+            <div className="support-divider"><span>or use Bitcoin on-chain</span></div>
+            <code className="support-address">{btcAddress}</code>
+            <button type="button" className="ui-button-secondary support-copy-button" onClick={copyToClipboard}>
+              {copied ? <Check size={16} /> : <Copy size={16} />}
+              {copied ? 'Copied' : 'Copy address'}
+            </button>
+            <p className="support-thanks">Thank you for keeping the curious corners of the internet alive.</p>
+            <p className="sr-only" role="status" aria-live="polite">
+              {copied ? 'Bitcoin address copied.' : copyError ? 'Could not copy the Bitcoin address. Select it manually.' : ''}
             </p>
-          </div>
-        </motion.div>
-      </div>
+          </motion.div>
+        </div>
+      )}
     </AnimatePresence>
   );
-};
-
-export default ZapModal;
+}

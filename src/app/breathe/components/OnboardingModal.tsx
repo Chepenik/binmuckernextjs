@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wind, Layers, Play } from 'lucide-react';
+import { useDialogFocus } from '@/app/hooks/useDialogFocus';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ const steps = [
   {
     icon: Layers,
     title: 'Choose a Pattern',
-    description: 'Pick from 5 scientifically-backed breathing patterns. Each one targets different goals — relaxation, focus, energy, or stress relief.',
+    description: 'Pick from five guided breathing patterns for different goals, including relaxation, focus, energy, and stress relief.',
   },
   {
     icon: Play,
@@ -29,14 +30,7 @@ const steps = [
 
 export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalProps) {
   const [step, setStep] = useState(0);
-
-  // Escape key to skip
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onComplete(); };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isOpen, onComplete]);
+  const dialogRef = useDialogFocus<HTMLDivElement>(isOpen, onComplete);
 
   const handleNext = () => {
     if (step < steps.length - 1) {
@@ -51,17 +45,17 @@ export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalP
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="ui-dialog-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Onboarding"
-            className="relative bg-cyber-black border border-white/10 rounded-2xl p-8 max-w-sm w-full text-center"
+            aria-labelledby="breathe-onboarding-title"
+            className="ui-dialog text-center"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -78,43 +72,37 @@ export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalP
                 {(() => {
                   const StepIcon = steps[step].icon;
                   return (
-                    <div className="flex justify-center mb-4">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-r from-pink-500/20 to-violet-500/20 flex items-center justify-center">
-                        <StepIcon className="w-8 h-8 text-violet-400" />
+                    <div className="ui-dialog-icon">
+                        <StepIcon size={27} strokeWidth={1.5} />
                       </div>
-                    </div>
                   );
                 })()}
-                <h2 className="text-xl font-bold text-white mb-3">{steps[step].title}</h2>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6">{steps[step].description}</p>
+                <h2 id="breathe-onboarding-title">{steps[step].title}</h2>
+                <p className="mt-3">{steps[step].description}</p>
               </motion.div>
             </AnimatePresence>
 
             {/* Step indicators */}
-            <div className="flex justify-center gap-2 mb-6">
+            <div className="dialog-progress" aria-label={`Step ${step + 1} of ${steps.length}`}>
               {steps.map((_, i) => (
                 <div
                   key={i}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    i === step ? 'bg-violet-400 w-6' : 'bg-white/20'
-                  }`}
+                  aria-hidden="true"
+                  className={i === step ? 'is-active' : ''}
                 />
               ))}
             </div>
 
-            <div className="flex gap-3">
+            <div className="ui-dialog-actions">
               <button
                 onClick={onComplete}
-                className="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
+                className="ui-button-secondary"
               >
                 Skip
               </button>
               <button
                 onClick={handleNext}
-                className="flex-1 px-6 py-2.5 rounded-xl font-semibold text-white
-                           bg-gradient-to-r from-pink-500 to-violet-500
-                           hover:from-pink-400 hover:to-violet-400
-                           transition-all duration-200"
+                className="ui-button"
               >
                 {step < steps.length - 1 ? 'Next' : "Let's Go"}
               </button>

@@ -8,10 +8,10 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <>
+    <div className="site-page">
       <Header />
       <BlogContent posts={posts} />
       <Footer />
-    </>
+    </div>
   );
 }

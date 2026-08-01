@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Play, Square, Volume2, VolumeX, HelpCircle, ArrowLeft } from 'lucide-react';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
@@ -36,13 +35,12 @@ export default function PracticePage() {
 
   // Check onboarding on mount
   useEffect(() => {
-    setMounted(true);
-    if (typeof window !== 'undefined') {
-      const completed = localStorage.getItem(ONBOARDING_KEY);
-      if (!completed) {
-        setShowOnboarding(true);
-      }
-    }
+    const completed = localStorage.getItem(ONBOARDING_KEY);
+    const frame = window.requestAnimationFrame(() => {
+      setMounted(true);
+      setShowOnboarding(!completed);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   // Initialize audio
@@ -136,12 +134,15 @@ export default function PracticePage() {
   // Loading skeleton
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#111827] to-[#1f2937]">
+      <div className="site-page">
         <Header />
-        <main className="max-w-4xl mx-auto px-4 pt-24 pb-16">
-          <div className="flex flex-col items-center gap-8">
-            <div className="w-64 h-64 rounded-full bg-white/5 animate-pulse" />
-            <div className="w-48 h-12 rounded-xl bg-white/5 animate-pulse" />
+        <main>
+          <div className="site-shell route-main practice-shell">
+            <h1 className="sr-only">Breathe Better guided practice</h1>
+            <div className="practice-loading" role="status" aria-label="Loading breathing practice">
+              <div className="practice-loading-circle" />
+              <div className="practice-loading-line" />
+            </div>
           </div>
         </main>
       </div>
@@ -149,64 +150,46 @@ export default function PracticePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#111827] to-[#1f2937]">
+    <div className="site-page">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 pt-20 pb-16">
+      <main>
+        <div className="site-shell route-main practice-shell">
+          <h1 className="sr-only">Breathe Better guided practice</h1>
         {/* Top bar */}
-        <motion.div
-          className="flex items-center justify-between mb-8"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="practice-toolbar">
           <Link
             href="/breathe"
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
+            className="ui-back-link"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
           <button
             onClick={() => setShowOnboarding(true)}
-            className="p-2 text-gray-400 hover:text-white transition-colors"
+            className="ui-icon-button"
             aria-label="Help"
           >
             <HelpCircle className="w-5 h-5" />
           </button>
-        </motion.div>
+        </div>
 
         {/* Breathing Circle */}
-        <motion.div
-          className="mb-10"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="practice-circle-wrap">
           <BreathingCircle
             phase={state.phase}
             timeRemaining={state.timeRemaining}
             phaseDuration={state.phaseDuration}
             isRunning={state.isRunning}
           />
-        </motion.div>
+        </div>
 
         {/* Controls */}
-        <motion.div
-          className="flex flex-col items-center gap-4 mb-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="flex items-center gap-4">
+        <div className="practice-controls">
+          <div className="practice-control-row">
             <button
               onClick={state.isRunning ? handleStop : handleStart}
-              className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white text-lg
-                         transition-all duration-200 min-w-[160px] justify-center
-                         ${state.isRunning
-                           ? 'bg-slate-600 hover:bg-slate-500'
-                           : 'bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-400 hover:to-violet-400 shadow-lg shadow-violet-500/25'
-                         }`}
+              className={state.isRunning ? 'ui-button-secondary practice-start-button' : 'ui-button practice-start-button'}
             >
               {state.isRunning ? (
                 <>
@@ -223,41 +206,43 @@ export default function PracticePage() {
 
             <button
               onClick={() => setIsMuted(!isMuted)}
-              className="p-3 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all"
+              className="ui-icon-button"
               aria-label={isMuted ? 'Unmute' : 'Mute'}
             >
               {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
           </div>
 
-          <p className="text-sm text-gray-500">
+          <p className="practice-guidance">
             {state.isRunning
               ? 'Follow the circle. Let your breath flow naturally.'
               : "Press Start when you're ready"}
           </p>
 
           {state.isRunning && (
-            <div className="flex gap-6 text-sm text-gray-500">
+            <div className="practice-stats" aria-live="polite">
               <span>Cycles: {state.cyclesCompleted}</span>
               <span>{Math.floor(state.elapsedSeconds)}s elapsed</span>
             </div>
           )}
-        </motion.div>
+        </div>
 
         {/* Pattern Selector */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h2 className="text-lg font-semibold text-white mb-4">Choose a Pattern</h2>
+        <section className="practice-patterns" aria-labelledby="pattern-title">
+          <div className="ui-section-heading">
+            <div>
+              <p className="route-eyebrow">Set the rhythm</p>
+              <h2 id="pattern-title">Choose a pattern</h2>
+            </div>
+          </div>
           <PatternSelector
             patterns={PATTERNS}
             selected={selectedPattern}
             onSelect={handlePatternChange}
             disabled={state.isRunning}
           />
-        </motion.div>
+        </section>
+        </div>
       </main>
 
       <Footer />

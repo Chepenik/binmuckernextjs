@@ -1,242 +1,175 @@
-'use client';
-
-import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
-  Zap,
-  Code2,
-  Video,
-  Calculator,
-  GitFork,
-  GraduationCap,
+  ArrowRight,
   ArrowUpRight,
+  Bitcoin,
+  BookOpen,
+  HeartPulse,
+  Lightbulb,
+  PenLine,
+  Sparkles,
+  Wrench,
 } from 'lucide-react';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 
-const skills = [
-  { icon: Zap, title: 'Bitcoin & Lightning', description: 'Education, tools, and advocacy for sound money and the Lightning Network.' },
-  { icon: Code2, title: 'Web Development', description: 'Building with Next.js, React, TypeScript, and Tailwind CSS.' },
-  { icon: Video, title: 'Content Creation', description: 'Daily writing on Medium, YouTube videos, and Nostr posts.' },
-  { icon: Calculator, title: 'Finance Tools', description: 'Mortgage calculators, investment trackers, and financial education.' },
-  { icon: GitFork, title: 'Open Source', description: 'Contributing to the Bitcoin ecosystem and sharing code publicly.' },
-  { icon: GraduationCap, title: 'Education', description: 'Making complex topics accessible through books, games, and interactive tools.' },
+const principles = [
+  {
+    icon: Wrench,
+    title: 'Build for a real need',
+    copy: 'Most projects begin as something I want to use myself. If it proves useful, I share it.',
+  },
+  {
+    icon: PenLine,
+    title: 'Write toward clarity',
+    copy: 'Daily writing is how I test ideas, notice patterns, and turn vague thoughts into workable ones.',
+  },
+  {
+    icon: Bitcoin,
+    title: 'Prefer ownership',
+    copy: 'Bitcoin, Lightning, sound money, sovereignty, and self-custody shape how I think about tools and incentives.',
+  },
+  {
+    icon: HeartPulse,
+    title: 'Protect attention',
+    copy: 'Health, family, breathing, and focused software matter because useful work needs a human being behind it.',
+  },
 ];
 
 const projects = [
-  { title: 'Breathe Better', description: 'Free breathing exercise app with 5 science-backed patterns.', url: '/breathe' },
-  { title: 'Space Invaders', description: 'Retro arcade game with 5 levels, power-ups, and boss fights.', url: '/space-invaders' },
-  { title: 'Bitcoin Coloring Book', description: 'A fun introduction to Bitcoin for kids and families.', url: 'https://bitcoincoloring.com/' },
-  { title: 'Sound Money Mortgage', description: 'Calculate monthly payments and view amortization schedules.', url: 'https://soundmoneymortgage.com/' },
-  { title: 'Saylorscope', description: 'Track how investments perform over the years.', url: 'https://www.saylorscope.com/' },
-  { title: 'My Medium', description: 'Daily writing about Bitcoin, technology, and self-improvement.', url: 'https://medium.com/@chepenikconor' },
+  {
+    title: 'Free Local SEO Audit',
+    copy: 'A practical review of how a local business appears across search, reviews, content, technical SEO, and AI discovery.',
+    href: '/audit',
+  },
+  {
+    title: 'Bitcoin Coloring Book',
+    copy: 'A kid-friendly way to make Bitcoin, sound money, and self-custody easier to talk about.',
+    href: 'https://bitcoincoloring.com/',
+  },
+  {
+    title: 'Sound Money Mortgage',
+    copy: 'A mortgage calculator that adds time and Bitcoin opportunity cost to the usual monthly-payment view.',
+    href: 'https://soundmoneymortgage.com/',
+  },
+  {
+    title: 'Breathe Better',
+    copy: 'A quiet browser tool for guided breathing when the next minute needs to feel different from the last one.',
+    href: '/breathe',
+  },
 ];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] } },
-};
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="home-page min-h-screen">
       <Header />
-      <main className="max-w-6xl mx-auto px-4 py-16">
-        {/* Hero */}
-        <motion.div
-          className="mb-20 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="heading-display text-[#E6EEF3] mb-4">Conor Chepenik</h1>
-          <p className="text-neon-cyan text-xl font-semibold mb-6">Bitcoin Educator &amp; Builder</p>
-          <div className="h-[2px] w-32 mx-auto rounded-full bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent mb-8" />
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            I build tools, write daily, and create educational content to help people
-            understand Bitcoin, take control of their finances, and improve their lives.
+      <main>
+        <div className="home-shell about-shell">
+          <section className="about-hero" aria-labelledby="about-title">
+            <p className="home-eyebrow">Conor Chepenik · the person behind Binmucker</p>
+            <h1 id="about-title">I build small, useful things and write to understand why.</h1>
+            <p>
+              Binmucker is my personal internet home base: part project shelf, part public notebook,
+              part daily desk, and part invitation to follow whatever I build next.
+            </p>
+            <div className="home-hero-actions">
+              <Link href="/#directory" className="home-primary-button">
+                Explore the projects <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+              <a href="https://medium.com/@chepenikconor" target="_blank" rel="noopener noreferrer" className="home-secondary-button">
+                Read the daily writing
+              </a>
+            </div>
+          </section>
+
+          <section className="about-story" aria-labelledby="story-title">
+            <div className="about-section-heading">
+              <p className="home-eyebrow">How the pieces fit</p>
+              <h2 id="story-title">Writing is the thread.</h2>
+            </div>
+            <div className="about-story-grid">
+              <div className="about-story-main">
+                <BookOpen size={25} strokeWidth={1.5} aria-hidden="true" />
+                <p>
+                  I committed to writing every day, whether I felt inspired or not. That practice
+                  became the foundation for the tools, books, experiments, and ideas collected here.
+                  Writing forces clarity; building tests whether the clarity survives contact with reality.
+                </p>
+                <p>
+                  My interest in Bitcoin grew from curiosity into a wider exploration of sound money,
+                  decentralization, self-custody, and personal sovereignty. Those ideas sit alongside
+                  work about better businesses, health, breathing, games, education, and whatever else
+                  seems worth understanding by making something.
+                </p>
+              </div>
+              <aside className="about-note" aria-label="Conor's working approach">
+                <Lightbulb size={22} strokeWidth={1.5} aria-hidden="true" />
+                <strong>The working bet</strong>
+                <p>Build it for myself first. Make it genuinely useful. Then let other people decide whether it belongs in their lives too.</p>
+              </aside>
+            </div>
+          </section>
+
+          <section className="about-principles" aria-labelledby="principles-title">
+            <div className="about-section-heading">
+              <p className="home-eyebrow">Operating principles</p>
+              <h2 id="principles-title">What guides the work.</h2>
+            </div>
+            <div className="about-principles-grid">
+              {principles.map(({ icon: Icon, title, copy }) => (
+                <article key={title} className="about-principle-card">
+                  <Icon size={23} strokeWidth={1.5} aria-hidden="true" />
+                  <h3>{title}</h3>
+                  <p>{copy}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="about-projects" aria-labelledby="about-projects-title">
+            <div className="about-section-heading">
+              <p className="home-eyebrow">A few places to begin</p>
+              <h2 id="about-projects-title">Useful, curious, sometimes strange.</h2>
+            </div>
+            <div className="about-project-list">
+              {projects.map((project) => {
+                const external = project.href.startsWith('http');
+                const content = (
+                  <>
+                    <span>
+                      <strong>{project.title}</strong>
+                      <small>{project.copy}</small>
+                    </span>
+                    <ArrowUpRight size={19} aria-hidden="true" />
+                  </>
+                );
+
+                return external ? (
+                  <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer">{content}</a>
+                ) : (
+                  <Link key={project.title} href={project.href}>{content}</Link>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="about-close" aria-labelledby="about-close-title">
+            <Sparkles size={24} strokeWidth={1.5} aria-hidden="true" />
+            <div>
+              <p className="home-eyebrow">Still in motion</p>
+              <h2 id="about-close-title">The site is a map, not a monument.</h2>
+              <p>I keep writing, building, and revising. The searchable directory is the best way to see the whole drawer.</p>
+            </div>
+            <Link href="/#directory">Open everything <ArrowRight size={16} aria-hidden="true" /></Link>
+          </section>
+
+          <p className="about-legal">
+            Binmucker is operated by Binmucker LLC. Some recommendations use clearly labeled affiliate links.
+            See the <Link href="/privacy">Privacy Policy</Link> and <Link href="/terms">Terms of Service</Link>.
           </p>
-        </motion.div>
-
-        {/* Story */}
-        <motion.section
-          className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-1 h-12 bg-neon-cyan/60 rounded-full shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
-            <h2 className="heading-section text-white">
-              My <span className="text-neon-cyan">Story</span>
-            </h2>
-          </div>
-          <div className="glass-dark rounded-2xl border border-white/10 p-8 space-y-5 text-gray-300 leading-relaxed">
-            <p>
-              I committed to writing every single day, rain or shine, inspired or not. That daily
-              practice on Medium became the foundation for everything else I&apos;ve built. The projects,
-              the tools, the books, and this site all came out of that habit. Writing forces clarity.
-              Clarity forces you to stop lying to yourself. And once things are clear, you can
-              actually build things that work instead of just talking about them.
-            </p>
-            <p>
-              My Bitcoin journey started with curiosity and turned into conviction. The deeper I
-              went into sound money, decentralization, and self-sovereignty, the more I felt
-              compelled to share what I was learning. That impulse turned into the{' '}
-              <a href="https://bitcoincoloring.com/" target="_blank" rel="noopener noreferrer" className="text-neon-cyan hover:underline">
-                Bitcoin Coloring Book
-              </a>
-              , educational content, and tools like the{' '}
-              <a href="https://soundmoneymortgage.com/" target="_blank" rel="noopener noreferrer" className="text-neon-cyan hover:underline">
-                Sound Money Mortgage Calculator
-              </a>
-              . Each of those started as a way to make something confusing more concrete, first
-              for me, then for anyone else who found it useful.
-            </p>
-            <p>
-              Today I split my time between building web applications, creating content, and
-              exploring the intersection of technology and personal well-being. I mostly build
-              tools for myself, to solve problems I actually have. My bet is simple: if something
-              is genuinely useful to me, there is a good chance it will be useful to someone else
-              too. That is how I think about value for value. Create real value for yourself, put
-              it into the world, and let others decide if it is worth keeping.
-            </p>
-          </div>
-        </motion.section>
-
-        {/* Skills */}
-        <motion.section
-          className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-1 h-12 bg-neon-cyan/60 rounded-full shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
-            <h2 className="heading-section text-white">
-              What I <span className="text-neon-cyan">Do</span>
-            </h2>
-          </div>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {skills.map((skill) => (
-              <motion.div
-                key={skill.title}
-                variants={itemVariants}
-                className="glass-dark rounded-2xl border border-white/10 p-6
-                           hover:border-neon-cyan/30 hover:shadow-[0_0_20px_rgba(0,194,255,0.1)]
-                           transition-all duration-300"
-              >
-                <skill.icon className="w-8 h-8 text-neon-cyan mb-4" />
-                <h3 className="text-white font-semibold text-lg mb-2">{skill.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{skill.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
-        {/* Projects */}
-        <motion.section
-          className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-1 h-12 bg-neon-cyan/60 rounded-full shadow-[0_0_10px_rgba(0,194,255,0.3)]" />
-            <h2 className="heading-section text-white">
-              Featured <span className="text-neon-cyan">Projects</span>
-            </h2>
-          </div>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {projects.map((project) => {
-              const isExternal = project.url.startsWith('http');
-              return (
-                <motion.div key={project.title} variants={itemVariants}>
-                  <Link
-                    href={project.url}
-                    {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group block glass-dark rounded-2xl border border-white/10 p-6 h-full
-                               hover:border-neon-cyan/30 hover:shadow-[0_0_20px_rgba(0,194,255,0.1)]
-                               transition-all duration-300"
-                  >
-                    <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-white font-semibold text-lg group-hover:text-neon-cyan transition-colors">
-                        {project.title}
-                      </h3>
-                      <ArrowUpRight
-                        className="text-gray-600 group-hover:text-neon-cyan
-                                   group-hover:translate-x-1 group-hover:-translate-y-1
-                                   transition-all duration-300 flex-shrink-0"
-                        size={18}
-                      />
-                    </div>
-                    <p className="text-gray-400 text-sm leading-relaxed">{project.description}</p>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </motion.section>
-
-        {/* LLC Note */}
-        <motion.section
-          className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="glass-dark rounded-2xl border border-white/10 p-8 text-center">
-            <p className="text-gray-400 text-sm leading-relaxed max-w-2xl mx-auto">
-              Binmucker is operated by Binmucker&apos;s LLC. This site and its projects are built with
-              transparency in mind. Some links are affiliate links — see the homepage for disclosures.
-              For legal information, see our{' '}
-              <Link href="/privacy" className="text-neon-cyan hover:underline">Privacy Policy</Link> and{' '}
-              <Link href="/terms" className="text-neon-cyan hover:underline">Terms of Service</Link>.
-            </p>
-          </div>
-        </motion.section>
-
-        {/* CTA */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <a
-            href="https://x.com/ConorChepenik"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-gold-outline px-8 py-3 text-base inline-block"
-          >
-            Say hi on X
-          </a>
-        </motion.div>
+        </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

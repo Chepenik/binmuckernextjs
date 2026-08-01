@@ -6,6 +6,7 @@ import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 import { getAllPosts, getPostBySlug } from '@/lib/blog';
 import { BlogPostContent } from './BlogPostContent';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -27,11 +28,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${post.title} | Binmucker`,
       description: post.description,
-      url: `https://binmucker.com/blog/${slug}`,
+      url: `https://www.binmucker.com/blog/${slug}`,
       type: 'article',
       publishedTime: post.date,
       authors: ['Conor Chepenik'],
       tags: post.tags,
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} | Binmucker`,
+      description: post.description,
+      images: [OG_IMAGE_URL],
     },
   };
 }
@@ -43,45 +51,55 @@ export default async function BlogPost({ params }: PageProps) {
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: post.description,
-    datePublished: post.date,
-    author: {
-      '@type': 'Person',
-      name: 'Conor Chepenik',
-      url: 'https://binmucker.com',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: "Binmucker's LLC",
-      url: 'https://binmucker.com',
-    },
-    url: `https://binmucker.com/blog/${slug}`,
-    keywords: post.tags,
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.description,
+        datePublished: post.date,
+        author: {
+          '@type': 'Person',
+          name: 'Conor Chepenik',
+          url: 'https://www.binmucker.com',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Binmucker LLC',
+          url: 'https://www.binmucker.com',
+        },
+        url: `https://www.binmucker.com/blog/${slug}`,
+        mainEntityOfPage: `https://www.binmucker.com/blog/${slug}`,
+        image: OG_IMAGE_URL,
+        keywords: post.tags,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.binmucker.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Writing', item: 'https://www.binmucker.com/blog' },
+          { '@type': 'ListItem', position: 3, name: post.title },
+        ],
+      },
+    ],
   };
 
   return (
-    <>
+    <div className="site-page">
       <Header />
-      <main className="max-w-3xl mx-auto px-4 py-16">
+      <main>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c') }}
         />
 
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-neon-cyan
-                     transition-colors duration-300 mb-8"
-        >
-          &larr; Back to Blog
-        </Link>
+        <div className="site-shell route-main route-main-narrow">
+          <Link href="/blog" className="ui-back-link">&larr; Back to writing</Link>
 
-        <article>
-          <header className="mb-10">
-            <h1 className="heading-display text-[#E6EEF3] mb-4">{post.title}</h1>
-            <div className="flex items-center gap-3 text-sm text-gray-500 mb-4">
+          <article>
+            <header className="article-header">
+              <p className="route-eyebrow">Binmucker writing</p>
+              <h1 className="article-title">{post.title}</h1>
+              <div className="article-meta">
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -89,36 +107,25 @@ export default async function BlogPost({ params }: PageProps) {
                   day: 'numeric',
                 })}
               </time>
-              <span className="text-gray-700">&middot;</span>
+              <span aria-hidden="true">&middot;</span>
               <span>{post.readingTime}</span>
-            </div>
-            <div className="flex flex-wrap gap-2 mb-6">
+              </div>
+              <div className="blog-post-tags" aria-label="Topics">
               {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider
-                             bg-white/5 text-gray-400 border border-white/10"
-                >
-                  {tag}
-                </span>
+                <span key={tag} className="ui-chip">{tag}</span>
               ))}
-            </div>
-            <div className="h-[2px] w-full rounded-full bg-gradient-to-r from-transparent via-neon-cyan/40 to-transparent" />
-          </header>
+              </div>
+            </header>
 
-          <BlogPostContent content={post.content} />
-        </article>
+            <BlogPostContent content={post.content} />
+          </article>
 
-        <div className="mt-16 pt-8 border-t border-white/10 text-center">
-          <Link
-            href="/blog"
-            className="text-sm text-gray-500 hover:text-neon-cyan transition-colors duration-300"
-          >
-            &larr; Back to all posts
-          </Link>
+          <div className="article-footer-link">
+            <Link href="/blog" className="ui-button-secondary">Back to all writing</Link>
+          </div>
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

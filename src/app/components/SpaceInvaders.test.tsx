@@ -12,9 +12,7 @@ import {
   createInvader,
   calculateScore,
   getBasePoints,
-  updateInvaderPosition,
   shouldMoveDown,
-  moveInvadersDown,
   hasInvadersReachedBottom,
   countAliveInvaders,
   initializeGameState,
@@ -561,6 +559,7 @@ describe('Regression Tests', () => {
 
       // Simulate scoring
       const scoreAfterKill = initialState.score + 100;
+      expect(scoreAfterKill).toBe(100);
 
       // Game state should remain consistent
       expect(initialState.level).toBe(1);

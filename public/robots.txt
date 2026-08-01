@@ -7,8 +7,7 @@ Disallow: /thank-you
 # Prevent crawlers from probing API endpoints
 Disallow: /api/
 
-Sitemap: https://binmucker.com/sitemap.xml
+Sitemap: https://www.binmucker.com/sitemap.xml
 
 # LLM/AI agent-readable site description
 # https://llmstxt.org/
-LLMs-Txt: https://binmucker.com/llms.txt

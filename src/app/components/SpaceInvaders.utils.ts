@@ -195,9 +195,11 @@ export function updateInvaderPosition(
   invaderDirection: number,
   invaderSpeed: number,
   speedMod: number,
-  playerX: number,
-  playerWidth: number
+  _playerX: number,
+  _playerWidth: number
 ): Invader {
+  void _playerX;
+  void _playerWidth;
   if (!invader.alive) return invader;
 
   const updated = { ...invader };

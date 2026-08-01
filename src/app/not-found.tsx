@@ -1,155 +1,99 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { Footer } from '@/app/components/Footer';
+import { Header } from '@/app/components/Header';
+import { ArrowRight, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+const TOTAL_SQUARES = 25;
 
 export default function NotFoundPage() {
-  // Game states
   const [isGameActive, setIsGameActive] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30); // 30-second timer
+  const [timeLeft, setTimeLeft] = useState(20);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Grid settings
-  const rows = 5;
-  const cols = 5;
-  const totalSquares = rows * cols;
-
-  // Start Game
   const startGame = () => {
     setIsGameActive(true);
+    setHasPlayed(true);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(20);
     setActiveIndex(null);
   };
 
-  // Timer countdown
   useEffect(() => {
-    if (!isGameActive || timeLeft <= 0) return;
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+    if (!isGameActive) return;
+    const timer = window.setTimeout(() => {
+      if (timeLeft <= 1) {
+        setTimeLeft(0);
+        setIsGameActive(false);
+        setActiveIndex(null);
+      } else {
+        setTimeLeft((current) => current - 1);
+      }
     }, 1000);
-
-    return () => clearInterval(timer);
+    return () => window.clearTimeout(timer);
   }, [isGameActive, timeLeft]);
 
-  // Randomly pick an active square every 800ms or so
   useEffect(() => {
     if (!isGameActive || timeLeft <= 0) return;
+    const interval = window.setInterval(() => {
+      setActiveIndex(Math.floor(Math.random() * TOTAL_SQUARES));
+    }, 720);
+    return () => window.clearInterval(interval);
+  }, [isGameActive, timeLeft]);
 
-    const interval = setInterval(() => {
-      const randomIndex = Math.floor(Math.random() * totalSquares);
-      setActiveIndex(randomIndex);
-    }, 800);
-
-    return () => clearInterval(interval);
-  }, [isGameActive, timeLeft, totalSquares]);
-
-  // When time runs out, end the game
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      setIsGameActive(false);
-      setActiveIndex(null);
-      alert("Time's up! Your final score: " + score);
-    }
-  }, [timeLeft, score]);
-
-  // Handle square click
-  const handleSquareClick = (index: number) => {
-    if (!isGameActive) return;
-    // Only score if user clicks the "active" square
-    if (index === activeIndex) {
-      setScore((prev) => prev + 1);
-      setActiveIndex(null);
-    }
+  const hitSquare = (index: number) => {
+    if (!isGameActive || index !== activeIndex) return;
+    setScore((current) => current + 1);
+    setActiveIndex(null);
   };
 
   return (
-    <div
-      className="
-        min-h-screen flex flex-col items-center justify-center
-        bg-white
-        p-6 text-gray-800 text-center
-      "
-    >
-      <h1 className="text-6xl font-black mb-4 drop-shadow-lg">404 - Oops, You&apos;re Lost!</h1>
-      <p className="text-lg md:text-2xl max-w-xl mb-8">
-        The page you&apos;re looking for doesn&apos;t exist (yet).  
-        You can{' '}
-        <Link href="/" className="underline font-bold hover:text-gray-600">
-          head home
-        </Link>{' '}
-        or play a quick game below while you&apos;re here.
-      </p>
+    <div className="site-page">
+      <Header />
+      <main className="site-shell route-main not-found-page">
+        <section className="route-hero route-hero-centered">
+          <p className="route-eyebrow">404 · Uncharted territory</p>
+          <h1 className="route-title route-title-compact">Nothing lives here. Yet.</h1>
+          <p className="route-lede">
+            The link may have moved, or the idea may still be waiting to be built. Head home or stay for a twenty-second distraction.
+          </p>
+          <div className="route-actions">
+            <Link href="/" className="ui-button">Return home <ArrowRight size={16} /></Link>
+            <button type="button" className="ui-button-secondary" onClick={startGame}>
+              <RotateCcw size={16} /> {hasPlayed ? 'Play again' : 'Play the tiny game'}
+            </button>
+          </div>
+        </section>
 
-      {/* Game Start / Restart */}
-      {!isGameActive && (
-        <button
-          onClick={startGame}
-          className="
-            bg-gray-700 hover:bg-gray-800 text-white
-            font-semibold py-2 px-4 rounded-lg mb-6
-            transition-colors
-          "
-        >
-          {score === 0 ? 'Play Whack-a-Gold!' : 'Play Again'}
-        </button>
-      )}
-
-      {isGameActive && (
-        <p className="mb-4 text-xl">
-          Click the gold square before it disappears!  
-          Score: {score} | Time Left: {timeLeft}
-        </p>
-      )}
-
-      {/* Game Grid */}
-      <div
-        className="grid"
-        style={{
-          gridTemplateRows: `repeat(${rows}, 60px)`,
-          gridTemplateColumns: `repeat(${cols}, 60px)`,
-          gap: '8px',
-        }}
-      >
-        {Array.from({ length: totalSquares }).map((_, index) => {
-          const isActive = index === activeIndex;
-          return (
-            <div
-              key={index}
-              onClick={() => handleSquareClick(index)}
-              className={`
-                flex items-center justify-center
-                w-[60px] h-[60px]
-                rounded-lg cursor-pointer
-                transition-colors
-                ${
-                  isActive
-                    ? 'bg-[#BF9B30] hover:bg-[#85BB65] text-black'
-                    : 'bg-gray-800 hover:bg-gray-700 text-white'
-                }
-              `}
-            >
-              {isActive ? '💰' : ''}
+        <section className="not-found-game ui-card" aria-labelledby="tiny-game-title">
+          <div className="not-found-game-heading">
+            <div>
+              <p className="route-eyebrow">Optional easter egg</p>
+              <h2 id="tiny-game-title">Catch the signal</h2>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Footer */}
-      <footer className="mt-12 text-sm md:text-base opacity-90">
-        <p>
-          Built with{' '}
-          <span role="img" aria-label="heart">
-            ❤️
-          </span>{' '}
-          by{' '}
-          <Link href="/" className="underline font-bold hover:text-[#BF9B30]">
-            The Binmucker
-          </Link>{' '}
-        </p>
-      </footer>
+            <p aria-live="polite">Score {score} · {isGameActive ? `${timeLeft}s left` : hasPlayed ? `Finished at ${score}` : 'Ready'}</p>
+          </div>
+          <div className="not-found-grid" aria-label="Catch the highlighted square">
+            {Array.from({ length: TOTAL_SQUARES }, (_, index) => (
+              <button
+                key={index}
+                type="button"
+                className={index === activeIndex ? 'is-active' : ''}
+                onClick={() => hitSquare(index)}
+                disabled={!isGameActive}
+                aria-label={index === activeIndex ? 'Catch the signal' : `Empty square ${index + 1}`}
+              >
+                {index === activeIndex ? <span aria-hidden="true">₿</span> : null}
+              </button>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
 
 export const metadata: Metadata = {
   title: 'Breathe Better',
@@ -7,12 +8,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Breathe Better | Binmucker',
     description: 'Free breathing exercises to help you find calm, focus, and balance.',
-    url: 'https://binmucker.com/breathe',
+    url: 'https://www.binmucker.com/breathe',
+    images: [OG_IMAGE],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Breathe Better | Binmucker',
     description: 'Free breathing exercises to help you find calm, focus, and balance.',
+    images: [OG_IMAGE_URL],
   },
 };
 

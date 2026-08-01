@@ -40,15 +40,18 @@ export function useBreathingTimer(pattern: Pattern) {
     if (patternIdRef.current !== pattern.id) {
       patternIdRef.current = pattern.id;
       if (intervalRef.current) clearInterval(intervalRef.current);
-      setState({
-        isRunning: false,
-        phase: 'inhale',
-        timeRemaining: getInitialPhaseDuration(pattern),
-        phaseDuration: getInitialPhaseDuration(pattern),
-        cyclesCompleted: 0,
-        elapsedSeconds: 0,
-        sequenceIndex: 0,
+      const frame = window.requestAnimationFrame(() => {
+        setState({
+          isRunning: false,
+          phase: 'inhale',
+          timeRemaining: getInitialPhaseDuration(pattern),
+          phaseDuration: getInitialPhaseDuration(pattern),
+          cyclesCompleted: 0,
+          elapsedSeconds: 0,
+          sequenceIndex: 0,
+        });
       });
+      return () => window.cancelAnimationFrame(frame);
     }
   }, [pattern]);
 
