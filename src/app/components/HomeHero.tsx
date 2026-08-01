@@ -1,967 +1,667 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
+  ArrowRight,
   ArrowUpRight,
+  BookOpen,
+  Bot,
+  Brain,
+  Check,
+  CircleDollarSign,
   Coffee,
+  CreditCard,
+  Gamepad2,
+  Gift,
+  Guitar,
+  HeartPulse,
+  Landmark,
+  Lightbulb,
+  MessageCircle,
   PenLine,
+  Search,
+  Server,
+  ShieldCheck,
+  Shirt,
   Sparkles,
   Terminal,
+  UserRound,
+  WandSparkles,
+  X,
   Zap,
+  type LucideIcon,
 } from 'lucide-react';
-import { FaXTwitter } from 'react-icons/fa6';
+import { FaGithub, FaMedium, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 import ZapModal from './ZapModal';
-import { ScoreRing } from './audit/ScoreRing';
-import { getScoreColor } from '@/lib/audit-constants';
-import { resolveShotTarget, displayHost } from '@/lib/site-url';
+import RainbowCursor from './RainbowCursor';
 
-type Status =
-  | 'Live'
-  | 'Tool'
-  | 'Daily'
-  | 'Book'
-  | 'Experiment'
-  | 'Writing'
-  | 'Game'
-  | 'Social'
-  | 'Partner';
+type Category = 'Build' | 'Bitcoin' | 'Writing' | 'Play' | 'Stack' | 'Connect';
 
-interface LinkItem {
+interface HubLink {
   title: string;
   description: string;
-  url: string;
-  status: Status;
-  featured?: boolean;
-  isAffiliate?: boolean;
-  thumbnailUrl?: string;
+  href: string;
+  category: Category;
+  label: string;
+  icon: LucideIcon;
+  affiliate?: boolean;
 }
 
-interface LinkSection {
-  id: string;
-  eyebrow: string;
-  title: React.ReactNode;
-  description: string;
-  accent: 'gold' | 'cyan' | 'bitcoin' | 'magenta' | 'purple';
-  items: LinkItem[];
-}
-
-const sections: LinkSection[] = [
+const hubLinks: HubLink[] = [
   {
-    id: 'built-by-me',
-    eyebrow: 'Shipped from this desk',
-    title: (
-      <>
-        Built by <span className="text-gradient-gold">Me</span>
-      </>
-    ),
-    description: 'Original tools, services, and oddities I actually use.',
-    accent: 'gold',
-    items: [
-      {
-        title: 'Free Local SEO Audit',
-        description:
-          'An AI audit that scores a business across 6 categories from real website and Google Profile data. Actionable fixes in about 90 seconds.',
-        url: '/audit',
-        status: 'Live',
-        featured: true,
-      },
-      {
-        title: 'Bitcoin Coloring Book',
-        description:
-          'A kid-friendly introduction to sound money and self-custody. Print, color, learn, repeat.',
-        url: 'https://bitcoincoloring.com/',
-        status: 'Book',
-      },
-      {
-        title: 'Handwritten Letters',
-        description:
-          'Real pen, real paper, real human. Buy a personal letter with sats and I put it in the mail.',
-        url: 'https://quotestoansweryourquestions.replit.app/',
-        status: 'Experiment',
-      },
-    ],
-  },
-  {
-    id: 'bitcoin-lightning',
-    eyebrow: 'Sound money and sovereignty',
-    title: (
-      <>
-        Bitcoin &amp; <span className="text-bitcoin">Lightning</span>
-      </>
-    ),
-    description: 'Tools and profiles for the Bitcoin-curious and the already-orange-pilled.',
-    accent: 'bitcoin',
-    items: [
-      {
-        title: 'Sound Money Mortgage',
-        description:
-          'A mortgage calculator that surfaces monthly payments, amortization, and what a home really costs in Bitcoin terms.',
-        url: 'https://soundmoneymortgage.com/',
-        status: 'Tool',
-      },
-      {
-        title: 'Saylorscope',
-        description:
-          'Track how different investments are likely to perform over years. A quiet stress test for long-term conviction.',
-        url: 'https://www.saylorscope.com/',
-        status: 'Tool',
-      },
-      {
-        title: 'My Nostr',
-        description:
-          'A decentralized network where I actually get paid to post. Follow along or zap the good stuff.',
-        url: 'https://primal.net/p/npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y',
-        status: 'Social',
-      },
-      {
-        title: 'Fortune Sats',
-        description:
-          'A Lightning-powered fortune teller. Pay 100 sats, receive a line of wisdom. A tiny ritual that shows how micropayments feel when the friction disappears.',
-        url: 'https://fortunesats.com',
-        status: 'Experiment',
-      },
-    ],
-  },
-  {
-    id: 'writing',
-    eyebrow: 'Daily output, public thinking',
-    title: (
-      <>
-        Writing &amp; <span className="text-neon-cyan">Ideas</span>
-      </>
-    ),
-    description: 'Daily essays, longer posts, and the occasional argument with myself.',
-    accent: 'cyan',
-    items: [
-      {
-        title: 'Medium',
-        description:
-          'Daily writing on Bitcoin, building, health, family, and the lessons I keep relearning.',
-        url: 'https://medium.com/@chepenikconor',
-        status: 'Writing',
-      },
-      {
-        title: 'The Binmucker Blog',
-        description:
-          'Longer pieces and references, posted here in a format that loads quickly and never hits a paywall.',
-        url: '/blog',
-        status: 'Writing',
-      },
-    ],
-  },
-  {
-    id: 'play-practice',
-    eyebrow: 'Not everything has to be productive',
-    title: (
-      <>
-        Play &amp; <span className="text-neon-green">Practice</span>
-      </>
-    ),
-    description:
-      'A retro arcade, a Lightning racer, a breathing app, and a guitar coach. Reminders that software is not the whole point.',
-    accent: 'magenta',
-    items: [
-      {
-        title: 'Space Invaders',
-        description:
-          'A browser-based retro arcade with 5 levels, power-ups, boss fights, and an endless mode. Built for fun.',
-        url: '/space-invaders',
-        status: 'Game',
-      },
-      {
-        title: 'RyRacer',
-        description:
-          'A 3D arcade combat racer where sats are on the line. Free 30-second practice laps, or 1,000 sats to enter the global leaderboard. Lightning makes the stakes real.',
-        url: 'https://ryracer.com',
-        status: 'Game',
-      },
-      {
-        title: 'Breathe Better',
-        description:
-          'Five science-backed breathing patterns, animated, no login, no ads. Calm down, perform better, sleep easier.',
-        url: '/breathe',
-        status: 'Tool',
-      },
-      {
-        title: 'GuitarGui',
-        description:
-          'A free, open-source guitar coach. Tuner, metronome, lessons, and songs in one place. No account, no ads, no paywall. MIT-licensed.',
-        url: 'https://guitargui.com',
-        status: 'Tool',
-      },
-    ],
-  },
-  {
-    id: 'picks-partners',
-    eyebrow: 'Value for value, transparent',
-    title: (
-      <>
-        Picks &amp; <span className="text-neon-purple">Partners</span>
-      </>
-    ),
-    description: 'Affiliate links for things I actually use. If you sign up through them, we both win.',
-    accent: 'purple',
-    items: [],
-  },
-];
-
-const accentClasses: Record<
-  LinkSection['accent'],
-  { bar: string; hover: string; text: string; cardGradient: string }
-> = {
-  gold: {
-    bar: 'bg-gold-400/70',
-    hover: 'group-hover:text-gold-300',
-    text: 'text-gold-300',
-    cardGradient: 'from-white/[0.06] to-transparent',
-  },
-  cyan: {
-    bar: 'bg-neon-cyan/60',
-    hover: 'group-hover:text-neon-cyan',
-    text: 'text-neon-cyan',
-    cardGradient: 'from-white/[0.06] to-transparent',
-  },
-  bitcoin: {
-    bar: 'bg-bitcoin/70',
-    hover: 'group-hover:text-bitcoin',
-    text: 'text-bitcoin',
-    cardGradient: 'from-white/[0.06] to-transparent',
-  },
-  magenta: {
-    bar: 'bg-neon-magenta/60',
-    hover: 'group-hover:text-neon-magenta',
-    text: 'text-neon-magenta',
-    cardGradient: 'from-white/[0.06] to-transparent',
-  },
-  purple: {
-    bar: 'bg-neon-purple/60',
-    hover: 'group-hover:text-neon-purple',
-    text: 'text-neon-purple',
-    cardGradient: 'from-white/[0.06] to-transparent',
-  },
-};
-
-const statusClasses: Record<Status, string> = {
-  Live: 'bg-neon-green/10 text-neon-green border-neon-green/30',
-  Tool: 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30',
-  Daily: 'bg-gold-400/10 text-gold-300 border-gold-400/30',
-  Book: 'bg-bitcoin/10 text-bitcoin border-bitcoin/30',
-  Experiment: 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30',
-  Writing: 'bg-electric/10 text-electric border-electric/30',
-  Game: 'bg-laser/10 text-laser border-laser/30',
-  Social: 'bg-neon-purple/10 text-neon-purple border-neon-purple/30',
-  Partner: 'bg-white/5 text-gray-300 border-white/15',
-};
-
-const recentShips = [
-  { label: 'AI Audit Tool', href: '/audit' },
-  { label: 'My Stack', href: '/stack' },
-];
-
-const startHere = [
-  {
-    icon: PenLine,
-    title: 'I write every day',
-    body: 'A commitment to daily publishing on Medium, no matter the mood.',
-  },
-  {
-    icon: Terminal,
-    title: 'I ship small useful tools',
-    body: 'Audits, calculators, games, breathing aids. Built for me first.',
-  },
-  {
-    icon: Zap,
-    title: 'Bitcoin and Lightning, always',
-    body: 'Sound money, self-custody, and invisible payments are the throughline.',
-  },
-  {
+    title: 'Free Local SEO Audit',
+    description: 'See how a local business performs across search, reviews, content, and AI readiness.',
+    href: '/audit',
+    category: 'Build',
+    label: 'Free tool',
     icon: Sparkles,
-    title: 'Health, family, weird detours',
-    body: 'Software is not the whole point. The rest of life shows up here too.',
+  },
+  {
+    title: 'Bitcoin Coloring Book',
+    description: 'A kid-friendly introduction to sound money, self-custody, and Bitcoin.',
+    href: 'https://bitcoincoloring.com/',
+    category: 'Bitcoin',
+    label: 'Book',
+    icon: BookOpen,
+  },
+  {
+    title: 'Sound Money Mortgage',
+    description: 'Understand a mortgage in dollars, time, and Bitcoin opportunity cost.',
+    href: 'https://soundmoneymortgage.com/',
+    category: 'Bitcoin',
+    label: 'Calculator',
+    icon: Landmark,
+  },
+  {
+    title: 'Saylorscope',
+    description: 'A long-view calculator for testing investment ideas against time.',
+    href: 'https://www.saylorscope.com/',
+    category: 'Bitcoin',
+    label: 'Tool',
+    icon: CircleDollarSign,
+  },
+  {
+    title: 'Fortune Sats',
+    description: 'A tiny Lightning ritual: send 100 sats and receive a line of wisdom.',
+    href: 'https://fortunesats.com',
+    category: 'Bitcoin',
+    label: 'Experiment',
+    icon: Zap,
+  },
+  {
+    title: 'Nostr',
+    description: 'My notes and conversations on the decentralized social network.',
+    href: 'https://primal.net/p/npub16syt2k5uky4pxycfttxrxmwwzht2t3008f2q68kw4almjl4guu9qea8t7y',
+    category: 'Bitcoin',
+    label: 'Social',
+    icon: Brain,
+  },
+  {
+    title: 'Daily writing on Medium',
+    description: 'Notes on Bitcoin, building, health, family, and the lessons I keep relearning.',
+    href: 'https://medium.com/@chepenikconor',
+    category: 'Writing',
+    label: 'Daily',
+    icon: PenLine,
+  },
+  {
+    title: 'The Binmucker Blog',
+    description: 'Longer essays and references, without a paywall or an algorithm in the way.',
+    href: '/blog',
+    category: 'Writing',
+    label: 'Essays',
+    icon: BookOpen,
+  },
+  {
+    title: 'Breathe Better',
+    description: 'Five guided breathing patterns for focus, calm, sleep, and recovery.',
+    href: '/breathe',
+    category: 'Play',
+    label: 'Well-being',
+    icon: HeartPulse,
+  },
+  {
+    title: 'Space Invaders',
+    description: 'A lovingly overbuilt browser arcade with levels, bosses, and endless mode.',
+    href: '/space-invaders',
+    category: 'Play',
+    label: 'Game',
+    icon: Gamepad2,
+  },
+  {
+    title: 'RyRacer',
+    description: 'A 3D combat racer where Lightning turns practice laps into real stakes.',
+    href: 'https://ryracer.com',
+    category: 'Play',
+    label: 'Game',
+    icon: Gamepad2,
+  },
+  {
+    title: 'GuitarGui',
+    description: 'An open-source tuner, metronome, lesson space, and songbook for guitarists.',
+    href: 'https://guitargui.com',
+    category: 'Play',
+    label: 'Open source',
+    icon: Guitar,
+  },
+  {
+    title: 'Handwritten Letters',
+    description: 'A real letter, written with a real pen and mailed to your door.',
+    href: 'https://quotestoansweryourquestions.replit.app/',
+    category: 'Build',
+    label: 'Experiment',
+    icon: PenLine,
+  },
+  {
+    title: 'Venice AI',
+    description: 'Private AI with uncensored models. Join Pro and you get $10; I get $10 in credits too.',
+    href: 'https://venice.ai/chat?ref=pnaIip',
+    category: 'Stack',
+    label: 'Give $10, get $10',
+    icon: Bot,
+    affiliate: true,
+  },
+  {
+    title: 'Gemini Credit Card',
+    description: 'The card I use for everyday purchases to earn Bitcoin rewards automatically.',
+    href: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
+    category: 'Stack',
+    label: 'Bitcoin rewards',
+    icon: CreditCard,
+    affiliate: true,
+  },
+  {
+    title: 'CrowdHealth',
+    description: 'The community-powered health funding option my household actually uses.',
+    href: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
+    category: 'Stack',
+    label: 'Referral',
+    icon: ShieldCheck,
+    affiliate: true,
+  },
+  {
+    title: 'Hostinger',
+    description: 'Affordable hosting I use when a project needs to be fast, reliable, and simple.',
+    href: 'https://hostinger.com?REFERRALCODE=1CONOR59',
+    category: 'Stack',
+    label: '20% off',
+    icon: Server,
+    affiliate: true,
+  },
+  {
+    title: 'My Stack',
+    description: 'The cards, services, hosting, and tools I actually use—with honest disclosure.',
+    href: '/stack',
+    category: 'Stack',
+    label: 'Recommendations',
+    icon: Terminal,
+  },
+  {
+    title: 'X / Twitter',
+    description: 'Build logs, Bitcoin takes, unfinished ideas, and the day-to-day work in motion.',
+    href: 'https://x.com/ConorChepenik',
+    category: 'Connect',
+    label: 'Social',
+    icon: MessageCircle,
+  },
+  {
+    title: 'LinkedIn',
+    description: 'The more professional corner of my work, background, and conversations.',
+    href: 'https://www.linkedin.com/in/conorchepenik/',
+    category: 'Connect',
+    label: 'Profile',
+    icon: UserRound,
+  },
+  {
+    title: 'GitHub',
+    description: 'Source code, experiments, and the work behind many of the projects here.',
+    href: 'https://github.com/Chepenik',
+    category: 'Connect',
+    label: 'Code',
+    icon: Terminal,
+  },
+  {
+    title: 'YouTube',
+    description: 'Videos about Bitcoin, building, and the ideas that are easier to show than tell.',
+    href: 'https://www.youtube.com/@ConorChepenik',
+    category: 'Connect',
+    label: 'Video',
+    icon: Gamepad2,
+  },
+  {
+    title: 'Merch',
+    description: 'Wearable artifacts from the stranger corners of the Binmucker universe.',
+    href: 'https://chep.creator-spring.com/',
+    category: 'Connect',
+    label: 'Shop',
+    icon: Shirt,
+  },
+  {
+    title: 'Buy Me a Coffee',
+    description: 'Support the next useful experiment if something here made your day better.',
+    href: 'https://ko-fi.com/chepenik',
+    category: 'Connect',
+    label: 'Support',
+    icon: Gift,
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
-};
+const categories: Array<'All' | Category> = ['All', 'Build', 'Bitcoin', 'Writing', 'Play', 'Stack', 'Connect'];
+const habits = [
+  { id: 'write', label: 'Write one honest thing', detail: 'Clarify the thought.' },
+  { id: 'build', label: 'Improve one useful thing', detail: 'Make the work compound.' },
+  { id: 'move', label: 'Move and breathe', detail: 'Keep the machine working.' },
+];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.4, 0, 0.2, 1] } },
-};
-
-interface LinkCardProps {
-  item: LinkItem;
-  accent: LinkSection['accent'];
-  eager?: boolean;
-}
-
-const accentRingClasses: Record<LinkSection['accent'], string> = {
-  gold: 'group-hover:ring-white/20',
-  cyan: 'group-hover:ring-white/20',
-  bitcoin: 'group-hover:ring-white/20',
-  magenta: 'group-hover:ring-white/20',
-  purple: 'group-hover:ring-white/20',
-};
-
-interface CardThumbnailProps {
-  url: string;
-  host: string;
-  accent: LinkSection['accent'];
-  eager?: boolean;
-}
-
-function CardThumbnail({ url, host, accent, eager }: CardThumbnailProps) {
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const src = `/api/thumbnail?url=${encodeURIComponent(url)}`;
-
-  return (
-    <div className="relative border-b border-white/10 overflow-hidden">
-      {/* Browser chrome */}
-      <div className="flex items-center gap-2 px-3 h-[28px] bg-black/60 backdrop-blur-sm border-b border-white/5">
-        <span className="flex gap-1.5" aria-hidden="true">
-          <span className="w-[10px] h-[10px] rounded-full bg-[#FF5F57]" />
-          <span className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]" />
-          <span className="w-[10px] h-[10px] rounded-full bg-[#28C840]" />
-        </span>
-        <span
-          className="ml-2 flex-1 truncate px-2 py-[2px] rounded-md bg-white/5 border border-white/10
-                     font-mono text-[11px] text-gray-400"
-          title={host}
-        >
-          {host}
-        </span>
-      </div>
-
-      {/* Shot frame */}
-      <div
-        className={`relative aspect-[16/10] bg-cyber-black ring-1 ring-white/5 transition-all duration-500
-                    ${accentRingClasses[accent]}`}
-      >
-        {!loaded && !failed && <div className="thumb-shimmer" aria-hidden="true" />}
-        {failed ? (
-          <div className="absolute inset-0 flex items-center justify-center text-[10px] font-mono uppercase tracking-widest text-gray-600">
-            preview unavailable
-          </div>
-        ) : (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={src}
-            alt=""
-            loading={eager ? 'eager' : 'lazy'}
-            decoding="async"
-            onLoad={() => setLoaded(true)}
-            onError={() => setFailed(true)}
-            className={`absolute inset-0 w-full h-full object-cover object-top
-                        transition-[transform,opacity] duration-500 ease-out
-                        motion-reduce:transition-none
-                        group-hover:scale-[1.04] motion-reduce:group-hover:scale-100
-                        ${loaded ? 'opacity-100' : 'opacity-0'}`}
-          />
-        )}
-
-        {/* Subtle top-glare */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-1/3
-                     bg-gradient-to-b from-white/[0.04] to-transparent"
-          aria-hidden="true"
-        />
-      </div>
-    </div>
-  );
-}
-
-function LinkCard({ item, accent, eager }: LinkCardProps) {
-  const isExternal = item.url.startsWith('http');
-  const accentCfg = accentClasses[accent];
-  const shotTarget = resolveShotTarget(item.url, item.thumbnailUrl);
-  const host = displayHost(item.thumbnailUrl ?? item.url);
-
-  return (
-    <Link
-      href={item.url}
-      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      className={`group relative block card-premium !p-0 h-full focus-visible:outline-none
-                  ${item.featured ? 'border-gold-400/40 shadow-[0_0_24px_rgba(255,215,0,0.08)]' : ''}`}
-      aria-label={`${item.title}. ${item.status}${item.isAffiliate ? ', affiliate' : ''}.`}
-    >
-      <div
-        className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${accentCfg.cardGradient}
-                    opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-        aria-hidden="true"
-      />
-
-      {item.featured && (
-        <span
-          className="absolute top-[38px] right-3 z-20 inline-flex items-center gap-1 px-2 py-1 rounded-md
-                     text-[10px] font-bold uppercase tracking-widest
-                     bg-gold-400/15 text-gold-300 border border-gold-400/40
-                     shadow-[0_0_10px_rgba(255,215,0,0.15)]"
-        >
-          <Sparkles className="w-3 h-3" aria-hidden="true" />
-          Featured
-        </span>
-      )}
-
-      <div className="relative z-10 flex h-full flex-col">
-        <CardThumbnail url={shotTarget} host={host} accent={accent} eager={eager} />
-
-        <div className="flex flex-1 flex-col p-5">
-          <div className="flex items-center flex-wrap gap-2 mb-3">
-            <span
-              className={`px-2 py-1 rounded-md border text-[10px] font-semibold uppercase tracking-wider
-                          ${statusClasses[item.status]}`}
-            >
-              {item.status}
-            </span>
-            {item.isAffiliate && (
-              <span
-                className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider
-                           bg-gold-500/10 text-gold-400 border border-gold-500/30"
-              >
-                Affiliate
-              </span>
-            )}
-            {isExternal && (
-              <span className="text-[10px] text-gray-500 uppercase tracking-widest ml-auto">
-                External
-              </span>
-            )}
-          </div>
-
-          <div className="flex justify-between items-start gap-4 mb-3">
-            <h3
-              className={`font-semibold text-white text-lg leading-tight transition-colors duration-300
-                          ${accentCfg.hover}`}
-            >
-              {item.title}
-            </h3>
-            <ArrowUpRight
-              className={`text-gray-600 ${accentCfg.hover}
-                         group-hover:translate-x-1 group-hover:-translate-y-1
-                         transition-all duration-300 flex-shrink-0`}
-              size={20}
-              aria-hidden="true"
-            />
-          </div>
-
-          <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-            {item.description}
-          </p>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Static sample audit used in the "Proof" section. Mirrors the shape and
-// styling of a real /audit result so visitors see exactly what they'll get.
-// ---------------------------------------------------------------------------
-const sampleAudit = {
-  businessName: 'Sample: Jax Coffee Roasters',
-  overallScore: 53,
-  summary:
-    'Solid reputation and a real Google presence, but the website and AI signals are leaving customers on the table. Three focused fixes would move the needle fast.',
-  categories: [
-    { category: 'Google Business Profile', emoji: '📍', score: 72 },
-    { category: 'Website & Technical SEO', emoji: '🌐', score: 54 },
-    { category: 'Reviews & Reputation', emoji: '⭐', score: 81 },
-    { category: 'Content & Social', emoji: '📱', score: 38 },
-    { category: 'Competitive Position', emoji: '🏆', score: 47 },
-    { category: 'AI Readiness', emoji: '🤖', score: 29 },
-  ],
-  fixes: [
-    {
-      priority: 'high' as const,
-      action:
-        'Add LocalBusiness schema with your hours, geo, and menu URL so AI engines can quote you directly.',
-    },
-    {
-      priority: 'medium' as const,
-      action:
-        'Reply to your last 15 Google reviews — recency and response rate both feed local ranking.',
-    },
-    {
-      priority: 'medium' as const,
-      action:
-        'Publish 3 neighborhood pages targeting "coffee roaster near me" searches across Jacksonville.',
-    },
-  ],
-};
-
-const proofPriorityColors: Record<string, { bg: string; text: string; label: string }> = {
-  high: { bg: 'bg-red-500/20', text: 'text-red-400', label: 'High' },
-  medium: { bg: 'bg-yellow-500/20', text: 'text-yellow-400', label: 'Medium' },
-  low: { bg: 'bg-green-500/20', text: 'text-green-400', label: 'Low' },
-};
-
-function ProofSection() {
-  return (
-    <motion.section
-      className="mb-20 scroll-mt-28"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.5 }}
-      aria-labelledby="proof-title"
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-1 h-14 rounded-full bg-neon-cyan/60" />
-        <div>
-          <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
-            See it before you run it
-          </p>
-          <h2 id="proof-title" className="heading-section text-white">
-            What the free audit <span className="text-neon-cyan">looks like</span>
-          </h2>
-        </div>
-      </div>
-
-      <div className="glass-dark rounded-2xl border border-white/10 p-6 md:p-8 max-w-3xl">
-        {/* Business + overall score */}
-        <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-          <div className="shrink-0">
-            <ScoreRing score={sampleAudit.overallScore} size={140} />
-          </div>
-          <div className="text-center sm:text-left">
-            <h3 className="text-lg font-display font-semibold text-gold-400 mb-1">
-              {sampleAudit.businessName}
-            </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">{sampleAudit.summary}</p>
-          </div>
-        </div>
-
-        {/* Category breakdown */}
-        <div className="mb-8">
-          <h4 className="text-sm font-display font-semibold text-gold-400 mb-3">
-            Category Breakdown
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {sampleAudit.categories.map((cat) => {
-              const color = getScoreColor(cat.score);
-              return (
-                <div
-                  key={cat.category}
-                  className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-base" aria-hidden="true">{cat.emoji}</span>
-                      <span className="text-sm text-gray-200 truncate">{cat.category}</span>
-                    </div>
-                    <span className="font-mono font-bold text-sm shrink-0" style={{ color }}>
-                      {cat.score}
-                    </span>
-                  </div>
-                  <div className="mt-2 h-1.5 rounded-full bg-white/5 overflow-hidden">
-                    <div
-                      className="h-full rounded-full"
-                      style={{ width: `${cat.score}%`, backgroundColor: color }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Example fixes */}
-        <div>
-          <h4 className="text-sm font-display font-semibold text-neon-cyan mb-3">
-            Example Fixes
-          </h4>
-          <div className="space-y-3">
-            {sampleAudit.fixes.map((fix, i) => {
-              const p = proofPriorityColors[fix.priority];
-              return (
-                <div key={i} className="flex items-start gap-3">
-                  <span
-                    className={`${p.bg} ${p.text} text-xs font-mono font-semibold px-2 py-0.5 rounded mt-0.5 shrink-0`}
-                  >
-                    {p.label}
-                  </span>
-                  <p className="text-gray-300 text-sm leading-relaxed">{fix.action}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-xs">
-            Sample report. Your real audit pulls live website and Google Profile data.
-          </p>
-          <Link href="/audit" className="btn-neon px-6 py-2.5 text-sm font-semibold whitespace-nowrap">
-            Run your free audit
-          </Link>
-        </div>
-      </div>
-    </motion.section>
-  );
-}
-
-function FollowOnXPromo() {
-  return (
-    <motion.section
-      className="mb-20"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6 }}
-      aria-labelledby="follow-x-title"
-    >
-      <div className="glass-dark rounded-2xl border border-white/10 p-8 md:p-10">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 mb-4 text-neon-purple">
-            <FaXTwitter className="w-5 h-5" aria-hidden="true" />
-            <span className="text-xs font-mono uppercase tracking-widest">Where I&apos;m most active</span>
-          </div>
-          <h2 id="follow-x-title" className="heading-section text-white mb-3">
-            The day-to-day lives <span className="text-neon-purple">on X.</span>
-          </h2>
-          <p className="text-gray-400 text-sm md:text-base mb-6">
-            Builds in progress, Bitcoin takes, and half-formed ideas — posted in real time.
-            It&apos;s the fastest way to follow the work and reach me.
-          </p>
-
-          <a
-            href="https://x.com/ConorChepenik"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-premium inline-flex items-center gap-2 text-sm font-semibold"
-          >
-            <FaXTwitter className="w-4 h-4" aria-hidden="true" />
-            Follow @ConorChepenik on X
-          </a>
-        </div>
-      </div>
-    </motion.section>
-  );
+function isExternal(href: string) {
+  return href.startsWith('http');
 }
 
 export function HomeHero() {
+  const [category, setCategory] = useState<(typeof categories)[number]>('All');
+  const [query, setQuery] = useState('');
+  const [completed, setCompleted] = useState<Record<string, boolean>>({});
+  const [note, setNote] = useState('');
+  const [saved, setSaved] = useState(false);
   const [isZapModalOpen, setZapModalOpen] = useState(false);
+  const [weirdMode, setWeirdMode] = useState(false);
+  const [easterMessage, setEasterMessage] = useState('');
+
+  useEffect(() => {
+    const dateKey = new Date().toISOString().slice(0, 10);
+    let storedHabits: Record<string, boolean> | null = null;
+    let storedNote: string | null = null;
+    try {
+      const rawHabits = localStorage.getItem(`binmucker-loop-${dateKey}`);
+      if (rawHabits) storedHabits = JSON.parse(rawHabits);
+      storedNote = localStorage.getItem('binmucker-idea');
+    } catch {
+      // Browser storage is a progressive enhancement; the desk still works without it.
+    }
+    const frame = window.requestAnimationFrame(() => {
+      if (storedHabits) setCompleted(storedHabits);
+      if (storedNote) setNote(storedNote);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    const sequence = [
+      'ArrowUp',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowLeft',
+      'ArrowRight',
+      'b',
+      'a',
+    ];
+    let position = 0;
+    let messageTimer = 0;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      position = key === sequence[position] ? position + 1 : key === sequence[0] ? 1 : 0;
+      if (position === sequence.length) {
+        setWeirdMode(true);
+        setEasterMessage('Arcade protocol unlocked. The universe approves.');
+        position = 0;
+        messageTimer = window.setTimeout(() => setEasterMessage(''), 4200);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.clearTimeout(messageTimer);
+    };
+  }, []);
+
+  const filteredLinks = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return hubLinks.filter((item) => {
+      const inCategory = category === 'All' || item.category === category;
+      const matchesQuery =
+        !needle ||
+        `${item.title} ${item.description} ${item.category} ${item.label}`
+          .toLowerCase()
+          .includes(needle);
+      return inCategory && matchesQuery;
+    });
+  }, [category, query]);
+
+  function toggleHabit(id: string) {
+    const dateKey = new Date().toISOString().slice(0, 10);
+    setCompleted((current) => {
+      const next = { ...current, [id]: !current[id] };
+      try {
+        localStorage.setItem(`binmucker-loop-${dateKey}`, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  }
+
+  function saveNote() {
+    try {
+      localStorage.setItem('binmucker-idea', note);
+    } catch {}
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 1600);
+  }
+
+  function trackPointer(event: React.PointerEvent<HTMLElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    event.currentTarget.style.setProperty('--pointer-x', `${event.clientX - rect.left}px`);
+    event.currentTarget.style.setProperty('--pointer-y', `${event.clientY - rect.top}px`);
+  }
+
+  function toggleWeirdMode() {
+    setWeirdMode((current) => !current);
+    setEasterMessage(weirdMode ? 'Back to quiet mode.' : 'Weird mode engaged. Click anywhere.');
+    window.setTimeout(() => setEasterMessage(''), 2800);
+  }
 
   return (
     <>
-      <section className="max-w-6xl mx-auto px-4 md:px-8">
-        {/* ==================== HERO ==================== */}
-        <motion.div
-          className="relative pt-4 md:pt-10 pb-14 md:pb-20 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="relative z-10">
-          <div
-            className="inline-flex items-center gap-2 mb-8 glass-dark px-4 py-2 rounded-full
-                       border border-white/10 text-xs md:text-sm text-gray-300 font-mono tracking-wide"
-          >
-            <span className="w-2 h-2 rounded-full bg-neon-green shadow-[0_0_8px_rgba(57,255,20,0.8)]" aria-hidden="true" />
-            <span className="uppercase text-gray-500">Binmucker</span>
-            <span className="text-gray-600">/</span>
-            <span>by Conor Chepenik</span>
+      {weirdMode && <div className="home-weird-background" aria-hidden="true" />}
+      <div className={`home-shell ${weirdMode ? 'is-weird' : ''}`}>
+        <section className="home-hero" aria-labelledby="home-title">
+          <div className="home-kicker">
+            <span className="home-status-dot" aria-hidden="true" />
+            Conor Chepenik · Building in public
           </div>
-
-          <h1 className="heading-display text-[#E6EEF3] mb-5 drop-shadow-[0_0_30px_rgba(0,194,255,0.15)]">
-            A builder&apos;s home base{' '}
-            <span className="text-deco-gold">on the internet.</span>
+          <h1 id="home-title">
+            Useful things for a <span>more sovereign life.</span>
           </h1>
-          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Free tools, daily essays, Bitcoin projects, breathing exercises, a retro game, and a few
-            experiments that defy category. If something is genuinely useful to me, I ship it so it
-            can be useful to you too.
+          <p className="home-intro">
+            I write every day and build tools around Bitcoin, better businesses, clearer thinking,
+            and feeling good in your own body. This is the map.
           </p>
-
-          <div className="deco-divider w-44 mx-auto mt-8" />
-
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <Link
-              href="/audit"
-              className="btn-premium inline-flex items-center gap-2 text-base md:text-lg px-8 py-3.5"
-            >
-              <Sparkles className="w-5 h-5" aria-hidden="true" />
-              Get your free AI SEO audit
+          <div className="home-hero-actions">
+            <a href="#directory" className="home-primary-button">
+              Explore everything <ArrowRight size={17} aria-hidden="true" />
+            </a>
+            <Link href="/about" className="home-secondary-button">
+              Why I build
             </Link>
-            <div className="flex items-center gap-4 text-sm text-gray-500">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-neon-cyan
-                           transition-colors duration-200 border-b border-dashed border-white/10
-                           hover:border-neon-cyan/60 pb-px"
-              >
-                <PenLine className="w-3.5 h-3.5" aria-hidden="true" />
-                Read the writing
-              </Link>
-              <span className="text-gray-700" aria-hidden="true">&middot;</span>
-              <button
-                type="button"
-                onClick={() => setZapModalOpen(true)}
-                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gold-400
-                           transition-colors duration-200 border-b border-dashed border-white/10
-                           hover:border-gold-400/60 pb-px"
-              >
-                <span className="text-base leading-none" aria-hidden="true">&#9889;</span>
-                Zap me
-              </button>
+          </div>
+        </section>
+
+        <section className="home-feature-grid" aria-label="Start here">
+          <Link href="/audit" className="home-feature-card home-feature-main" onPointerMove={trackPointer}>
+            <div className="home-card-topline">
+              <span className="home-chip home-chip-blue">Featured tool</span>
+              <ArrowUpRight size={20} aria-hidden="true" />
             </div>
-          </div>
+            <div className="home-feature-copy">
+              <Sparkles size={28} strokeWidth={1.6} aria-hidden="true" />
+              <h2>How discoverable is your business?</h2>
+              <p>
+                Run a free AI-powered audit across local search, reviews, content, technical SEO,
+                and AI readiness. Clear score. Useful next steps.
+              </p>
+            </div>
+            <span className="home-text-link">Run the free audit <ArrowRight size={15} /></span>
+          </Link>
 
-          {/* Recently shipped strip */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs md:text-sm">
-            <span className="font-mono uppercase tracking-widest text-gray-500">
-              Recently shipped
-            </span>
-            <span className="text-gray-700" aria-hidden="true">/</span>
-            {recentShips.map((ship, i) => (
-              <React.Fragment key={ship.href}>
-                <Link
-                  href={ship.href}
-                  className="text-gray-300 hover:text-neon-cyan transition-colors duration-200
-                             border-b border-dashed border-white/10 hover:border-neon-cyan/60 pb-px"
-                >
-                  {ship.label}
-                </Link>
-                {i < recentShips.length - 1 && (
-                  <span className="text-gray-700" aria-hidden="true">&middot;</span>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-          </div>
-        </motion.div>
-
-        {/* ==================== FOLLOW ON X PROMO ==================== */}
-        <FollowOnXPromo />
-
-        {/* ==================== START HERE ==================== */}
-        <motion.section
-          className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          aria-labelledby="start-here-title"
-        >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-1 h-12 bg-neon-cyan/60 rounded-full" />
+          <Link href="/breathe" className="home-feature-card home-feature-small home-feature-calm" onPointerMove={trackPointer}>
+            <div className="home-card-topline">
+              <span className="home-chip">Reset</span>
+              <ArrowUpRight size={18} aria-hidden="true" />
+            </div>
+            <HeartPulse size={24} strokeWidth={1.5} aria-hidden="true" />
             <div>
-              <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
-                New here? Five seconds.
-              </p>
-              <h2 id="start-here-title" className="heading-section text-white">
-                Start <span className="text-neon-cyan">Here</span>
-              </h2>
+              <h3>Breathe Better</h3>
+              <p>One quiet minute can change the next hour.</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {startHere.map((item) => (
-              <div
-                key={item.title}
-                className="glass-dark rounded-2xl border border-white/10 p-5
-                           hover:border-neon-cyan/30 hover:shadow-[0_0_20px_rgba(0,194,255,0.08)]
-                           transition-all duration-300"
-              >
-                <item.icon className="w-6 h-6 text-neon-cyan mb-3" aria-hidden="true" />
-                <h3 className="text-white font-semibold text-base mb-1.5">{item.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* ==================== LINK SECTIONS ==================== */}
-        {sections.map((section) => {
-          const accentCfg = accentClasses[section.accent];
-          const isPicksPartners = section.id === 'picks-partners';
-          return (
-            <React.Fragment key={section.id}>
-              <motion.section
-                id={section.id}
-                className="mb-20 scroll-mt-28"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.5 }}
-                aria-labelledby={`${section.id}-title`}
-              >
-                <div className="flex items-center gap-4 mb-8">
-                  <div className={`w-1 h-14 rounded-full ${accentCfg.bar}`} />
-                  <div>
-                    <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
-                      {section.eyebrow}
-                    </p>
-                    <h2
-                      id={`${section.id}-title`}
-                      className="heading-section text-white"
-                    >
-                      {section.title}
-                    </h2>
-                    <p className="text-gray-500 text-sm mt-1 max-w-2xl">
-                      {section.description}
-                    </p>
-                  </div>
-                </div>
-
-                {isPicksPartners ? (
-                  <div className="glass-dark rounded-2xl border border-white/10 p-6 md:p-8 max-w-3xl">
-                    <p className="text-gray-300 leading-relaxed mb-1">
-                      The credit card, hardware wallet, hosting, and services I actually pay for and
-                      earn from now live in one place.
-                    </p>
-                    <p className="text-gray-500 text-sm leading-relaxed mb-5">
-                      Honest affiliate picks, full disclosure, no fluff — just the tools behind the
-                      work.
-                    </p>
-                    <Link
-                      href="/stack"
-                      className="btn-gold-outline inline-flex items-center gap-2 text-sm"
-                    >
-                      See my full stack
-                      <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                    </Link>
-                  </div>
-                ) : (
-                  <motion.div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: '-80px' }}
-                  >
-                    {section.items.map((item) => (
-                      <motion.article key={item.title} variants={itemVariants}>
-                        <LinkCard item={item} accent={section.accent} eager={item.featured} />
-                      </motion.article>
-                    ))}
-                  </motion.div>
-                )}
-              </motion.section>
-
-              {section.id === 'built-by-me' && <ProofSection />}
-            </React.Fragment>
-          );
-        })}
-
-        {/* ==================== ABOUT PREVIEW ==================== */}
-        <motion.section
-          className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          aria-labelledby="about-preview-title"
-        >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-1 h-12 bg-gold-400/70 rounded-full" />
+          <a
+            href="https://medium.com/@chepenikconor"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="home-feature-card home-feature-small home-feature-writing"
+            onPointerMove={trackPointer}
+          >
+            <div className="home-card-topline">
+              <span className="home-chip">Daily practice</span>
+              <ArrowUpRight size={18} aria-hidden="true" />
+            </div>
+            <PenLine size={24} strokeWidth={1.5} aria-hidden="true" />
             <div>
-              <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-1">
-                Behind the site
-              </p>
-              <h2 id="about-preview-title" className="heading-section text-white">
-                Who is the <span className="text-gradient-gold">Binmucker</span>?
-              </h2>
+              <h3>Writing every day</h3>
+              <p>Public thinking, without waiting for perfect.</p>
             </div>
+          </a>
+
+          <a
+            href="https://venice.ai/chat?ref=pnaIip"
+            target="_blank"
+            rel="sponsored noopener noreferrer"
+            className="home-feature-card home-feature-wide home-feature-partner home-feature-venice"
+            onPointerMove={trackPointer}
+          >
+            <div className="home-venice-mark" aria-hidden="true"><Bot size={22} /></div>
+            <div className="home-feature-wide-copy">
+              <span className="home-chip">Referral · Pro</span>
+              <h3>Try Venice AI. You get $10, I get $10.</h3>
+              <p>Private, unrestricted AI models with a welcome credit when you join Pro.</p>
+            </div>
+            <ArrowUpRight size={20} aria-hidden="true" />
+          </a>
+
+          <a
+            href="https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94"
+            target="_blank"
+            rel="sponsored noopener noreferrer"
+            className="home-feature-card home-feature-wide home-feature-partner home-feature-gemini"
+            onPointerMove={trackPointer}
+          >
+            <div className="home-gemini-mark" aria-hidden="true"><CreditCard size={22} /></div>
+            <div className="home-feature-wide-copy">
+              <span className="home-chip">Referral · Card</span>
+              <h3>Earn Bitcoin on everyday purchases.</h3>
+              <p>The Gemini Credit Card is the one I use to stack sats automatically.</p>
+            </div>
+            <ArrowUpRight size={20} aria-hidden="true" />
+          </a>
+        </section>
+
+        <section id="directory" className="home-directory" aria-labelledby="directory-title">
+          <div className="home-section-heading">
+            <div>
+              <p className="home-eyebrow">The whole internet drawer</p>
+              <h2 id="directory-title">Everything, organized.</h2>
+            </div>
+            <p>Projects, writing, experiments, profiles, and the tools behind the work.</p>
           </div>
 
-          <div className="glass-dark rounded-2xl border border-white/10 p-8 md:p-10">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-10 items-start">
-              <div className="space-y-4 text-gray-300 leading-relaxed">
-                <p>
-                  I&apos;m Conor Chepenik. A while back I committed to writing every day, forever, and
-                  that habit turned into a habit of building things in public. The tools, the books,
-                  the odd little apps, they all come out of that practice.
-                </p>
-                <p>
-                  I care about Bitcoin, sovereignty, and software that respects your attention. I
-                  mostly build for myself first. If a thing is honestly useful to me, there is a
-                  decent chance it is useful to someone else too. That is what this site is. A place
-                  where the writing, the code, the experiments, and the detours all live together.
-                </p>
-              </div>
-              <div className="flex md:flex-col gap-3">
-                <Link
-                  href="/about"
-                  className="btn-gold-outline inline-flex items-center gap-2 text-sm whitespace-nowrap"
-                >
-                  Read the full story
-                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                </Link>
-                <a
-                  href="https://x.com/ConorChepenik"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-neon inline-flex items-center gap-2 text-sm whitespace-nowrap"
-                >
-                  Say hi on X
-                </a>
-              </div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* ==================== SUPPORT ==================== */}
-        <motion.section
-          id="support"
-          className="scroll-mt-28 mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          aria-labelledby="support-title"
-        >
-          <div className="glass-dark rounded-2xl border border-white/10 p-8 md:p-10">
-            <div className="text-center">
-              <div className="inline-block mb-3">
-                <span className="text-4xl md:text-5xl" aria-hidden="true">
-                  &#8383;
-                </span>
-              </div>
-              <h2
-                id="support-title"
-                className="text-2xl md:text-3xl font-display font-bold text-gradient-gold mb-2"
-              >
-                Value for value
-              </h2>
-              <div className="deco-divider w-24 mx-auto mb-5" />
-              <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                If something here saved you time, taught you something, or made you laugh, you can
-                send sats. Not required. I keep building either way. This is just how you
-                participate in the healthy version of the internet if you want to.
-              </p>
-
-              <div className="mt-7 flex flex-wrap justify-center gap-3 md:gap-4">
-                <a
-                  href="https://ko-fi.com/chepenik"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-premium inline-flex items-center gap-2"
-                >
-                  <Coffee className="w-5 h-5" aria-hidden="true" />
-                  <span>Buy me a coffee</span>
-                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                </a>
-
+          <div className="home-directory-tools">
+            <label className="home-search">
+              <Search size={17} aria-hidden="true" />
+              <span className="sr-only">Search links</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Find a project, idea, or tool"
+              />
+              {query && (
+                <button type="button" onClick={() => setQuery('')} aria-label="Clear search">
+                  <X size={15} />
+                </button>
+              )}
+            </label>
+            <div className="home-filters" aria-label="Filter links">
+              {categories.map((item) => (
                 <button
                   type="button"
-                  onClick={() => setZapModalOpen(true)}
-                  className="btn-neon inline-flex items-center gap-2"
+                  key={item}
+                  onClick={() => setCategory(item)}
+                  className={category === item ? 'is-active' : ''}
+                  aria-pressed={category === item}
                 >
-                  <span className="text-xl" aria-hidden="true">&#9889;</span>
-                  <span>Zap with Bitcoin</span>
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="home-link-list" aria-live="polite">
+            {filteredLinks.map((item) => {
+              const Icon = item.icon;
+              const external = isExternal(item.href);
+              const content = (
+                <>
+                  <span className="home-link-icon"><Icon size={19} strokeWidth={1.65} /></span>
+                  <span className="home-link-copy">
+                    <span className="home-link-title-row">
+                      <strong>{item.title}</strong>
+                      <span className="home-chip">{item.label}</span>
+                      {item.affiliate && <span className="home-affiliate-label">Affiliate</span>}
+                    </span>
+                    <span>{item.description}</span>
+                  </span>
+                  <ArrowUpRight className="home-link-arrow" size={19} aria-hidden="true" />
+                </>
+              );
+
+              return external ? (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  target="_blank"
+                  rel={item.affiliate ? 'sponsored noopener noreferrer' : 'noopener noreferrer'}
+                  className="home-link-row"
+                  onPointerMove={trackPointer}
+                >
+                  {content}
+                </a>
+              ) : (
+                <Link key={item.title} href={item.href} className="home-link-row" onPointerMove={trackPointer}>
+                  {content}
+                </Link>
+              );
+            })}
+            {filteredLinks.length === 0 && (
+              <div className="home-empty-state">
+                <Search size={24} strokeWidth={1.5} />
+                <p>No link matches that yet.</p>
+                <button type="button" onClick={() => { setQuery(''); setCategory('All'); }}>
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section id="desk" className="home-desk" aria-labelledby="desk-title">
+          <div className="home-section-heading">
+            <div>
+              <p className="home-eyebrow">A site that gives something back</p>
+              <h2 id="desk-title">The daily desk.</h2>
+            </div>
+            <p>A lightweight loop for making progress. Private to this browser.</p>
+          </div>
+
+          <div className="home-desk-grid">
+            <div className="home-desk-panel">
+              <div className="home-panel-heading">
+                <div>
+                  <span>Today&apos;s loop</span>
+                  <p>{Object.values(completed).filter(Boolean).length} of {habits.length} complete</p>
+                </div>
+                <span className="home-loop-count">{Object.values(completed).filter(Boolean).length}/{habits.length}</span>
+              </div>
+              <div className="home-habits">
+                {habits.map((habit) => (
+                  <button
+                    type="button"
+                    key={habit.id}
+                    onClick={() => toggleHabit(habit.id)}
+                    className={completed[habit.id] ? 'is-complete' : ''}
+                    aria-pressed={Boolean(completed[habit.id])}
+                  >
+                    <span className="home-check">{completed[habit.id] && <Check size={15} />}</span>
+                    <span><strong>{habit.label}</strong><small>{habit.detail}</small></span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="home-desk-panel home-idea-panel">
+              <div className="home-panel-heading">
+                <div>
+                  <span>Quick capture</span>
+                  <p>The thought you do not want to lose.</p>
+                </div>
+                <Lightbulb size={20} strokeWidth={1.5} aria-hidden="true" />
+              </div>
+              <textarea
+                value={note}
+                onChange={(event) => setNote(event.target.value)}
+                placeholder="What if I built…"
+                aria-label="Private idea note"
+              />
+              <div className="home-note-footer">
+                <span>Saved only on this device.</span>
+                <button type="button" onClick={saveNote}>
+                  {saved ? <><Check size={14} /> Saved</> : 'Save thought'}
                 </button>
               </div>
             </div>
           </div>
-        </motion.section>
-      </section>
+        </section>
 
+        <section className="home-connect" aria-labelledby="connect-title">
+          <div>
+            <p className="home-eyebrow">Follow the work in motion</p>
+            <h2 id="connect-title">Ideas improve in public.</h2>
+            <p>Find the daily notes, unfinished thoughts, build logs, and occasional strong opinion.</p>
+          </div>
+          <div className="home-connect-actions">
+            <button
+              type="button"
+              className={`home-weird-toggle ${weirdMode ? 'is-active' : ''}`}
+              onClick={toggleWeirdMode}
+              aria-pressed={weirdMode}
+              title="Hint: the Konami code works too"
+            >
+              <WandSparkles size={15} />
+              {weirdMode ? 'Quiet mode' : 'Make it weird'}
+            </button>
+            <div className="home-social-links">
+              <a href="https://x.com/ConorChepenik" target="_blank" rel="noopener noreferrer" aria-label="Follow Conor on X"><FaXTwitter /></a>
+              <a href="https://medium.com/@chepenikconor" target="_blank" rel="noopener noreferrer" aria-label="Read Conor on Medium"><FaMedium /></a>
+              <a href="https://github.com/Chepenik" target="_blank" rel="noopener noreferrer" aria-label="View Conor on GitHub"><FaGithub /></a>
+              <a href="https://www.youtube.com/@ConorChepenik" target="_blank" rel="noopener noreferrer" aria-label="Watch Conor on YouTube"><FaYoutube /></a>
+              <button type="button" onClick={() => setZapModalOpen(true)} aria-label="Zap Conor with Bitcoin"><Zap size={18} /></button>
+            </div>
+          </div>
+        </section>
+
+        <section className="home-support">
+          <div>
+            <Coffee size={22} strokeWidth={1.5} aria-hidden="true" />
+            <div><strong>Something here helped?</strong><span>Support the next useful thing.</span></div>
+          </div>
+          <a href="https://ko-fi.com/chepenik" target="_blank" rel="noopener noreferrer">
+            Buy me a coffee <ArrowUpRight size={15} />
+          </a>
+        </section>
+      </div>
+
+      {easterMessage && (
+        <div className="home-easter-toast" role="status">
+          <WandSparkles size={16} />
+          <span>{easterMessage}</span>
+          {weirdMode && <Link href="/space-invaders">Enter arcade</Link>}
+        </div>
+      )}
+      {weirdMode && <RainbowCursor />}
       <ZapModal isOpen={isZapModalOpen} onClose={() => setZapModalOpen(false)} />
     </>
   );
