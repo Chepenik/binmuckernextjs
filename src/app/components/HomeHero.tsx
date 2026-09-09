@@ -234,7 +234,7 @@ const hubLinks: HubLink[] = [
   {
     title: 'Merch',
     description: 'Wearable artifacts from the stranger corners of the Binmucker universe.',
-    href: 'https://chep.creator-spring.com/',
+    href: 'https://app.amazecommerce.com/shop/chep',
     category: 'Connect',
     label: 'Shop',
     icon: Shirt,
