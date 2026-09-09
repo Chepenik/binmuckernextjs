@@ -2,14 +2,13 @@
   "schema_version": "v1",
   "name_for_human": "Binmucker",
   "name_for_model": "binmucker",
-  "description_for_human": "Bitcoin-native consulting and SEO audits by Conor Chepenik.",
-  "description_for_model": "Binmucker provides AI-powered local business SEO audits, Bitcoin integration consulting, and content creation. Use the /api/audit endpoint to run SEO audits. Services are priced in sats (Bitcoin satoshis) and payable via Lightning Network.",
+  "description_for_human": "Free SEO audits, Bitcoin tools, and useful software by Conor Chepenik.",
+  "description_for_model": "Binmucker provides a free AI-powered local business SEO audit tool, Bitcoin and Lightning experiments, breathing exercises, games, and curated tools. The audit analyzes local search, reviews, content, technical SEO, and AI readiness. Visit https://binmucker.com/audit to try the free audit or explore the full directory of projects at https://binmucker.com",
   "auth": {
     "type": "none"
   },
   "api": {
-    "type": "openapi",
-    "url": "https://binmucker.com/api/openapi.json"
+    "type": "none"
   },
   "logo_url": "https://binmucker.com/binmuckerlogo.png",
   "contact_email": "chepenikconor@gmail.com",

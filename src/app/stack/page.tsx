@@ -40,7 +40,7 @@ interface StackItem {
 const tools: StackItem[] = [
   {
     name: 'Venice AI',
-    description: 'Private AI models and a tool I use when I want a different approach to working with AI.',
+    description: 'Private, uncensored AI models with genuine privacy. A tool I use when I want a different approach to working with AI—one that doesn\'t compromise.',
     disclosure: 'Join Pro through this link and you receive a $10 welcome bonus; I receive $10 in compute credits.',
     href: 'https://venice.ai/chat?ref=pnaIip',
     cta: 'Give $10, get $10',
@@ -49,7 +49,7 @@ const tools: StackItem[] = [
   },
   {
     name: 'Gemini Credit Card',
-    description: 'The card I use for everyday purchases to earn Bitcoin rewards automatically.',
+    description: 'Stack sats automatically on every purchase. The card I use daily to turn everyday spending into Bitcoin rewards—effortlessly.',
     disclosure: 'This is my referral application link. Provider terms, eligibility, and rewards can change.',
     href: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
     cta: 'View the card',
@@ -58,7 +58,7 @@ const tools: StackItem[] = [
   },
   {
     name: 'CrowdHealth',
-    description: 'The community-powered health funding option my household actually uses.',
+    description: 'The community-powered health funding option my household actually uses. A transparent alternative to traditional health insurance.',
     disclosure: 'This is a referral link. Review CrowdHealth’s current terms and model before deciding whether it fits you.',
     href: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
     cta: 'Explore CrowdHealth',
@@ -67,7 +67,7 @@ const tools: StackItem[] = [
   },
   {
     name: 'Hostinger',
-    description: 'Hosting I use for side projects when I want a straightforward place to get something online.',
+    description: 'Fast, reliable hosting at a straightforward price. What I use for side projects when I need to get something online without complexity.',
     disclosure: 'This is an affiliate link. Plans, discounts, and included features are set by Hostinger and can change.',
     href: 'https://hostinger.com?REFERRALCODE=1CONOR59',
     cta: 'See the current offer',
