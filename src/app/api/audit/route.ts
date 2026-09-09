@@ -1,16 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { generateObject } from 'ai';
+import { z } from 'zod';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { buildAuditPrompt, BUSINESS_TYPES } from '@/lib/audit-constants';
 import { saveLead, generateLeadId, type Lead } from '@/lib/leads';
 import { scrapeWebsite } from '@/lib/scraper';
 import { calculateAiReadiness } from '@/lib/ai-readiness';
 import { fetchGooglePlacesData } from '@/lib/google-places';
-import type { AuditReport, CategoryResult } from '@/types/audit';
+import type { CategoryResult } from '@/types/audit';
 import type { ScrapedData } from '@/types/scraper';
 import type { PlacesData } from '@/types/places';
 
-// Kimi K2.6 is a reasoning model that typically takes 60–120s. Vercel's
-// default 15s function timeout would kill the request mid-generation.
+// AI Gateway model routing: default to gpt-5.4, allow env override.
+// Routes through Vercel AI Gateway automatically for observability, cost tracking, and failover.
 export const maxDuration = 300;
 
 const MAX_LENGTHS = {
@@ -21,8 +23,37 @@ const MAX_LENGTHS = {
   additionalContext: 1000,
 } as const;
 
-const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'moonshotai/kimi-k2.6';
+// Default model for audit generation via AI Gateway
+// Free tier: gpt-4o-mini, gemini-2.5-flash-lite, claude-3-haiku
+// Paid tier: upgrade at vercel.com for gpt-5.4, claude-sonnet-4.6, etc.
+const AUDIT_MODEL = process.env.AUDIT_MODEL || 'openai/gpt-4o-mini';
+
+// Zod schema for structured audit report generation
+const auditReportSchema = z.object({
+  overallScore: z.number().min(0).max(100).describe('Overall digital marketing score (0-100)'),
+  summary: z.string().describe('Brief executive summary of the audit findings'),
+  categories: z.array(
+    z.object({
+      category: z.string().describe('Category name (e.g., "SEO", "Content", "Social Media")'),
+      score: z.number().min(0).max(100).describe('Category score (0-100)'),
+      emoji: z.string().describe('Single emoji representing the category'),
+      actions: z.array(
+        z.object({
+          action: z.string().describe('Specific recommended action'),
+          priority: z.enum(['high', 'medium', 'low']).describe('Action priority level'),
+          estimatedImpact: z.string().describe('Expected business impact of this action'),
+        }),
+      ).describe('List of actionable recommendations for this category'),
+    }),
+  ).describe('Detailed category-by-category analysis'),
+  quickWin: z.object({
+    title: z.string().describe('Title of the easiest high-impact action'),
+    description: z.string().describe('Why this is valuable and how to implement it'),
+    timeToImplement: z.string().describe('Estimated time to complete (e.g., "1 hour", "1 day")'),
+  }).describe('The single most impactful quick win'),
+  topPriorities: z.array(z.string()).describe('Top 3-5 priority actions across all categories'),
+  competitiveInsight: z.string().describe('One strategic insight about the competitive landscape'),
+});
 
 function log(level: 'INFO' | 'WARN' | 'ERROR', message: string, data?: Record<string, unknown>) {
   const entry = {
@@ -60,15 +91,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Validate API key
-  const apiKey = process.env.NVIDIA_API_KEY;
-  if (!apiKey) {
-    log('ERROR', 'NVIDIA_API_KEY not configured', { leadId });
-    return NextResponse.json(
-      { error: 'Audit service is not configured. Please contact the administrator.' },
-      { status: 500 },
-    );
-  }
+  // AI Gateway authentication: uses Vercel OIDC on deployment, optional AI_GATEWAY_API_KEY for local dev
+  // No explicit provider keys (OPENAI_API_KEY, etc.) needed — gateway handles auth via OIDC token.
 
   // Parse request body
   let body: Record<string, unknown>;
@@ -213,112 +237,50 @@ export async function POST(request: NextRequest) {
     placesData,
   );
 
-  // Call NVIDIA API with timeout (300s — Kimi K2.6 reasoning takes ~60-120s)
+  // Generate audit via AI Gateway with timeout (300s for reasoning models)
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 300000);
 
   try {
     const apiStartTime = Date.now();
 
-    const response = await fetch(NVIDIA_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'Accept': 'application/json',
+    // Detect environment for AI Gateway tracking
+    const environment = process.env.VERCEL_ENV || (process.env.NODE_ENV === 'production' ? 'production' : 'development');
+
+    // Call AI Gateway with structured output via AI SDK
+    // Includes free-tier-friendly failover models
+    const { object: report, usage } = await generateObject({
+      model: AUDIT_MODEL,
+      schema: auditReportSchema,
+      prompt,
+      abortSignal: controller.signal,
+      providerOptions: {
+        gateway: {
+          tags: [`feature:audit`, `env:${environment}`],
+          user: leadId, // Track per-audit for observability
+          models: [
+            AUDIT_MODEL,
+            'google/gemini-2.5-flash-lite', // Free tier fallback: $0.10/$0.40 per 1M tokens
+            'anthropic/claude-3-haiku',      // Free tier fallback: $0.25/$1.25 per 1M tokens
+          ],
+        },
       },
-      body: JSON.stringify({
-        model: NVIDIA_MODEL,
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 4096,
-        temperature: 1.0,
-        top_p: 1.0,
-        stream: false,
-      }),
-      signal: controller.signal,
     });
 
     const apiDurationMs = Date.now() - apiStartTime;
+    const tokensUsed = usage?.totalTokens || 0;
 
-    if (!response.ok) {
-      const statusCode = response.status;
-      let responseBody = '';
-      try {
-        responseBody = await response.text();
-      } catch {
-        responseBody = '(unable to read response body)';
-      }
-      const bodyPreview = responseBody.length > 500 ? responseBody.substring(0, 500) + '...' : responseBody;
-      log('ERROR', 'NVIDIA API returned error', { leadId, statusCode, apiDurationMs, model: NVIDIA_MODEL, responseBody: bodyPreview });
+    log('INFO', 'AI Gateway responded', {
+      leadId,
+      model: AUDIT_MODEL,
+      apiDurationMs,
+      tokensUsed,
+    });
 
-      const lead: Lead = { ...leadBase, status: 'error', errorMessage: `API ${statusCode}`, durationMs: Date.now() - startTime };
-      await saveLead(lead);
-
-      return NextResponse.json(
-        { error: 'Failed to generate audit. Please try again.' },
-        { status: 500 },
-      );
-    }
-
-    const data = await response.json();
-    const rawText: string = data.choices?.[0]?.message?.content || '';
-    const tokensUsed = data.usage?.total_tokens || 0;
-
-    log('INFO', 'NVIDIA API responded', { leadId, apiDurationMs, tokensUsed, contentLength: rawText.length });
-
-    // Robust JSON extraction: find the first complete JSON object
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      log('ERROR', 'No JSON found in model response', { leadId, contentPreview: rawText.substring(0, 200) });
-
-      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'No JSON in response', durationMs: Date.now() - startTime };
-      await saveLead(lead);
-
-      return NextResponse.json(
-        { error: 'Failed to parse audit results. Please try again.' },
-        { status: 500 },
-      );
-    }
-
-    let report: AuditReport;
-    try {
-      report = JSON.parse(jsonMatch[0]);
-    } catch {
-      log('ERROR', 'JSON parse failed', { leadId, jsonPreview: jsonMatch[0].substring(0, 200) });
-
-      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'JSON parse failed', durationMs: Date.now() - startTime };
-      await saveLead(lead);
-
-      return NextResponse.json(
-        { error: 'Failed to parse audit results. Please try again.' },
-        { status: 500 },
-      );
-    }
-
-    // Validate structure
-    if (typeof report.overallScore !== 'number' || !Array.isArray(report.categories)) {
-      log('ERROR', 'Invalid report structure', { leadId });
-
-      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'Invalid report structure', durationMs: Date.now() - startTime };
-      await saveLead(lead);
-
-      return NextResponse.json(
-        { error: 'Invalid audit response format. Please try again.' },
-        { status: 500 },
-      );
-    }
-
-    // Sanitize scores and validate enums
+    // Sanitize scores (Zod validates structure, but we still enforce bounds)
     report.overallScore = Math.max(0, Math.min(100, Math.round(report.overallScore)));
     for (const cat of report.categories) {
       cat.score = Math.max(0, Math.min(100, Math.round(cat.score)));
-      if (Array.isArray(cat.actions)) {
-        for (const action of cat.actions) {
-          if (!['high', 'medium', 'low'].includes(action.priority)) {
-            action.priority = 'medium';
-          }
-        }
-      }
     }
 
     // Append AI Readiness category if scraping succeeded
@@ -402,8 +364,51 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const errMsg = error instanceof Error ? error.message : 'Unknown error';
-    log('ERROR', 'Unexpected error', { leadId, error: errMsg, totalDurationMs });
+    // AI Gateway specific errors: free tier restrictions, budget exhaustion, and rate limits
+    const errMsg = error instanceof Error ? error.message : String(error);
+    const errStr = errMsg.toLowerCase();
+
+    // Free tier model restriction
+    if (errStr.includes('free tier') || errStr.includes('upgrade to paid') || errStr.includes('unrestricted access')) {
+      log('ERROR', 'AI Gateway free tier model restriction', { leadId, error: errMsg, model: AUDIT_MODEL, totalDurationMs });
+
+      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'Free tier model restriction', durationMs: totalDurationMs };
+      await saveLead(lead);
+
+      return NextResponse.json(
+        {
+          error: `The requested AI model (${AUDIT_MODEL}) requires paid credits. The free tier includes models like gpt-4o-mini. ` +
+                 'Contact the administrator to upgrade at vercel.com/ai or set AUDIT_MODEL=openai/gpt-4o-mini.'
+        },
+        { status: 402 },
+      );
+    }
+
+    if (errStr.includes('402') || errStr.includes('budget') || errStr.includes('payment required')) {
+      log('ERROR', 'AI Gateway budget exhausted', { leadId, error: errMsg, totalDurationMs });
+
+      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'Budget exhausted', durationMs: totalDurationMs };
+      await saveLead(lead);
+
+      return NextResponse.json(
+        { error: 'AI service budget exceeded. Please contact the administrator.' },
+        { status: 503 },
+      );
+    }
+
+    if (errStr.includes('429') || errStr.includes('rate limit') || errStr.includes('too many requests')) {
+      log('ERROR', 'AI Gateway rate limited', { leadId, error: errMsg, totalDurationMs });
+
+      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'Gateway rate limited', durationMs: totalDurationMs };
+      await saveLead(lead);
+
+      return NextResponse.json(
+        { error: 'AI service temporarily unavailable due to high demand. Please try again in a few moments.' },
+        { status: 429 },
+      );
+    }
+
+    log('ERROR', 'Unexpected error during audit generation', { leadId, error: errMsg, totalDurationMs });
 
     const lead: Lead = { ...leadBase, status: 'error', errorMessage: errMsg, durationMs: totalDurationMs };
     await saveLead(lead);
