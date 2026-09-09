@@ -1,5 +1,4 @@
-import { writeFile, readFile, mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { getRedis } from './redis';
 
 export interface Lead {
   id: string;
@@ -23,34 +22,38 @@ export interface Lead {
   googleReviewCount?: number;
 }
 
-const DATA_DIR = join(process.cwd(), 'data');
-const LEADS_FILE = join(DATA_DIR, 'leads.json');
-
-async function ensureDataDir() {
-  try {
-    await mkdir(DATA_DIR, { recursive: true });
-  } catch {
-    // directory already exists
-  }
-}
-
-async function readLeads(): Promise<Lead[]> {
-  try {
-    const data = await readFile(LEADS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
+let warnedMissingRedis = false;
 
 export async function saveLead(lead: Lead): Promise<void> {
+  const redis = getRedis();
+  
+  if (!redis) {
+    if (!warnedMissingRedis) {
+      warnedMissingRedis = true;
+      console.warn(
+        JSON.stringify({
+          level: 'WARN',
+          service: 'leads',
+          message: 'Redis env vars not set (KV_REST_API_URL/TOKEN or UPSTASH_REDIS_REST_URL/TOKEN). Lead tracking disabled.',
+        }),
+      );
+    }
+    return;
+  }
+
   try {
-    await ensureDataDir();
-    const leads = await readLeads();
-    leads.push(lead);
-    await writeFile(LEADS_FILE, JSON.stringify(leads, null, 2));
+    const key = `lead:${lead.id}`;
+    await redis.set(key, JSON.stringify(lead));
   } catch (err) {
-    console.error('[LEADS] Failed to save lead:', err);
+    console.error(
+      JSON.stringify({
+        level: 'ERROR',
+        service: 'leads',
+        message: 'Failed to save lead to Redis',
+        error: err instanceof Error ? err.message : 'unknown',
+        leadId: lead.id,
+      }),
+    );
   }
 }
 

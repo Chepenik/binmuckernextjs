@@ -9,7 +9,7 @@ import type { AuditReport, CategoryResult } from '@/types/audit';
 import type { ScrapedData } from '@/types/scraper';
 import type { PlacesData } from '@/types/places';
 
-// Kimi K2.5 is a reasoning model that typically takes 60–120s. Vercel's
+// Kimi K2.6 is a reasoning model that typically takes 60–120s. Vercel's
 // default 15s function timeout would kill the request mid-generation.
 export const maxDuration = 300;
 
@@ -22,7 +22,7 @@ const MAX_LENGTHS = {
 } as const;
 
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const NVIDIA_MODEL = 'moonshotai/kimi-k2.5';
+const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'moonshotai/kimi-k2.6';
 
 function log(level: 'INFO' | 'WARN' | 'ERROR', message: string, data?: Record<string, unknown>) {
   const entry = {
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
     placesData,
   );
 
-  // Call NVIDIA API with timeout (300s — Kimi K2.5 reasoning takes ~60-120s)
+  // Call NVIDIA API with timeout (300s — Kimi K2.6 reasoning takes ~60-120s)
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 300000);
 
@@ -242,7 +242,14 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const statusCode = response.status;
-      log('ERROR', 'NVIDIA API returned error', { leadId, statusCode, apiDurationMs });
+      let responseBody = '';
+      try {
+        responseBody = await response.text();
+      } catch {
+        responseBody = '(unable to read response body)';
+      }
+      const bodyPreview = responseBody.length > 500 ? responseBody.substring(0, 500) + '...' : responseBody;
+      log('ERROR', 'NVIDIA API returned error', { leadId, statusCode, apiDurationMs, model: NVIDIA_MODEL, responseBody: bodyPreview });
 
       const lead: Lead = { ...leadBase, status: 'error', errorMessage: `API ${statusCode}`, durationMs: Date.now() - startTime };
       await saveLead(lead);
