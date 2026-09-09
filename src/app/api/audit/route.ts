@@ -315,7 +315,7 @@ export async function POST(request: NextRequest) {
 
     const totalDurationMs = Date.now() - startTime;
 
-    // Save successful lead
+    // Save successful lead (best effort - don't fail audit if Redis unavailable)
     const lead: Lead = {
       ...leadBase,
       status: 'success',
