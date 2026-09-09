@@ -331,6 +331,31 @@ export async function POST(request: NextRequest) {
     };
     await saveLead(lead);
 
+    // Store audit report in Redis for email unlock (Campaign 1)
+    // TTL: 1 hour (3600 seconds)
+    const redis = await import('@/lib/redis').then(m => m.getRedis());
+    if (redis()) {
+      try {
+        const auditSessionKey = `audit:session:${ip}`;
+        await redis()!.set(
+          auditSessionKey,
+          JSON.stringify({
+            report,
+            businessName: businessName as string,
+            city: city as string,
+            timestamp: new Date().toISOString(),
+          }),
+          { ex: 3600 }, // 1 hour expiry
+        );
+        log('INFO', 'Audit report stored for unlock', { leadId, auditSessionKey });
+      } catch (err) {
+        log('WARN', 'Failed to store audit for unlock', { 
+          leadId, 
+          error: err instanceof Error ? err.message : 'unknown',
+        });
+      }
+    }
+
     log('INFO', 'Audit completed successfully', {
       leadId,
       businessName,

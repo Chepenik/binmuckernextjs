@@ -158,7 +158,7 @@ const hubLinks: HubLink[] = [
   {
     title: 'Venice AI',
     description: 'Private AI with uncensored models. Join Pro and you get $10; I get $10 in credits too.',
-    href: 'https://venice.ai/chat?ref=pnaIip',
+    href: 'https://venice.ai/chat?ref=pnaIip&utm_source=binmucker&utm_medium=referral&utm_campaign=stack',
     category: 'Stack',
     label: 'Give $10, get $10',
     icon: Bot,
@@ -167,7 +167,7 @@ const hubLinks: HubLink[] = [
   {
     title: 'Gemini Credit Card',
     description: 'The card I use for everyday purchases to earn Bitcoin rewards automatically.',
-    href: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94',
+    href: 'https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94&utm_source=binmucker&utm_medium=referral&utm_campaign=stack',
     category: 'Stack',
     label: 'Bitcoin rewards',
     icon: CreditCard,
@@ -176,7 +176,7 @@ const hubLinks: HubLink[] = [
   {
     title: 'CrowdHealth',
     description: 'The community-powered health funding option my household actually uses.',
-    href: 'https://www.joincrowdhealth.com/?referral_code=GQRENX',
+    href: 'https://www.joincrowdhealth.com/?referral_code=GQRENX&utm_source=binmucker&utm_medium=referral&utm_campaign=stack',
     category: 'Stack',
     label: 'Referral',
     icon: ShieldCheck,
@@ -185,7 +185,7 @@ const hubLinks: HubLink[] = [
   {
     title: 'Hostinger',
     description: 'Affordable hosting I use when a project needs to be fast, reliable, and simple.',
-    href: 'https://hostinger.com?REFERRALCODE=1CONOR59',
+    href: 'https://hostinger.com?REFERRALCODE=1CONOR59&utm_source=binmucker&utm_medium=referral&utm_campaign=stack',
     category: 'Stack',
     label: '20% off',
     icon: Server,
@@ -194,7 +194,7 @@ const hubLinks: HubLink[] = [
   {
     title: 'My Stack',
     description: 'The cards, services, hosting, and tools I actually use—with honest disclosure.',
-    href: '/stack',
+    href: '/stack?utm_source=binmucker&utm_medium=referral&utm_campaign=home',
     category: 'Stack',
     label: 'Recommendations',
     icon: Terminal,
@@ -404,17 +404,27 @@ export function HomeHero() {
             better businesses, health, and the weird edges between them. This is where it all lives.
           </p>
           <div className="home-hero-actions">
-            <a href="#directory" className="home-primary-button">
-              Explore everything <ArrowRight size={17} aria-hidden="true" />
-            </a>
-            <Link href="/about" className="home-secondary-button">
-              Why I build
+            <Link 
+              href="/audit?utm_source=binmucker&utm_medium=referral&utm_campaign=home" 
+              className="home-primary-button"
+            >
+              Run the free audit <ArrowRight size={17} aria-hidden="true" />
+            </Link>
+            <Link 
+              href="/stack?utm_source=binmucker&utm_medium=referral&utm_campaign=home" 
+              className="home-secondary-button"
+            >
+              My stack
             </Link>
           </div>
         </section>
 
         <section className="home-feature-grid" aria-label="Start here">
-          <Link href="/audit" className="home-feature-card home-feature-main" onPointerMove={trackPointer}>
+          <Link 
+            href="/audit?utm_source=binmucker&utm_medium=referral&utm_campaign=home" 
+            className="home-feature-card home-feature-main" 
+            onPointerMove={trackPointer}
+          >
             <div className="home-card-topline">
               <span className="home-chip home-chip-blue">Featured tool</span>
               <ArrowUpRight size={20} aria-hidden="true" />
@@ -460,37 +470,19 @@ export function HomeHero() {
             </div>
           </a>
 
-          <a
-            href="https://venice.ai/chat?ref=pnaIip"
-            target="_blank"
-            rel="sponsored noopener noreferrer"
-            className="home-feature-card home-feature-wide home-feature-partner home-feature-venice"
+          <Link
+            href="/stack?utm_source=binmucker&utm_medium=referral&utm_campaign=home"
+            className="home-feature-card home-feature-wide home-feature-partner home-feature-stack"
             onPointerMove={trackPointer}
           >
-            <div className="home-venice-mark" aria-hidden="true"><Bot size={22} /></div>
+            <div className="home-stack-mark" aria-hidden="true"><Terminal size={22} /></div>
             <div className="home-feature-wide-copy">
-              <span className="home-chip">Referral · Pro</span>
-              <h3>Try Venice AI. You get $10, I get $10.</h3>
-              <p>Private, unrestricted AI models with a welcome credit when you join Pro.</p>
+              <span className="home-chip">Recommendations</span>
+              <h3>My Stack</h3>
+              <p>The cards, services, hosting, and tools I actually use—with honest disclosure.</p>
             </div>
             <ArrowUpRight size={20} aria-hidden="true" />
-          </a>
-
-          <a
-            href="https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94"
-            target="_blank"
-            rel="sponsored noopener noreferrer"
-            className="home-feature-card home-feature-wide home-feature-partner home-feature-gemini"
-            onPointerMove={trackPointer}
-          >
-            <div className="home-gemini-mark" aria-hidden="true"><CreditCard size={22} /></div>
-            <div className="home-feature-wide-copy">
-              <span className="home-chip">Referral · Card</span>
-              <h3>Earn Bitcoin on everyday purchases.</h3>
-              <p>The Gemini Credit Card is the one I use to stack sats automatically.</p>
-            </div>
-            <ArrowUpRight size={20} aria-hidden="true" />
-          </a>
+          </Link>
         </section>
 
         <section id="directory" className="home-directory" aria-labelledby="directory-title">

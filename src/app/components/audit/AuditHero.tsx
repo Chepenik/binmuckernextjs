@@ -9,11 +9,13 @@ import type { AuditFormData, AuditReport, AuditState } from '@/types/audit';
 export function AuditHero() {
   const [state, setState] = useState<AuditState>('idle');
   const [report, setReport] = useState<AuditReport | null>(null);
+  const [formData, setFormData] = useState<AuditFormData | null>(null);
   const [error, setError] = useState('');
 
   const handleSubmit = async (data: AuditFormData) => {
     setState('loading');
     setError('');
+    setFormData(data);
 
     try {
       const res = await fetch('/api/audit', {
@@ -40,6 +42,7 @@ export function AuditHero() {
   const handleReset = () => {
     setState('idle');
     setReport(null);
+    setFormData(null);
     setError('');
   };
 
@@ -60,8 +63,12 @@ export function AuditHero() {
 
         {state === 'loading' && <LoadingState />}
 
-        {state === 'success' && report && (
-          <AuditResults report={report} onReset={handleReset} />
+        {state === 'success' && report && formData && (
+          <AuditResults 
+            report={report} 
+            onReset={handleReset}
+            businessName={formData.businessName}
+          />
         )}
 
         {state === 'error' && (
