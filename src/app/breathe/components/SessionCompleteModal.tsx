@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Share2, Copy, Check } from 'lucide-react';
 import { useDialogFocus } from '@/app/hooks/useDialogFocus';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface SessionCompleteModalProps {
   isOpen: boolean;
@@ -43,9 +43,17 @@ export default function SessionCompleteModal({
 }: SessionCompleteModalProps) {
   const dialogRef = useDialogFocus<HTMLDivElement>(isOpen, onClose);
   const [copied, setCopied] = useState(false);
+  const [hasWebShare, setHasWebShare] = useState(false);
 
   const shareUrl = 'https://www.binmucker.com/breathe';
   const shareText = getShareText(duration, patternName);
+
+  // Check Web Share API support on mount
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      setHasWebShare(true);
+    }
+  }, []);
 
   const handleTwitterShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
@@ -160,7 +168,7 @@ export default function SessionCompleteModal({
               </div>
 
               <div className="flex gap-2 justify-center">
-                {navigator.share && (
+                {hasWebShare && (
                   <button
                     onClick={handleWebShare}
                     className="flex items-center gap-2 px-4 py-2 text-xs text-gray-400 hover:text-gray-300 transition-colors"
