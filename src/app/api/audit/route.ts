@@ -24,7 +24,9 @@ const MAX_LENGTHS = {
 } as const;
 
 // Default model for audit generation via AI Gateway
-const AUDIT_MODEL = process.env.AUDIT_MODEL || 'openai/gpt-5.4';
+// Free tier: gpt-4o-mini, gemini-2.5-flash-lite, claude-3-haiku
+// Paid tier: upgrade at vercel.com for gpt-5.4, claude-sonnet-4.6, etc.
+const AUDIT_MODEL = process.env.AUDIT_MODEL || 'openai/gpt-4o-mini';
 
 // Zod schema for structured audit report generation
 const auditReportSchema = z.object({
@@ -246,6 +248,7 @@ export async function POST(request: NextRequest) {
     const environment = process.env.VERCEL_ENV || (process.env.NODE_ENV === 'production' ? 'production' : 'development');
 
     // Call AI Gateway with structured output via AI SDK
+    // Includes free-tier-friendly failover models
     const { object: report, usage } = await generateObject({
       model: AUDIT_MODEL,
       schema: auditReportSchema,
@@ -255,6 +258,11 @@ export async function POST(request: NextRequest) {
         gateway: {
           tags: [`feature:audit`, `env:${environment}`],
           user: leadId, // Track per-audit for observability
+          models: [
+            AUDIT_MODEL,
+            'google/gemini-2.5-flash-lite', // Free tier fallback: $0.10/$0.40 per 1M tokens
+            'anthropic/claude-3-haiku',      // Free tier fallback: $0.25/$1.25 per 1M tokens
+          ],
         },
       },
     });
@@ -356,9 +364,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // AI Gateway specific errors: budget exhaustion (402) and rate limits (429)
+    // AI Gateway specific errors: free tier restrictions, budget exhaustion, and rate limits
     const errMsg = error instanceof Error ? error.message : String(error);
     const errStr = errMsg.toLowerCase();
+
+    // Free tier model restriction
+    if (errStr.includes('free tier') || errStr.includes('upgrade to paid') || errStr.includes('unrestricted access')) {
+      log('ERROR', 'AI Gateway free tier model restriction', { leadId, error: errMsg, model: AUDIT_MODEL, totalDurationMs });
+
+      const lead: Lead = { ...leadBase, status: 'error', errorMessage: 'Free tier model restriction', durationMs: totalDurationMs };
+      await saveLead(lead);
+
+      return NextResponse.json(
+        {
+          error: `The requested AI model (${AUDIT_MODEL}) requires paid credits. The free tier includes models like gpt-4o-mini. ` +
+                 'Contact the administrator to upgrade at vercel.com/ai or set AUDIT_MODEL=openai/gpt-4o-mini.'
+        },
+        { status: 402 },
+      );
+    }
 
     if (errStr.includes('402') || errStr.includes('budget') || errStr.includes('payment required')) {
       log('ERROR', 'AI Gateway budget exhausted', { leadId, error: errMsg, totalDurationMs });
