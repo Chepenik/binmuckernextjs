@@ -104,6 +104,13 @@ export function AuditResults({ report, onReset, businessName }: AuditResultsProp
       {/* Full Report (shown after email submitted or gate skipped) */}
       {(showFullReport || gateSkipped) && (
         <>
+          {/* Unlocked header */}
+          {showFullReport && (
+            <div className="audit-unlocked-header">
+              <h2>Full report unlocked</h2>
+            </div>
+          )}
+
           {/* Category Cards */}
           <section className="audit-result-section">
             <h2>Category breakdown</h2>
@@ -132,6 +139,21 @@ export function AuditResults({ report, onReset, businessName }: AuditResultsProp
             <h2>Competitive insight</h2>
             <p>{report.competitiveInsight}</p>
           </section>
+
+          {/* Stack footer */}
+          {showFullReport && (
+            <div className="audit-stack-footer">
+              <p>
+                Tools I actually use when I build sites →{' '}
+                <a 
+                  href="/stack?utm_source=binmucker&utm_medium=referral&utm_campaign=audit_results"
+                  className="ui-text-link"
+                >
+                  My Stack
+                </a>
+              </p>
+            </div>
+          )}
         </>
       )}
 

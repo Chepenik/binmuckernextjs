@@ -3787,25 +3787,31 @@ textarea.ui-field {
   cursor: not-allowed;
 }
 
-.email-gate-success {
-  display: grid;
-  gap: 16px;
+.audit-unlocked-header {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
 }
 
-.email-gate-success h3 {
-  margin-bottom: 4px;
+.audit-unlocked-header h2 {
+  color: #81c784;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.email-gate-success p {
+.audit-stack-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.audit-stack-footer p {
   color: #aaaab1;
   font-size: 14px;
   line-height: 1.6;
-}
-
-.email-gate-stack-link {
-  margin-top: 8px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
 }
 
 .home-feature-stack {

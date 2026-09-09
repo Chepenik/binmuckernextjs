@@ -315,7 +315,7 @@ export async function POST(request: NextRequest) {
 
     const totalDurationMs = Date.now() - startTime;
 
-    // Save successful lead
+    // Save successful lead (best effort - don't fail audit if Redis unavailable)
     const lead: Lead = {
       ...leadBase,
       status: 'success',
@@ -330,31 +330,6 @@ export async function POST(request: NextRequest) {
       googleReviewCount: placesData?.userRatingCount ?? undefined,
     };
     await saveLead(lead);
-
-    // Store audit report in Redis for email unlock (Campaign 1)
-    // TTL: 1 hour (3600 seconds)
-    const redis = await import('@/lib/redis').then(m => m.getRedis());
-    if (redis) {
-      try {
-        const auditSessionKey = `audit:session:${ip}`;
-        await redis.set(
-          auditSessionKey,
-          JSON.stringify({
-            report,
-            businessName: businessName as string,
-            city: city as string,
-            timestamp: new Date().toISOString(),
-          }),
-          { ex: 3600 }, // 1 hour expiry
-        );
-        log('INFO', 'Audit report stored for unlock', { leadId, auditSessionKey });
-      } catch (err) {
-        log('WARN', 'Failed to store audit for unlock', { 
-          leadId, 
-          error: err instanceof Error ? err.message : 'unknown',
-        });
-      }
-    }
 
     log('INFO', 'Audit completed successfully', {
       leadId,

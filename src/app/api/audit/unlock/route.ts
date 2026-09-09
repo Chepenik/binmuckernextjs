@@ -1,20 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRedis } from '@/lib/redis';
 import { checkRateLimit } from '@/lib/rateLimit';
-import { sendAuditReport } from '@/lib/email';
-import type { AuditReport } from '@/types/audit';
 
-export const maxDuration = 60;
+export const maxDuration = 30;
 
 interface UnlockRequest {
   email: string;
-}
-
-interface StoredAuditData {
-  report: AuditReport;
-  businessName: string;
-  city: string;
-  timestamp: string;
 }
 
 function log(level: 'INFO' | 'WARN' | 'ERROR', message: string, data?: Record<string, unknown>) {
@@ -37,7 +28,7 @@ function log(level: 'INFO' | 'WARN' | 'ERROR', message: string, data?: Record<st
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
   
-  // Rate limiting
+  // Rate limiting (best effort)
   const ip = request.headers.get('x-real-ip') || 'unknown';
   const { allowed, remaining } = await checkRateLimit(ip, 'audit-unlock');
   
@@ -72,92 +63,41 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid email format.' }, { status: 400 });
   }
 
-  // Get the audit report from session/cookie
-  // For now, we'll retrieve from Redis using the IP as a temporary key
-  // In production, you might want to use a session token
+  // Store the email lead (best effort - don't fail if Redis unavailable)
   const redis = getRedis();
+  let leadSaved = false;
 
-  if (!redis) {
-    log('ERROR', 'Redis not configured for unlock', { ip, email });
-    return NextResponse.json(
-      { error: 'Report storage not available. Please run the audit again.' },
-      { status: 503 },
-    );
-  }
-
-  try {
-    // Try to get the most recent audit for this IP
-    const auditKey = `audit:session:${ip}`;
-    const storedData = await redis.get(auditKey);
-
-    if (!storedData) {
-      log('WARN', 'No recent audit found for unlock', { ip, email });
-      return NextResponse.json(
-        { error: 'No recent audit found. Please run the audit again.' },
-        { status: 404 },
-      );
-    }
-
-    const auditData: StoredAuditData = JSON.parse(storedData as string);
-
-    log('INFO', 'Unlock requested', {
-      ip,
-      email,
-      businessName: auditData.businessName,
-      score: auditData.report.overallScore,
-    });
-
-    // Send the email
-    const emailResult = await sendAuditReport({
-      email: email.trim(),
-      businessName: auditData.businessName,
-      city: auditData.city,
-      report: auditData.report,
-    });
-
-    if (!emailResult.success) {
-      log('ERROR', 'Failed to send email for unlock', {
+  if (redis) {
+    try {
+      const leadKey = `lead:unlock:${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      await redis.set(leadKey, JSON.stringify({
+        email: email.trim(),
+        timestamp: new Date().toISOString(),
         ip,
-        email,
-        error: emailResult.error,
-      });
-      return NextResponse.json(
-        { error: emailResult.error || 'Failed to send report.' },
-        { status: 500 },
-      );
+      }), { ex: 7776000 }); // 90 days
+      leadSaved = true;
+      
+      log('INFO', 'Lead saved successfully', { ip, email });
+    } catch (error: unknown) {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      log('WARN', 'Failed to save lead (continuing anyway)', { ip, email, error: errMsg });
     }
-
-    // Store the email lead
-    const leadKey = `lead:unlock:${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    await redis.set(leadKey, JSON.stringify({
-      email: email.trim(),
-      businessName: auditData.businessName,
-      city: auditData.city,
-      score: auditData.report.overallScore,
-      timestamp: new Date().toISOString(),
-      ip,
-    }));
-
-    const duration = Date.now() - startTime;
-
-    log('INFO', 'Unlock completed successfully', {
-      ip,
-      email,
-      businessName: auditData.businessName,
-      durationMs: duration,
-    });
-
-    return NextResponse.json(
-      { success: true },
-      { headers: { 'X-RateLimit-Remaining': String(remaining) } },
-    );
-  } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : String(error);
-    log('ERROR', 'Unexpected error during unlock', { ip, email, error: errMsg });
-
-    return NextResponse.json(
-      { error: 'An unexpected error occurred. Please try again.' },
-      { status: 500 },
-    );
+  } else {
+    log('WARN', 'Redis not available - lead not persisted', { ip, email });
   }
+
+  const duration = Date.now() - startTime;
+
+  log('INFO', 'Unlock completed', {
+    ip,
+    email,
+    leadSaved,
+    durationMs: duration,
+  });
+
+  // Always return success - client unlocks report in browser
+  return NextResponse.json(
+    { ok: true, leadSaved },
+    { headers: { 'X-RateLimit-Remaining': String(remaining) } },
+  );
 }
