@@ -334,10 +334,10 @@ export async function POST(request: NextRequest) {
     // Store audit report in Redis for email unlock (Campaign 1)
     // TTL: 1 hour (3600 seconds)
     const redis = await import('@/lib/redis').then(m => m.getRedis());
-    if (redis()) {
+    if (redis) {
       try {
         const auditSessionKey = `audit:session:${ip}`;
-        await redis()!.set(
+        await redis.set(
           auditSessionKey,
           JSON.stringify({
             report,
