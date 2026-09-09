@@ -1,5 +1,4 @@
-import { writeFile, readFile, mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { getRedis } from './redis';
 
 export interface Lead {
   id: string;
@@ -23,34 +22,40 @@ export interface Lead {
   googleReviewCount?: number;
 }
 
-const DATA_DIR = join(process.cwd(), 'data');
-const LEADS_FILE = join(DATA_DIR, 'leads.json');
-
-async function ensureDataDir() {
-  try {
-    await mkdir(DATA_DIR, { recursive: true });
-  } catch {
-    // directory already exists
-  }
-}
-
-async function readLeads(): Promise<Lead[]> {
-  try {
-    const data = await readFile(LEADS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
+/**
+ * Save a lead to Upstash Redis.
+ * 
+ * If Redis is not configured, fails silently (lead tracking is a nice-to-have, not critical).
+ * 
+ * Leads are stored with a 90-day TTL as individual keys (lead:<id>) and also added to a 
+ * sorted set (leads:index) for time-based querying.
+ */
 export async function saveLead(lead: Lead): Promise<void> {
   try {
-    await ensureDataDir();
-    const leads = await readLeads();
-    leads.push(lead);
-    await writeFile(LEADS_FILE, JSON.stringify(leads, null, 2));
+    const redis = getRedis();
+    if (!redis) {
+      console.warn('[LEADS] Redis not configured, lead not persisted:', lead.id);
+      return;
+    }
+
+    const leadKey = `lead:${lead.id}`;
+    const indexKey = 'leads:index';
+    const ttl = 60 * 60 * 24 * 90; // 90 days
+
+    // Store lead data with TTL
+    await redis.setex(leadKey, ttl, JSON.stringify(lead));
+
+    // Add to sorted set index (score = timestamp for time-based queries)
+    const timestamp = new Date(lead.timestamp).getTime();
+    await redis.zadd(indexKey, { score: timestamp, member: lead.id });
+
+    // Clean up old entries from the index (keep last 10k leads)
+    const count = await redis.zcard(indexKey);
+    if (count > 10000) {
+      await redis.zremrangebyrank(indexKey, 0, count - 10001);
+    }
   } catch (err) {
-    console.error('[LEADS] Failed to save lead:', err);
+    console.error('[LEADS] Failed to save lead to Redis:', err);
   }
 }
 

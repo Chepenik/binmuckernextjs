@@ -1,42 +1,43 @@
 # Binmucker
 
-> The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin and Lightning projects, and services priced in sats.
+> The personal internet home base of Conor Chepenik. Free tools, daily writing, Bitcoin experiments, and useful software for a more sovereign life.
 
-For full details see: https://binmucker.com/llms.txt
+For full details see: https://binmucker.com
 
 ## Quick Summary
 
 Binmucker.com is the personal site of Conor Chepenik featuring:
-- A 30-minute Bitcoin/AI/SEO consultation priced at 21,000 sats, paid via Lightning
-- Free AI-powered local business SEO audit (with premium tiers)
-- Free breathing exercise app (5 patterns, no account needed)
-- Browser-based Space Invaders game (5 levels, power-ups, endless mode)
-- Curated Bitcoin, Lightning, and music tools (Sound Money Mortgage, Saylorscope, Nostr, Fortune Sats, RyRacer, GuitarGui, Bitcoin Coloring Book, Handwritten Letters)
-- Daily writing on Medium and long-form posts on the Binmucker blog
+- Free AI-powered local business SEO audit (local search, reviews, content, technical SEO, and AI readiness)
+- Free breathing exercise app (5 guided patterns for focus, calm, sleep, and recovery)
+- Browser-based Space Invaders game (5 levels, bosses, power-ups, endless mode)
+- Bitcoin and Lightning tools (Sound Money Mortgage, Saylorscope, Fortune Sats, Bitcoin Coloring Book)
+- Open-source projects (RyRacer, GuitarGui, Handwritten Letters)
+- Daily writing on Medium and long-form essays on the Binmucker blog
+- Curated stack of tools and services with clear referral disclosures
 
-## Homepage Sections (anchored)
+## Main Categories
 
-- `#built-by-me` — Built by Me
-- `#bitcoin-lightning` — Bitcoin & Lightning
-- `#writing` — Writing & Ideas
-- `#play-practice` — Play & Practice
-- `#picks-partners` — Picks & Partners (affiliates, disclosed)
+- **Build** — Free SEO audit, experiments, and useful software
+- **Bitcoin** — Lightning integrations, educational tools, and sound money calculators
+- **Writing** — Daily notes on Medium and longer essays on the blog
+- **Play** — Breathe Better, Space Invaders, RyRacer, GuitarGui
+- **Stack** — Services and products I actually use, with honest disclosure
+- **Connect** — Social profiles, merch, and support options
 
 ## Key Links
 
 - Home: https://binmucker.com
-- Services: https://binmucker.com/services
 - SEO Audit: https://binmucker.com/audit
 - Breathe Better: https://binmucker.com/breathe
 - Space Invaders: https://binmucker.com/space-invaders
 - Blog: https://binmucker.com/blog
 - About: https://binmucker.com/about
-- Contact: https://binmucker.com/contact
+- My Stack: https://binmucker.com/stack
 - Sitemap: https://binmucker.com/sitemap.xml
 
 ## API
 
-- POST /api/audit — Run an SEO audit (JSON in/out)
+- POST /api/audit — Run an AI-powered local business SEO audit (JSON in/out)
 
 ## Support / Value for Value
 
