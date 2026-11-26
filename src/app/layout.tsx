@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
@@ -10,6 +10,10 @@ const inter = Inter({
   variable: '--font-inter',
   display: 'swap',
 });
+
+export const viewport: Viewport = {
+  themeColor: '#0A0A0F',
+};
 
 export const metadata: Metadata = {
   title: {
@@ -74,6 +78,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
   other: {
     'llms-txt': 'https://www.binmucker.com/llms.txt',
