@@ -83,7 +83,8 @@ export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalP
             </AnimatePresence>
 
             {/* Step indicators */}
-            <div className="dialog-progress" aria-label={`Step ${step + 1} of ${steps.length}`}>
+            <div className="dialog-progress">
+              <span className="sr-only">{`Step ${step + 1} of ${steps.length}`}</span>
               {steps.map((_, i) => (
                 <div
                   key={i}
