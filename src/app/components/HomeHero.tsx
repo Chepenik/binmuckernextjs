@@ -10,7 +10,6 @@ import {
   Bot,
   Brain,
   Check,
-  CircleDollarSign,
   Coffee,
   CreditCard,
   Gamepad2,
@@ -74,14 +73,6 @@ const hubLinks: HubLink[] = [
     category: 'Bitcoin',
     label: 'Calculator',
     icon: Landmark,
-  },
-  {
-    title: 'Saylorscope',
-    description: 'A long-view calculator for testing investment ideas against time.',
-    href: 'https://www.saylorscope.com/',
-    category: 'Bitcoin',
-    label: 'Tool',
-    icon: CircleDollarSign,
   },
   {
     title: 'Fortune Sats',
