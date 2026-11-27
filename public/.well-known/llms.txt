@@ -11,7 +11,7 @@ Binmucker.com is the personal site of Conor Chepenik featuring:
 - Free AI-powered local business SEO audit (with premium tiers)
 - Free breathing exercise app (5 patterns, no account needed)
 - Browser-based Space Invaders game (5 levels, power-ups, endless mode)
-- Curated Bitcoin, Lightning, and music tools (Sound Money Mortgage, Saylorscope, Nostr, Fortune Sats, RyRacer, GuitarGui, Bitcoin Coloring Book, Handwritten Letters)
+- Curated Bitcoin, Lightning, and music tools (Sound Money Mortgage, Nostr, Fortune Sats, RyRacer, GuitarGui, Bitcoin Coloring Book, Handwritten Letters)
 - Daily writing on Medium and long-form posts on the Binmucker blog
 
 ## Homepage Sections (anchored)

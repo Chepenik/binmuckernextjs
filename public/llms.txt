@@ -23,7 +23,6 @@ Business: Binmucker LLC
 
 - [Bitcoin Coloring Book](https://bitcoincoloring.com/): A kid-friendly introduction to Bitcoin, sound money, and self-custody.
 - [Sound Money Mortgage](https://soundmoneymortgage.com/): A mortgage calculator that includes Bitcoin opportunity cost.
-- [Saylorscope](https://www.saylorscope.com/): A long-view investment comparison tool.
 - [Fortune Sats](https://fortunesats.com/): A small Lightning experiment.
 - [RyRacer](https://ryracer.com/): A 3D combat racing game with Lightning elements.
 - [GuitarGui](https://guitargui.com/): An open-source collection of guitar tools.
