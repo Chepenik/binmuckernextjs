@@ -46,12 +46,20 @@ export default function PracticePage() {
   // Initialize audio
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    musicRef.current = new Audio('/sounds/music_fx_create_a_soothing_lofi_track_for_breath_work.mp3');
-    musicRef.current.loop = true;
-    musicRef.current.volume = 0.05;
+    // preload='none' is set before src so the ~3 MB of audio is only fetched
+    // once the visitor presses Start, not on every page view.
+    const music = new Audio();
+    music.preload = 'none';
+    music.loop = true;
+    music.volume = 0.05;
+    music.src = '/sounds/music_fx_create_a_soothing_lofi_track_for_breath_work.mp3';
+    musicRef.current = music;
 
-    transitionRef.current = new Audio('/sounds/transition_to_inhale.mp3');
-    transitionRef.current.volume = 0.15;
+    const transition = new Audio();
+    transition.preload = 'none';
+    transition.volume = 0.15;
+    transition.src = '/sounds/transition_to_inhale.mp3';
+    transitionRef.current = transition;
 
     return () => {
       musicRef.current?.pause();
@@ -96,6 +104,10 @@ export default function PracticePage() {
 
   const handleStart = () => {
     start();
+    // Fetch the phase-change chime now so it is ready for the first transition.
+    if (transitionRef.current && transitionRef.current.readyState === 0) {
+      transitionRef.current.load();
+    }
     if (!isMuted && musicRef.current) {
       musicRef.current.play().catch(() => {});
     }
