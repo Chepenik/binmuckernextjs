@@ -6,7 +6,7 @@ import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 import { getAllPosts, getPostBySlug } from '@/lib/blog';
 import { BlogPostContent } from './BlogPostContent';
-import { OG_IMAGE, OG_IMAGE_URL } from '@/lib/og';
+import { OG_IMAGE_URL } from '@/lib/og';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -33,13 +33,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: post.date,
       authors: ['Conor Chepenik'],
       tags: post.tags,
-      images: [OG_IMAGE],
+      // images come from ./opengraph-image.tsx (per-post card)
     },
     twitter: {
       card: 'summary_large_image',
       title: `${post.title} | Binmucker`,
       description: post.description,
-      images: [OG_IMAGE_URL],
     },
   };
 }
